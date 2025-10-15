@@ -31,6 +31,7 @@
         android:layout_marginVertical="24dp"
         android:orientation="vertical">
         <Button
+            android:id="@+id/search_button"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -46,6 +47,7 @@
             app:iconTint="@color/yp_black">
         </Button>
         <Button
+            android:id="@+id/show_media_button"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -61,6 +63,7 @@
             app:iconTint="@color/yp_black">
         </Button>
         <Button
+            android:id="@+id/settings_button"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
