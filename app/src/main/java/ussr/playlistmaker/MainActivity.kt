@@ -1,5 +1,6 @@
 package ussr.playlistmaker
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -29,7 +30,8 @@ class MainActivity : AppCompatActivity() {
         }
         val settingsButton = findViewById<Button>(R.id.settings_button)
         settingsButton.setOnClickListener {
-            Toast.makeText(this@MainActivity, "Настройки тоже недоступны. Попробуйте позже.", Toast.LENGTH_SHORT).show()
+            val settingsIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(settingsIntent)
         }
 
     }
