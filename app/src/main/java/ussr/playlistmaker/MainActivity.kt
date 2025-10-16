@@ -16,17 +16,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val searchButton = findViewById<Button>(R.id.go_search_button)
-        // способ 1: анонимный класс
-        val settingsClickListener: View.OnClickListener = object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                Toast.makeText(this@MainActivity, "Поиск недоступен. Попробуйте позже.", Toast.LENGTH_SHORT).show()
-            }
+        searchButton.setOnClickListener {
+            val searchIntent = Intent(this, SearchActivity::class.java)
+            startActivity(searchIntent)
         }
-        searchButton.setOnClickListener(settingsClickListener)
-        // способ 2: лямбда-выражение
+
         val mediaButton = findViewById<Button>(R.id.show_media_button)
         mediaButton.setOnClickListener {
-            Toast.makeText(this@MainActivity, "Медиатека недоступена. Попробуйте позже.", Toast.LENGTH_SHORT).show()
+            val mediaIntent = Intent(this, MediaActivity::class.java)
+            startActivity(mediaIntent)
         }
         val settingsButton = findViewById<Button>(R.id.settings_button)
         settingsButton.setOnClickListener {
