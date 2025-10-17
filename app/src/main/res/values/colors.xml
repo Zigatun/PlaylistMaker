@@ -4,6 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="yp_black">#FF1A1B22</color>
     <color name="yp_blue">#FF3772E7</color>
+    <color name="yp_blue_light">#FF9FBBF3</color>
     <color name="yp_white">#FFFFFFFF</color>
-    <color name="yp_text_gray">#FFFFFFFF</color>
+    <color name="yp_text_gray">#FFAEAFB4</color>
+    <color name="yp_light_gray">#FFE6E8EB</color>
 </resources>

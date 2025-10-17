@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -29,8 +30,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="@dimen/root_margin_vertical"
+        android:layout_marginHorizontal="@dimen/root_margin_horizontal"
         android:orientation="vertical">
         <FrameLayout
             android:layout_width="match_parent"
@@ -43,11 +44,13 @@
                 android:textSize="16sp"
                 android:textColor="@color/yp_black"
                 />
-            <com.google.android.material.switchmaterial.SwitchMaterial
+
+            <androidx.appcompat.widget.SwitchCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:checked="true"/>
+                app:thumbTint="@color/switch_thumb_colors"
+                app:trackTint="@color/switch_track_colors"/>
         </FrameLayout>
 
         <FrameLayout
