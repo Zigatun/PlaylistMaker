@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MainMenuItemCard">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:backgroundTint">@color/yp_white</item>
+        <item name="android:textColor">@color/yp_black</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">16dp</item>
+        <item name="iconTint">@color/yp_black</item>
+    </style>
+</resources>
