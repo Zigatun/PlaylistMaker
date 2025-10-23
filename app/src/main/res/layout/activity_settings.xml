@@ -51,6 +51,7 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/share_app"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -67,6 +68,7 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/contact_with_support"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -83,6 +85,7 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/user_agreement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
