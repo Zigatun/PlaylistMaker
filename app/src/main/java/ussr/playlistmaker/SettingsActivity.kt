@@ -13,8 +13,7 @@ class SettingsActivity : AppCompatActivity()  {
         setContentView(R.layout.activity_settings)
 
         findViewById<ImageView>(R.id.back_button).setOnClickListener {
-            val mainIntent = Intent(this, MainActivity::class.java)
-            startActivity(mainIntent)
+            finish()
         }
 
         findViewById<FrameLayout>(R.id.share_app).setOnClickListener{
