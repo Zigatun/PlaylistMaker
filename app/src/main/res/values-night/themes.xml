@@ -4,5 +4,7 @@
         <item name="colorOnPrimary">@color/yp_white</item>
         <item name="colorSecondaryVariant">@color/yp_black</item>
         <item name="colorOnBackground">@color/yp_black</item>
+        <item name="hintTextColor">@color/yp_black</item>
+        <item name="backgroundTint">@color/yp_white</item>
     </style>
 </resources>
