@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 
 class SearchActivity : AppCompatActivity() {
     private var searchBarValue: CharSequence? = SEARCHBAR_VALUE_DEFAULT
@@ -47,10 +48,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchBarValue = s
 
-                clearButton.visibility = when(s.isNullOrEmpty()){
-                    true -> View.GONE
-                    false -> View.VISIBLE
-                }
+                clearButton.isVisible = !s.isNullOrEmpty()
             }
 
             override fun afterTextChanged(s: Editable?) {
