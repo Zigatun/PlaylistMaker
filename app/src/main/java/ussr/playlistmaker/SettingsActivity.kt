@@ -1,11 +1,11 @@
 package ussr.playlistmaker
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 
 class SettingsActivity : AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,13 +19,13 @@ class SettingsActivity : AppCompatActivity()  {
         findViewById<FrameLayout>(R.id.share_app).setOnClickListener{
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
-            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link));
+            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
             startActivity(shareIntent)
         }
 
         findViewById<FrameLayout>(R.id.contact_with_support).setOnClickListener {
             val emailIntent = Intent(Intent.ACTION_SENDTO)
-            emailIntent.data = Uri.parse("mailto:")
+            emailIntent.data = "mailto:".toUri()
 
             emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.email_support_address)))
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_support_title))
@@ -34,7 +34,7 @@ class SettingsActivity : AppCompatActivity()  {
         }
 
         findViewById<FrameLayout>(R.id.user_agreement).setOnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.user_agreement_link)))
+            val browserIntent = Intent(Intent.ACTION_VIEW, getString(R.string.user_agreement_link).toUri())
             startActivity(browserIntent)
         }
     }
