@@ -30,6 +30,10 @@
         <item name="android:textFontWeight">500</item>
         <item name="android:textSize">16sp</item>
     </style>
+    <style name="MusicAlbumImage">
+        <item name="android:layout_width">45dp</item>
+        <item name="android:layout_height">45dp</item>
+    </style>
     <style name="MusicNameTextStyle">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textFontWeight">400</item>
@@ -40,7 +44,7 @@
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:textSize">11sp</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
     <style name="SettingsElementHeader">
         <item name="android:layout_gravity">center_vertical</item>
