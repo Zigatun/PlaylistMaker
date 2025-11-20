@@ -18,10 +18,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import ussr.playlistmaker.adapters.ItunesTrackAdapter
-import ussr.playlistmaker.adapters.TrackAdapter
 import ussr.playlistmaker.api.ItunesSearchApiService
 import ussr.playlistmaker.models.ItunesSearchResult
-import ussr.playlistmaker.models.Track
 
 class SearchActivity : AppCompatActivity() {
     private var searchBarValue: CharSequence? = SEARCHBAR_VALUE_DEFAULT
@@ -31,7 +29,7 @@ class SearchActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val itunesSearchApiService = retrofit.create<ItunesSearchApiService>();
+    private val itunesSearchApiService = retrofit.create<ItunesSearchApiService>()
 
     //    private var tracks: List<Track> = listOf(
 //        Track("Smells Like Teen Spirit", "Nirvana", "5:01", "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"),
@@ -60,7 +58,7 @@ class SearchActivity : AppCompatActivity() {
                     call: Call<ItunesSearchResult?>,
                     t: Throwable
                 ) {
-                    var toast =
+                    val toast =
                         Toast.makeText(
                             applicationContext,
                             t.message.toString(),
@@ -98,7 +96,6 @@ class SearchActivity : AppCompatActivity() {
         searchBar.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 doSearch(searchBar.text.toString())
-                true
             }
             false
         }
