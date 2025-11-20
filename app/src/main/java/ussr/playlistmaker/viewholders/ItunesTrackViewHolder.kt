@@ -11,7 +11,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import ussr.playlistmaker.R
 import ussr.playlistmaker.models.ItunesTrack
-import ussr.playlistmaker.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
