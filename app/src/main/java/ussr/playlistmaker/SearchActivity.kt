@@ -5,12 +5,16 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Visibility
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,6 +42,28 @@ class SearchActivity : AppCompatActivity() {
 //        Track("Whole Lotta Love", "Led Zeppelin", "5:33", "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"),
 //        Track("Sweet Child O'Mine", "Guns N' Roses", "5:03", "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"),
 //        )
+    private fun setPlaceholderMessage(message: String = "", isError: Boolean = false) {
+        val placeholderView = findViewById<LinearLayout>(R.id.error_placeholder)
+        val tracksView = findViewById<RecyclerView>(R.id.tracksRecyclerView)
+        if (message == "") {
+            placeholderView.isVisible = false
+            tracksView.isVisible = true
+            return
+        } else {
+            placeholderView.isVisible = true
+            tracksView.isVisible = false
+        }
+        findViewById<TextView>(R.id.error_description).text = message
+        val icon = findViewById<ImageView>(R.id.placeholder_icon)
+        val btn = findViewById<Button>(R.id.placeholder_refresh_button)
+        btn.isVisible = isError
+        if (isError) {
+            icon.setImageResource(R.drawable.no_connection_icon)
+        } else {
+            icon.setImageResource(R.drawable.no_items_icon)
+        }
+    }
+
     private fun doSearch(request: String) {
         itunesSearchApiService.search(request)
             .enqueue(object : Callback<ItunesSearchResult> {
@@ -47,9 +73,12 @@ class SearchActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val respObjects = response.body()?.results
-                        if (respObjects != null) {
+                        if (respObjects != null && respObjects.isNotEmpty()) {
+                            setPlaceholderMessage("")
                             findViewById<RecyclerView>(R.id.tracksRecyclerView).adapter =
                                 ItunesTrackAdapter(respObjects)
+                        } else {
+                            setPlaceholderMessage(getString(R.string.any_not_found))
                         }
                     }
                 }
@@ -58,13 +87,8 @@ class SearchActivity : AppCompatActivity() {
                     call: Call<ItunesSearchResult?>,
                     t: Throwable
                 ) {
-                    val toast =
-                        Toast.makeText(
-                            applicationContext,
-                            t.message.toString(),
-                            Toast.LENGTH_LONG
-                        )
-                    toast.show()
+                    //setPlaceholderMessage(getString(R.string.connection_troubles) + "\n\n" + t.message.toString(), true)
+                    setPlaceholderMessage(getString(R.string.connection_troubles) + "\n\n" + getString(R.string.trouble_no_internet), true)
                 }
 
             })
@@ -76,6 +100,7 @@ class SearchActivity : AppCompatActivity() {
 
         val searchBar = findViewById<EditText>(R.id.search_bar)
         val clearButton = findViewById<ImageView>(R.id.search_bar_clear_text)
+        val refreshButton = findViewById<Button>(R.id.placeholder_refresh_button)
 
         if (savedInstanceState != null) {
             searchBarValue = savedInstanceState.getCharSequence(SEARCHBAR, SEARCHBAR_VALUE_DEFAULT)
@@ -91,6 +116,10 @@ class SearchActivity : AppCompatActivity() {
             doSearch("")
             val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(searchBar.windowToken, 0)
+        }
+
+        refreshButton.setOnClickListener {
+            doSearch(searchBar.text.toString())
         }
 
         searchBar.setOnEditorActionListener { _, actionId, _ ->
