@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorOnBackground"
+    tools:context=".SearchActivity">
+    <Toolbar
+        android:id="@+id/main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="@string/search"
+        android:titleTextAppearance="@style/ToolbarTitleTextStyle"
+        android:navigationIcon="@drawable/back_icon" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="11dp"
+        android:layout_marginVertical="8dp"
+        android:layout_marginHorizontal="12dp"
+        android:background="@drawable/bg_search_field">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search_icon"
+            app:tint="?attr/hintTextColor"
+            android:contentDescription="@null"
+            android:layout_gravity="start"/>
+        <EditText
+            android:id="@+id/search_bar"
+            style="@style/RegularTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:autofillHints="name"
+            android:background="@null"
+            android:hint="@string/search"
+            android:textColor="@color/yp_black"
+            android:textColorHint="?attr/hintTextColor"
+            android:paddingHorizontal="36dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionSearch"/>
+
+        <ImageView android:id="@+id/search_bar_clear_text"
+            android:layout_marginTop="6dp"
+            android:layout_marginHorizontal="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:src="@drawable/clear_icon"
+            app:tint="?attr/hintTextColor"
+            android:visibility="gone"
+            android:contentDescription="@null"
+            />
+    </FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tracksRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="16dp">
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

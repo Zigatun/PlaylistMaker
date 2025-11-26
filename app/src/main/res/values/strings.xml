@@ -3,4 +3,13 @@
     <string name="search">Поиск</string>
     <string name="media">Медиатека</string>
     <string name="settings">Настройки</string>
+    <string name="black_theme">Тёмная тема</string>
+    <string name="share_app">Поделиться приложением</string>
+    <string name="contact_with_support">Написать в поддержку</string>
+    <string name="license">Пользовательское соглашение</string>
+    <string name="share_link">https://practicum.yandex.ru/profile/android-developer/</string>
+    <string name="email_support_address">zigatun@icloud.com</string>
+    <string name="email_support_title">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="email_support_body">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="user_agreement_link">https://yandex.ru/legal/practicum_offer/</string>
 </resources>

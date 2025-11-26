@@ -6,77 +6,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/yp_blue"
+    android:background="?attr/colorSecondaryVariant"
     tools:context=".MainActivity">
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        >
+        android:layout_marginTop="4dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textSize="22sp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
-            android:textColor="@color/yp_white"/>
+            android:text="@string/app_name"
+            android:textColor="@color/yp_white"
+            style="@style/PageHeader" />
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="24dp"
+        android:layout_marginHorizontal="@dimen/root_margin_horizontal"
+        android:layout_marginVertical="@dimen/root_margin_vertical"
         android:orientation="vertical">
+
         <Button
+            android:id="@+id/go_search_button"
+            style="@style/MainMenuItemCard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:textAllCaps="false"
             android:text="@string/search"
-            android:textColor="@color/yp_black"
-            android:textSize="22sp"
-            android:backgroundTint="@color/yp_white"
-            app:cornerRadius="16dp"
-            app:icon="@drawable/search_icon"
-            app:iconGravity="textStart"
-            app:iconPadding="8dp"
-            app:iconTint="@color/yp_black">
-        </Button>
+            app:icon="@drawable/search_icon" />
+
         <Button
+            android:id="@+id/show_media_button"
+            style="@style/MainMenuItemCard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:textAllCaps="false"
             android:text="@string/media"
-            android:textColor="@color/yp_black"
-            android:textSize="22sp"
-            android:backgroundTint="@color/yp_white"
-            app:cornerRadius="16dp"
-            app:icon="@drawable/media_icon"
-            app:iconGravity="textStart"
-            app:iconPadding="8dp"
-            app:iconTint="@color/yp_black">
-        </Button>
+            app:icon="@drawable/media_icon" />
+
         <Button
+            android:id="@+id/settings_button"
+            style="@style/MainMenuItemCard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:textAllCaps="false"
             android:text="@string/settings"
-            android:textColor="@color/yp_black"
-            android:textSize="22sp"
-            android:backgroundTint="@color/yp_white"
-            app:cornerRadius="16dp"
-            app:icon="@drawable/settings_icon"
-            app:iconGravity="textStart"
-            app:iconPadding="8dp"
-            app:iconTint="@color/yp_black">
-        </Button>
-
+            app:icon="@drawable/settings_icon" />
     </LinearLayout>
-
 </LinearLayout>
 
