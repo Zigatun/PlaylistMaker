@@ -17,8 +17,10 @@ class SettingsActivity : AppCompatActivity()  {
             finish()
         }
 
-        findViewById<SwitchMaterial>(R.id.themeSwitcher).setOnCheckedChangeListener { sw, enabled ->
-
+        val switcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+        switcher.isChecked = (applicationContext as PlaylistMakerApp).isDarkTheme
+        switcher.setOnCheckedChangeListener { sw, enabled ->
+            (applicationContext as PlaylistMakerApp).switchTheme(enabled)
         }
 
         findViewById<FrameLayout>(R.id.share_app).setOnClickListener{

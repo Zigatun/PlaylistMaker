@@ -14,7 +14,7 @@ class PlaylistMakerApp : Application() {
     override fun onCreate() {
         super.onCreate()
         sharedPreferences = getSharedPreferences(PLAYLISTMAKER_PREFERENCES, MODE_PRIVATE)
-        isDarkTheme = sharedPreferences.getBoolean(OPT_IS_DARK_THEME, isDarkTheme)
+        isDarkTheme = sharedPreferences.getBoolean(OPT_IS_DARK_THEME, false)
         switchTheme(isDarkTheme)
     }
 
@@ -27,5 +27,6 @@ class PlaylistMakerApp : Application() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
+        sharedPreferences.edit().putBoolean(OPT_IS_DARK_THEME, isDarkTheme).apply()
     }
 }
