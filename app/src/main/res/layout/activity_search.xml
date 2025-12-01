@@ -43,7 +43,8 @@
             android:paddingHorizontal="36dp"
             android:inputType="text"
             android:maxLines="1"
-            android:imeOptions="actionSearch"/>
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
 
         <ImageView android:id="@+id/search_bar_clear_text"
             android:layout_marginTop="6dp"
@@ -57,11 +58,48 @@
             android:contentDescription="@null"
             />
     </FrameLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tracksRecyclerView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_marginTop="16dp">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/error_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/placeholder_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_items_icon"
+                android:layout_marginTop="102dp"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="center_horizontal">
+            </ImageView>
+            <TextView
+                android:id="@+id/error_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/PlaceholderErrorTextStyle"
+                android:text="@string/any_not_found"/>
+            <Button
+                android:id="@+id/placeholder_refresh_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                style="@style/RegularAppButton"
+                android:visibility="gone"
+                android:text="@string/refresh"
+                android:layout_marginTop="24dp"
+                android:textAllCaps="false"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tracksRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="16dp">
+        </androidx.recyclerview.widget.RecyclerView>
+    </FrameLayout>
 </LinearLayout>
