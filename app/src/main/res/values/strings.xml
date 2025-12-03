@@ -4,6 +4,8 @@
     <string name="media">Медиатека</string>
     <string name="settings">Настройки</string>
     <string name="refresh">Обновить</string>
+    <string name="clear_history">Очистить историю</string>
+    <string name="you_are_search">Вы искали</string>
     <string name="black_theme">Тёмная тема</string>
     <string name="share_app">Поделиться приложением</string>
     <string name="contact_with_support">Написать в поддержку</string>
