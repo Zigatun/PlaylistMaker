@@ -1,10 +1,8 @@
 package ussr.playlistmaker.storages
 
 import android.content.SharedPreferences
-import android.util.Log
 import com.google.gson.Gson
 import ussr.playlistmaker.models.ItunesTrack
-import androidx.core.content.edit
 
 const val PLAYLISTMAKER_SEARCH_HISTORY = "playlistmaker_search_history"
 class SearchHistory(val storage: SharedPreferences) {
