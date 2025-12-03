@@ -7,7 +7,9 @@ import ussr.playlistmaker.R
 import ussr.playlistmaker.models.ItunesTrack
 import ussr.playlistmaker.viewholders.ItunesTrackViewHolder
 
-class ItunesTrackAdapter(private val tracks:List<ItunesTrack>) : RecyclerView.Adapter<ItunesTrackViewHolder>() {
+class ItunesTrackAdapter(private var tracks: MutableList<ItunesTrack>, private val onItemClick: (ItunesTrack) -> Unit
+) : RecyclerView.Adapter<ItunesTrackViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -21,8 +23,14 @@ class ItunesTrackAdapter(private val tracks:List<ItunesTrack>) : RecyclerView.Ad
         position: Int
     ) {
         holder.bind(tracks[position])
+        holder.itemView.setOnClickListener {
+             onItemClick(tracks[position])
+        }
     }
-
+    fun updateTracks(newTracks: MutableList<ItunesTrack>) {
+        tracks = newTracks
+        notifyDataSetChanged()
+    }
     override fun getItemCount(): Int {
         return tracks.size
     }
