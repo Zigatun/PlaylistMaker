@@ -4,7 +4,8 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import ussr.playlistmaker.models.ItunesTrack
 
-const val PLAYLISTMAKER_SEARCH_HISTORY = "playlistmaker_search_history"
+private const val PLAYLISTMAKER_SEARCH_HISTORY = "playlistmaker_search_history"
+private const val PLAYLISTMAKER_HISTORY_LIMIT = 10
 class SearchHistory(val storage: SharedPreferences) {
     private fun commit(target: ArrayDeque<ItunesTrack>){
         val json = Gson().toJson(target)
@@ -28,7 +29,7 @@ class SearchHistory(val storage: SharedPreferences) {
             tracks.removeIf { t -> t.trackId == track.trackId }
             tracks.addFirst(track)
         }
-        if(tracks.count() > 10)
+        if(tracks.count() > PLAYLISTMAKER_HISTORY_LIMIT)
             tracks.removeLast()
         commit(tracks)
     }
