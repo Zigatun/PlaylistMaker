@@ -9,8 +9,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -100,7 +102,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun refreshHistory() {
         val items = history.get()
-        val root = findViewById<LinearLayout>(R.id.tracksSearchHistory)
+        val root = findViewById<ScrollView>(R.id.tracksSearchHistory)
         root.isVisible = items.isNotEmpty()
         historyAdapter.updateTracks(items.toMutableList())
     }
@@ -152,7 +154,7 @@ class SearchActivity : AppCompatActivity() {
         }
         searchBar.setOnFocusChangeListener { view, hasFocus ->
             val historyIsVisible = hasFocus && searchBar.text.isEmpty()
-            findViewById<LinearLayout>(R.id.tracksSearchHistory).isVisible = historyIsVisible
+            findViewById<ScrollView>(R.id.tracksSearchHistory).isVisible = historyIsVisible
             if (historyIsVisible)
                 refreshHistory()
         }
@@ -173,7 +175,7 @@ class SearchActivity : AppCompatActivity() {
                 clearButton.isVisible = !s.isNullOrEmpty()
 
                 val historyIsVisible = searchBar.hasFocus() && s?.isEmpty() == true
-                findViewById<LinearLayout>(R.id.tracksSearchHistory).isVisible = historyIsVisible
+                findViewById<ScrollView>(R.id.tracksSearchHistory).isVisible = historyIsVisible
                 if (historyIsVisible) {
                     refreshHistory()
                 }

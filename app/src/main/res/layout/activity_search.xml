@@ -59,35 +59,44 @@
             />
     </FrameLayout>
 
-    <LinearLayout
+    <ScrollView
         android:id="@+id/tracksSearchHistory"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
         android:visibility="gone">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            style="@style/PlaceholderErrorTextStyle"
-            android:text="@string/you_are_search"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/tracksHistoryRecyclerView"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_marginTop="16dp">
-        </androidx.recyclerview.widget.RecyclerView>
-        <Button
-            android:id="@+id/tracksHistoryClear"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            style="@style/RegularAppButton"
-            android:text="@string/clear_history"
-            android:layout_marginTop="24dp"
-            android:textAllCaps="false"/>
-    </LinearLayout>
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/HistoryTitleTextStyle"
+                android:text="@string/you_are_search"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tracksHistoryRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_marginTop="16dp"/>
+
+            <Button
+                android:id="@+id/tracksHistoryClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                style="@style/RegularAppButton"
+                android:text="@string/clear_history"
+                android:layout_marginTop="24dp"
+                android:textAllCaps="false"/>
+        </LinearLayout>
+    </ScrollView>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

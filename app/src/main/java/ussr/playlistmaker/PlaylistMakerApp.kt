@@ -10,6 +10,7 @@ const val OPT_IS_DARK_THEME = "opt_is_dark_theme"
 class PlaylistMakerApp : Application() {
 
     var isDarkTheme = false
+        private set
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreate() {
         super.onCreate()
