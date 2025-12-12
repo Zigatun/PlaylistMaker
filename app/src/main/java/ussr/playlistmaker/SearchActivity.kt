@@ -9,8 +9,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -22,10 +24,13 @@ import retrofit2.create
 import ussr.playlistmaker.adapters.ItunesTrackAdapter
 import ussr.playlistmaker.api.ItunesSearchApiService
 import ussr.playlistmaker.models.ItunesSearchResult
+import ussr.playlistmaker.storages.SearchHistory
 
 class SearchActivity : AppCompatActivity() {
     private var searchBarValue: CharSequence? = SEARCHBAR_VALUE_DEFAULT
-
+    private lateinit var history: SearchHistory
+    private lateinit var historyAdapter: ItunesTrackAdapter
+    private lateinit var resultsAdapter: ItunesTrackAdapter
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -64,14 +69,13 @@ class SearchActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         setPlaceholderMessage("")
-                        if(wasBeenCleared){
+                        if (wasBeenCleared) {
                             findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
                             return
                         }
                         val respObjects = response.body()?.results
                         if (respObjects != null && respObjects.isNotEmpty()) {
-                            findViewById<RecyclerView>(R.id.tracksRecyclerView).adapter =
-                                ItunesTrackAdapter(respObjects)
+                            resultsAdapter.updateTracks(respObjects.toMutableList())
                         } else {
                             setPlaceholderMessage(getString(R.string.any_not_found))
                         }
@@ -82,15 +86,25 @@ class SearchActivity : AppCompatActivity() {
                     call: Call<ItunesSearchResult?>,
                     t: Throwable
                 ) {
-                    if(wasBeenCleared){
+                    if (wasBeenCleared) {
                         setPlaceholderMessage("")
-                        //findViewById<LinearLayout>(R.id.error_placeholder)
                         return
                     }
-                    setPlaceholderMessage(getString(R.string.connection_troubles) + "\n\n" + getString(R.string.trouble_no_internet), true)
+                    setPlaceholderMessage(
+                        getString(R.string.connection_troubles) + "\n\n" + getString(
+                            R.string.trouble_no_internet
+                        ), true
+                    )
                 }
 
             })
+    }
+
+    private fun refreshHistory() {
+        val items = history.get()
+        val root = findViewById<ScrollView>(R.id.tracksSearchHistory)
+        root.isVisible = items.isNotEmpty()
+        historyAdapter.updateTracks(items.toMutableList())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,6 +114,20 @@ class SearchActivity : AppCompatActivity() {
         val searchBar = findViewById<EditText>(R.id.search_bar)
         val clearButton = findViewById<ImageView>(R.id.search_bar_clear_text)
         val refreshButton = findViewById<Button>(R.id.placeholder_refresh_button)
+        history = SearchHistory((applicationContext as PlaylistMakerApp).sharedPreferences)
+
+        historyAdapter = ItunesTrackAdapter(history.get().toMutableList()) { track ->
+            history.add(track)
+            historyAdapter.updateTracks(history.get().toMutableList())
+        }
+
+        resultsAdapter = ItunesTrackAdapter(mutableListOf()) { track ->
+            history.add(track)
+            historyAdapter.updateTracks(history.get().toMutableList())
+        }
+
+        findViewById<RecyclerView>(R.id.tracksHistoryRecyclerView).adapter = historyAdapter
+        findViewById<RecyclerView>(R.id.tracksRecyclerView).adapter = resultsAdapter
 
         if (savedInstanceState != null) {
             searchBarValue = savedInstanceState.getCharSequence(SEARCHBAR, SEARCHBAR_VALUE_DEFAULT)
@@ -108,6 +136,10 @@ class SearchActivity : AppCompatActivity() {
 
         findViewById<android.widget.Toolbar>(R.id.main_toolbar).setNavigationOnClickListener {
             finish()
+        }
+        findViewById<Button>(R.id.tracksHistoryClear).setOnClickListener {
+            history.clear()
+            refreshHistory()
         }
 
         clearButton.setOnClickListener {
@@ -120,7 +152,12 @@ class SearchActivity : AppCompatActivity() {
         refreshButton.setOnClickListener {
             doSearch(searchBar.text.toString())
         }
-
+        searchBar.setOnFocusChangeListener { view, hasFocus ->
+            val historyIsVisible = hasFocus && searchBar.text.isEmpty()
+            findViewById<ScrollView>(R.id.tracksSearchHistory).isVisible = historyIsVisible
+            if (historyIsVisible)
+                refreshHistory()
+        }
         searchBar.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 doSearch(searchBar.text.toString())
@@ -135,8 +172,16 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchBarValue = s
-
                 clearButton.isVisible = !s.isNullOrEmpty()
+
+                val historyIsVisible = searchBar.hasFocus() && s?.isEmpty() == true
+                findViewById<ScrollView>(R.id.tracksSearchHistory).isVisible = historyIsVisible
+                if (historyIsVisible) {
+                    refreshHistory()
+                }
+                if (s?.isEmpty() == true) {
+                    doSearch("", true)
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {

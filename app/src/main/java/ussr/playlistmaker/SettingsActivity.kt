@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,6 +15,12 @@ class SettingsActivity : AppCompatActivity()  {
 
         findViewById<ImageView>(R.id.back_button).setOnClickListener {
             finish()
+        }
+
+        val switcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+        switcher.isChecked = (applicationContext as PlaylistMakerApp).isDarkTheme
+        switcher.setOnCheckedChangeListener { sw, enabled ->
+            (applicationContext as PlaylistMakerApp).switchTheme(enabled)
         }
 
         findViewById<FrameLayout>(R.id.share_app).setOnClickListener{
