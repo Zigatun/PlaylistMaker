@@ -1,5 +1,6 @@
 package ussr.playlistmaker
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -18,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions
 import ussr.playlistmaker.models.ItunesTrack
 
 class PlayerActivity : AppCompatActivity() {
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
