@@ -120,8 +120,9 @@ class SearchActivity : AppCompatActivity() {
         historyAdapter = ItunesTrackAdapter(history.get().toMutableList()) { track ->
             history.add(track)
             historyAdapter.updateTracks(history.get().toMutableList())
-                val playerIntent = Intent(this, PlayerActivity::class.java)
-                startActivity(playerIntent)
+            val playerIntent = Intent(this, PlayerActivity::class.java)
+            playerIntent.putExtra("track", track)
+            startActivity(playerIntent)
         }
 
         resultsAdapter = ItunesTrackAdapter(mutableListOf()) { track ->
