@@ -1,5 +1,6 @@
 package ussr.playlistmaker
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -119,11 +120,15 @@ class SearchActivity : AppCompatActivity() {
         historyAdapter = ItunesTrackAdapter(history.get().toMutableList()) { track ->
             history.add(track)
             historyAdapter.updateTracks(history.get().toMutableList())
+                val playerIntent = Intent(this, PlayerActivity::class.java)
+                startActivity(playerIntent)
         }
 
         resultsAdapter = ItunesTrackAdapter(mutableListOf()) { track ->
             history.add(track)
             historyAdapter.updateTracks(history.get().toMutableList())
+            val playerIntent = Intent(this, PlayerActivity::class.java)
+            startActivity(playerIntent)
         }
 
         findViewById<RecyclerView>(R.id.tracksHistoryRecyclerView).adapter = historyAdapter

@@ -4,9 +4,11 @@
         <item name="colorOnPrimary">@color/yp_white</item>
         <item name="colorOnSecondary">@color/yp_white</item>
         <item name="colorButtonNormal">@color/yp_white</item>
+        <item name="colorOnTertiary">@color/white_25</item>
         <item name="colorSecondaryVariant">@color/yp_black</item>
         <item name="colorOnBackground">@color/yp_black</item>
         <item name="hintTextColor">@color/yp_black</item>
+        <item name="subtitleTextColor">@color/yp_text_gray</item>
         <item name="backgroundTint">@color/yp_white</item>
     </style>
 </resources>

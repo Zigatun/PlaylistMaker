@@ -7,6 +7,7 @@
         <item name="colorSecondaryVariant">@color/yp_blue</item>
         <item name="colorOnBackground">@color/yp_white</item>
         <item name="hintTextColor">@color/yp_text_gray</item>
+        <item name="subtitleTextColor">@color/yp_text_gray</item>
         <item name="backgroundTint">@color/yp_light_gray</item>
     </style>
 </resources>
