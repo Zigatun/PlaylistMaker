@@ -26,7 +26,7 @@ class ItunesTrackViewHolder(private val parentView: View): RecyclerView.ViewHold
     fun bind(model: ItunesTrack){
         trackName.text = model.trackName
         trackAuthor.text = model.artistName
-        trackDuration.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
+        trackDuration.text = model.getHumanizedTime()
         val radius = 2f
         val metrics: DisplayMetrics = parentView.resources.displayMetrics
         val radiusPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, radius, metrics)
