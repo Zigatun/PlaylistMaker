@@ -59,7 +59,7 @@
         <item name="android:layout_marginTop">24dp</item>
         <item name="android:paddingVertical">12dp</item>
     </style>
-    <style name="MusicAlbumImage">
+    <style name="MusicAlbumImageCard">
         <item name="android:layout_width">45dp</item>
         <item name="android:layout_height">45dp</item>
     </style>
@@ -76,6 +76,22 @@
         <item name="android:textFontWeight">400</item>
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="MusicNameTextStyle.Player">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="MusicArtistTextStyle.Player">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
     </style>
