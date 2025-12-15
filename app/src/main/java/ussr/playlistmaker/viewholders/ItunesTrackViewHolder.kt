@@ -11,8 +11,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import ussr.playlistmaker.R
 import ussr.playlistmaker.models.ItunesTrack
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class ItunesTrackViewHolder(private val parentView: View): RecyclerView.ViewHolder(parentView) {
     private val trackName: TextView = parentView.findViewById(R.id.trackName)
@@ -23,7 +21,7 @@ class ItunesTrackViewHolder(private val parentView: View): RecyclerView.ViewHold
     fun bind(model: ItunesTrack){
         trackName.text = model.trackName
         trackAuthor.text = model.artistName
-        trackDuration.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
+        trackDuration.text = model.getHumanizedTime()
         val radius = 2f
         val metrics: DisplayMetrics = parentView.resources.displayMetrics
         val radiusPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, radius, metrics)
@@ -33,5 +31,6 @@ class ItunesTrackViewHolder(private val parentView: View): RecyclerView.ViewHold
             .centerCrop()
             .apply(RequestOptions.bitmapTransform(RoundedCorners(radiusPx.toInt())))
             .into(albumCover)
+
     }
 }

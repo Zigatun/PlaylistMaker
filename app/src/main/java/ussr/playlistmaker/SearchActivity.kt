@@ -1,5 +1,6 @@
 package ussr.playlistmaker
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,9 +13,10 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,15 +27,22 @@ import ussr.playlistmaker.adapters.ItunesTrackAdapter
 import ussr.playlistmaker.api.ItunesSearchApiService
 import ussr.playlistmaker.models.ItunesSearchResult
 import ussr.playlistmaker.storages.SearchHistory
+import java.time.Instant
 
 class SearchActivity : AppCompatActivity() {
     private var searchBarValue: CharSequence? = SEARCHBAR_VALUE_DEFAULT
     private lateinit var history: SearchHistory
     private lateinit var historyAdapter: ItunesTrackAdapter
     private lateinit var resultsAdapter: ItunesTrackAdapter
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(
+            Instant::class.java,
+            JsonDeserializer { json, _, _ -> Instant.parse(json.asString) }
+        )
+        .create()
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com/")
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
     private val itunesSearchApiService = retrofit.create<ItunesSearchApiService>()
@@ -119,11 +128,17 @@ class SearchActivity : AppCompatActivity() {
         historyAdapter = ItunesTrackAdapter(history.get().toMutableList()) { track ->
             history.add(track)
             historyAdapter.updateTracks(history.get().toMutableList())
+            val playerIntent = Intent(this, PlayerActivity::class.java)
+            playerIntent.putExtra("track", track)
+            startActivity(playerIntent)
         }
 
         resultsAdapter = ItunesTrackAdapter(mutableListOf()) { track ->
             history.add(track)
             historyAdapter.updateTracks(history.get().toMutableList())
+            val playerIntent = Intent(this, PlayerActivity::class.java)
+            playerIntent.putExtra("track", track)
+            startActivity(playerIntent)
         }
 
         findViewById<RecyclerView>(R.id.tracksHistoryRecyclerView).adapter = historyAdapter
