@@ -100,6 +100,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/searchProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:indeterminateTint="@color/yp_blue"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="140dp"/>
         <LinearLayout
             android:id="@+id/error_placeholder"
             android:layout_width="wrap_content"

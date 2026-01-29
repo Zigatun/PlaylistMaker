@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -58,6 +59,7 @@ class SearchActivity : AppCompatActivity() {
     private fun setPlaceholderMessage(message: String = "", isError: Boolean = false) {
         val placeholderView = findViewById<LinearLayout>(R.id.error_placeholder)
         val tracksView = findViewById<RecyclerView>(R.id.tracksRecyclerView)
+        findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
         if (message == "") {
             placeholderView.isVisible = false
             tracksView.isVisible = true
@@ -78,6 +80,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun doSearch(request: String, wasBeenCleared: Boolean = false) {
+        findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = true
+        findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
         itunesSearchApiService.search(request)
             .enqueue(object : Callback<ItunesSearchResult> {
                 override fun onResponse(
@@ -88,11 +92,14 @@ class SearchActivity : AppCompatActivity() {
                         setPlaceholderMessage("")
                         if (wasBeenCleared) {
                             findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
+                            findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
                             return
                         }
                         val respObjects = response.body()?.results
                         if (respObjects != null && respObjects.isNotEmpty()) {
                             resultsAdapter.updateTracks(respObjects.toMutableList())
+                            findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
+                            findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = true
                         } else {
                             setPlaceholderMessage(getString(R.string.any_not_found))
                         }
@@ -186,6 +193,7 @@ class SearchActivity : AppCompatActivity() {
         }
         searchBar.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                handler.removeCallbacks(searchRunnable)
                 doSearch(searchBar.text.toString())
             }
             false
