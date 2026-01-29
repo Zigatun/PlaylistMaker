@@ -2,6 +2,8 @@ package ussr.playlistmaker
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
@@ -12,6 +14,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -31,9 +34,14 @@ import java.time.Instant
 
 class SearchActivity : AppCompatActivity() {
     private var searchBarValue: CharSequence? = SEARCHBAR_VALUE_DEFAULT
+    private val handler = Handler(Looper.getMainLooper())
     private lateinit var history: SearchHistory
     private lateinit var historyAdapter: ItunesTrackAdapter
     private lateinit var resultsAdapter: ItunesTrackAdapter
+    private val searchRunnable = Runnable {
+        //Toast.makeText(this, "Kek", Toast.LENGTH_SHORT).show()
+        doSearch(searchBarValue.toString(), false)
+    }
     private val gson = GsonBuilder()
         .registerTypeAdapter(
             Instant::class.java,
@@ -108,7 +116,10 @@ class SearchActivity : AppCompatActivity() {
 
             })
     }
-
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCHBAR_DEBOUNCE_DELAY)
+    }
     private fun refreshHistory() {
         val items = history.get()
         val root = findViewById<ScrollView>(R.id.tracksSearchHistory)
@@ -196,6 +207,8 @@ class SearchActivity : AppCompatActivity() {
                 }
                 if (s?.isEmpty() == true) {
                     doSearch("", true)
+                }else{
+                    searchDebounce()
                 }
             }
 
@@ -221,5 +234,7 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SEARCHBAR = "SEARCHBAR"
         const val SEARCHBAR_VALUE_DEFAULT = ""
+        const val SEARCHBAR_DEBOUNCE_DELAY = 2000L
     }
+
 }
