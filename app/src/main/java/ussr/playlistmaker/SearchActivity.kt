@@ -36,6 +36,7 @@ import java.time.Instant
 class SearchActivity : AppCompatActivity() {
     private var searchBarValue: CharSequence? = SEARCHBAR_VALUE_DEFAULT
     private val handler = Handler(Looper.getMainLooper())
+    private var searchItemClickAllowed = true
     private lateinit var history: SearchHistory
     private lateinit var historyAdapter: ItunesTrackAdapter
     private lateinit var resultsAdapter: ItunesTrackAdapter
@@ -55,6 +56,14 @@ class SearchActivity : AppCompatActivity() {
 
     private val itunesSearchApiService = retrofit.create<ItunesSearchApiService>()
 
+    private fun isSearchItemClickAllowed() : Boolean {
+        val current = searchItemClickAllowed
+        if (searchItemClickAllowed) {
+            searchItemClickAllowed = false
+            handler.postDelayed({ searchItemClickAllowed = true }, SEARCHLIST_DEBOUNCE_DELAY)
+        }
+        return current
+    }
     private fun setPlaceholderMessage(message: String = "", isError: Boolean = false) {
         val placeholderView = findViewById<LinearLayout>(R.id.error_placeholder)
         val tracksView = findViewById<RecyclerView>(R.id.tracksRecyclerView)
@@ -145,17 +154,23 @@ class SearchActivity : AppCompatActivity() {
         historyAdapter = ItunesTrackAdapter(history.get().toMutableList()) { track ->
             history.add(track)
             historyAdapter.updateTracks(history.get().toMutableList())
-            val playerIntent = Intent(this, PlayerActivity::class.java)
-            playerIntent.putExtra("track", track)
-            startActivity(playerIntent)
+
+            if(isSearchItemClickAllowed()) {
+                val playerIntent = Intent(this, PlayerActivity::class.java)
+                playerIntent.putExtra("track", track)
+                startActivity(playerIntent)
+            }
         }
 
         resultsAdapter = ItunesTrackAdapter(mutableListOf()) { track ->
             history.add(track)
             historyAdapter.updateTracks(history.get().toMutableList())
-            val playerIntent = Intent(this, PlayerActivity::class.java)
-            playerIntent.putExtra("track", track)
-            startActivity(playerIntent)
+
+            if(isSearchItemClickAllowed()) {
+                val playerIntent = Intent(this, PlayerActivity::class.java)
+                playerIntent.putExtra("track", track)
+                startActivity(playerIntent)
+            }
         }
 
         findViewById<RecyclerView>(R.id.tracksHistoryRecyclerView).adapter = historyAdapter
@@ -236,6 +251,11 @@ class SearchActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         searchBarValue = savedInstanceState.getString(SEARCHBAR, SEARCHBAR_VALUE_DEFAULT)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(searchRunnable)
     }
 
     companion object {
