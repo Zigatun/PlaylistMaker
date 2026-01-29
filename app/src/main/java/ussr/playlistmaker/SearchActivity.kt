@@ -40,7 +40,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var historyAdapter: ItunesTrackAdapter
     private lateinit var resultsAdapter: ItunesTrackAdapter
     private val searchRunnable = Runnable {
-        //Toast.makeText(this, "Kek", Toast.LENGTH_SHORT).show()
         doSearch(searchBarValue.toString(), false)
     }
     private val gson = GsonBuilder()
@@ -243,6 +242,7 @@ class SearchActivity : AppCompatActivity() {
         const val SEARCHBAR = "SEARCHBAR"
         const val SEARCHBAR_VALUE_DEFAULT = ""
         const val SEARCHBAR_DEBOUNCE_DELAY = 2000L
+        const val SEARCHLIST_DEBOUNCE_DELAY = 1000L
     }
 
 }
