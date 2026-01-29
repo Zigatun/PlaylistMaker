@@ -15,7 +15,6 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -199,7 +198,7 @@ class SearchActivity : AppCompatActivity() {
         refreshButton.setOnClickListener {
             doSearch(searchBar.text.toString())
         }
-        searchBar.setOnFocusChangeListener { view, hasFocus ->
+        searchBar.setOnFocusChangeListener { _, hasFocus ->
             val historyIsVisible = hasFocus && searchBar.text.isEmpty()
             findViewById<ScrollView>(R.id.tracksSearchHistory).isVisible = historyIsVisible
             if (historyIsVisible)
