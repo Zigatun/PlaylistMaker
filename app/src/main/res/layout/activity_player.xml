@@ -108,7 +108,7 @@
                 app:layout_constraintRight_toLeftOf="@id/right_guideline"
                 app:layout_constraintTop_toBottomOf="@id/playButton"
                 style="@style/TrackCursorTextStyle"
-                tools:text="0:00"/>
+                tools:text="00:00"/>
             <!-- Длительность -->
             <TextView
                 android:id="@+id/duration_label"
