@@ -8,7 +8,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.TypedValue
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -69,10 +68,6 @@ class PlayerActivity : AppCompatActivity() {
                 }
             }
         }
-
-        handler.postDelayed(Runnable{
-
-        }, PLAYER_UPDATE_FREQ)
 
         val track = intent.getParcelableExtra("track", ItunesTrack::class.java)
         track?.let{
