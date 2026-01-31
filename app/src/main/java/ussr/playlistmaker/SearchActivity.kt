@@ -87,6 +87,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun doSearch(request: String, wasBeenCleared: Boolean = false) {
+        setPlaceholderMessage("")
         findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = true
         findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
         itunesSearchApiService.search(request)
@@ -96,7 +97,6 @@ class SearchActivity : AppCompatActivity() {
                     response: Response<ItunesSearchResult?>
                 ) {
                     if (response.isSuccessful) {
-                        setPlaceholderMessage("")
                         if (wasBeenCleared) {
                             findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
                             findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
