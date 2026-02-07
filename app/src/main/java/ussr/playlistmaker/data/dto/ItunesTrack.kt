@@ -1,4 +1,5 @@
-package ussr.playlistmaker.models
+package ussr.playlistmaker.data.dto
+
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
@@ -16,7 +17,7 @@ data class ItunesTrack (val trackId: Long,
                         val collectionName: String?,
                         val releaseDate: Instant?,
                         val primaryGenreName:String,
-                        val country:String): Parcelable{
+                        val country:String): Parcelable {
     fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
     fun getHumanizedTime() = SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
     fun getYearOfRelease(): String{

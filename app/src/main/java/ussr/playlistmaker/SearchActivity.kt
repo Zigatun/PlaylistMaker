@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import ussr.playlistmaker.adapters.ItunesTrackAdapter
 import ussr.playlistmaker.api.ItunesSearchApiService
-import ussr.playlistmaker.models.ItunesSearchResult
+import ussr.playlistmaker.data.dto.ItunesSearchResult
 import ussr.playlistmaker.storages.SearchHistory
 import java.time.Instant
 

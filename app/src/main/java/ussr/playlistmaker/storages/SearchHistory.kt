@@ -2,7 +2,7 @@ package ussr.playlistmaker.storages
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import ussr.playlistmaker.models.ItunesTrack
+import ussr.playlistmaker.data.dto.ItunesTrack
 
 private const val PLAYLISTMAKER_SEARCH_HISTORY = "playlistmaker_search_history"
 private const val PLAYLISTMAKER_HISTORY_LIMIT = 10

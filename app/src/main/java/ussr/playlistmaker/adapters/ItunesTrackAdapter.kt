@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ussr.playlistmaker.R
-import ussr.playlistmaker.models.ItunesTrack
+import ussr.playlistmaker.data.dto.ItunesTrack
 import ussr.playlistmaker.viewholders.ItunesTrackViewHolder
 
 class ItunesTrackAdapter(private var tracks: MutableList<ItunesTrack>, private val onItemClick: (ItunesTrack) -> Unit

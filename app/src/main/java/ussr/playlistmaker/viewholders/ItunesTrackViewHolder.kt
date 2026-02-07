@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import ussr.playlistmaker.R
-import ussr.playlistmaker.models.ItunesTrack
+import ussr.playlistmaker.data.dto.ItunesTrack
 
 class ItunesTrackViewHolder(private val parentView: View): RecyclerView.ViewHolder(parentView) {
     private val trackName: TextView = parentView.findViewById(R.id.trackName)
