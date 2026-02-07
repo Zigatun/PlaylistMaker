@@ -2,6 +2,8 @@ package ussr.playlistmaker
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
@@ -10,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -31,9 +34,14 @@ import java.time.Instant
 
 class SearchActivity : AppCompatActivity() {
     private var searchBarValue: CharSequence? = SEARCHBAR_VALUE_DEFAULT
+    private val handler = Handler(Looper.getMainLooper())
+    private var searchItemClickAllowed = true
     private lateinit var history: SearchHistory
     private lateinit var historyAdapter: ItunesTrackAdapter
     private lateinit var resultsAdapter: ItunesTrackAdapter
+    private val searchRunnable = Runnable {
+        doSearch(searchBarValue.toString(), false)
+    }
     private val gson = GsonBuilder()
         .registerTypeAdapter(
             Instant::class.java,
@@ -47,9 +55,18 @@ class SearchActivity : AppCompatActivity() {
 
     private val itunesSearchApiService = retrofit.create<ItunesSearchApiService>()
 
+    private fun isSearchItemClickAllowed() : Boolean {
+        val current = searchItemClickAllowed
+        if (searchItemClickAllowed) {
+            searchItemClickAllowed = false
+            handler.postDelayed({ searchItemClickAllowed = true }, SEARCHLIST_DEBOUNCE_DELAY)
+        }
+        return current
+    }
     private fun setPlaceholderMessage(message: String = "", isError: Boolean = false) {
         val placeholderView = findViewById<LinearLayout>(R.id.error_placeholder)
         val tracksView = findViewById<RecyclerView>(R.id.tracksRecyclerView)
+        findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
         if (message == "") {
             placeholderView.isVisible = false
             tracksView.isVisible = true
@@ -70,6 +87,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun doSearch(request: String, wasBeenCleared: Boolean = false) {
+        setPlaceholderMessage("")
+        findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = true
+        findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
         itunesSearchApiService.search(request)
             .enqueue(object : Callback<ItunesSearchResult> {
                 override fun onResponse(
@@ -77,14 +97,16 @@ class SearchActivity : AppCompatActivity() {
                     response: Response<ItunesSearchResult?>
                 ) {
                     if (response.isSuccessful) {
-                        setPlaceholderMessage("")
                         if (wasBeenCleared) {
                             findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
+                            findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
                             return
                         }
                         val respObjects = response.body()?.results
                         if (respObjects != null && respObjects.isNotEmpty()) {
                             resultsAdapter.updateTracks(respObjects.toMutableList())
+                            findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
+                            findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = true
                         } else {
                             setPlaceholderMessage(getString(R.string.any_not_found))
                         }
@@ -108,7 +130,10 @@ class SearchActivity : AppCompatActivity() {
 
             })
     }
-
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCHBAR_DEBOUNCE_DELAY)
+    }
     private fun refreshHistory() {
         val items = history.get()
         val root = findViewById<ScrollView>(R.id.tracksSearchHistory)
@@ -128,17 +153,23 @@ class SearchActivity : AppCompatActivity() {
         historyAdapter = ItunesTrackAdapter(history.get().toMutableList()) { track ->
             history.add(track)
             historyAdapter.updateTracks(history.get().toMutableList())
-            val playerIntent = Intent(this, PlayerActivity::class.java)
-            playerIntent.putExtra("track", track)
-            startActivity(playerIntent)
+
+            if(isSearchItemClickAllowed()) {
+                val playerIntent = Intent(this, PlayerActivity::class.java)
+                playerIntent.putExtra("track", track)
+                startActivity(playerIntent)
+            }
         }
 
         resultsAdapter = ItunesTrackAdapter(mutableListOf()) { track ->
             history.add(track)
             historyAdapter.updateTracks(history.get().toMutableList())
-            val playerIntent = Intent(this, PlayerActivity::class.java)
-            playerIntent.putExtra("track", track)
-            startActivity(playerIntent)
+
+            if(isSearchItemClickAllowed()) {
+                val playerIntent = Intent(this, PlayerActivity::class.java)
+                playerIntent.putExtra("track", track)
+                startActivity(playerIntent)
+            }
         }
 
         findViewById<RecyclerView>(R.id.tracksHistoryRecyclerView).adapter = historyAdapter
@@ -167,7 +198,7 @@ class SearchActivity : AppCompatActivity() {
         refreshButton.setOnClickListener {
             doSearch(searchBar.text.toString())
         }
-        searchBar.setOnFocusChangeListener { view, hasFocus ->
+        searchBar.setOnFocusChangeListener { _, hasFocus ->
             val historyIsVisible = hasFocus && searchBar.text.isEmpty()
             findViewById<ScrollView>(R.id.tracksSearchHistory).isVisible = historyIsVisible
             if (historyIsVisible)
@@ -175,6 +206,7 @@ class SearchActivity : AppCompatActivity() {
         }
         searchBar.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                handler.removeCallbacks(searchRunnable)
                 doSearch(searchBar.text.toString())
             }
             false
@@ -196,6 +228,8 @@ class SearchActivity : AppCompatActivity() {
                 }
                 if (s?.isEmpty() == true) {
                     doSearch("", true)
+                }else{
+                    searchDebounce()
                 }
             }
 
@@ -218,8 +252,16 @@ class SearchActivity : AppCompatActivity() {
         searchBarValue = savedInstanceState.getString(SEARCHBAR, SEARCHBAR_VALUE_DEFAULT)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(searchRunnable)
+    }
+
     companion object {
         const val SEARCHBAR = "SEARCHBAR"
         const val SEARCHBAR_VALUE_DEFAULT = ""
+        const val SEARCHBAR_DEBOUNCE_DELAY = 2000L
+        const val SEARCHLIST_DEBOUNCE_DELAY = 1000L
     }
+
 }

@@ -1,10 +1,14 @@
 package ussr.playlistmaker
 
 import android.annotation.SuppressLint
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -16,15 +20,35 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import kotlinx.coroutines.Runnable
 import ussr.playlistmaker.models.ItunesTrack
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
+    private var mediaPlayer = MediaPlayer()
+    private lateinit var playButton: ImageButton
+    private lateinit var trackPositionTextView: TextView
+    private val handler = Handler(Looper.getMainLooper())
+    private val playbackTimerRunnable = object: Runnable {
+        override fun run() {
+            if (playerState == PLAYER_STATE_PLAYING){
+                trackPositionTextView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+                handler.postDelayed(this, PLAYER_UPDATE_FREQ)
+            }
+        }
+    }
+    private var playerState = PLAYER_STATE_DEFAULT
+
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_player)
+
+        playButton = findViewById(R.id.playButton)
+        trackPositionTextView = findViewById(R.id.track_play_position)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -34,11 +58,21 @@ class PlayerActivity : AppCompatActivity() {
         findViewById<android.widget.Toolbar>(R.id.main_toolbar).setNavigationOnClickListener {
             finish()
         }
+        playButton.setOnClickListener {
+            when(playerState) {
+                PLAYER_STATE_PLAYING -> {
+                    pausePlayer()
+                }
+                PLAYER_STATE_PREPARED, PLAYER_STATE_PAUSED -> {
+                    startPlayer()
+                }
+            }
+        }
 
         val track = intent.getParcelableExtra("track", ItunesTrack::class.java)
         track?.let{
-            findViewById<TextView>(R.id.track_play_position).text = "0:00"
-
+            preparePlayer(track.previewUrl)
+            trackPositionTextView.text = "00:00"
             findViewById<TextView>(R.id.track_name).text = it.trackName
             findViewById<TextView>(R.id.track_author).text = it.artistName
             findViewById<TextView>(R.id.duration).text = it.getHumanizedTime()
@@ -68,5 +102,55 @@ class PlayerActivity : AppCompatActivity() {
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(radiusPx.toInt())))
                 .into(albumImage)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+        handler.removeCallbacks(playbackTimerRunnable)
+    }
+    private fun runPlaybackTimer(){
+        handler.postDelayed(playbackTimerRunnable, PLAYER_UPDATE_FREQ)
+    }
+    @SuppressLint("SetTextI18n")
+    private fun preparePlayer(url:String) {
+        mediaPlayer.setDataSource(url)
+        mediaPlayer.prepareAsync()
+        playButton.isEnabled = true
+        mediaPlayer.setOnPreparedListener {
+            trackPositionTextView.text = "00:00"
+            playButton.setImageResource(R.drawable.play_icon)
+            playerState = PLAYER_STATE_PREPARED
+        }
+        mediaPlayer.setOnCompletionListener {
+            trackPositionTextView.text = "00:00"
+            playButton.setImageResource(R.drawable.play_icon)
+            playerState = PLAYER_STATE_PREPARED
+        }
+    }
+    private fun startPlayer() {
+        playButton.setImageResource(R.drawable.pause_icon)
+        mediaPlayer.start()
+        playerState = PLAYER_STATE_PLAYING
+        runPlaybackTimer()
+    }
+
+    private fun pausePlayer() {
+        playButton.setImageResource(R.drawable.play_icon)
+        mediaPlayer.pause()
+        playerState = PLAYER_STATE_PAUSED
+        handler.removeCallbacks(playbackTimerRunnable)
+    }
+    companion object {
+        private const val PLAYER_STATE_DEFAULT = 0
+        private const val PLAYER_STATE_PREPARED = 1
+        private const val PLAYER_STATE_PLAYING = 2
+        private const val PLAYER_STATE_PAUSED = 3
+        private const val PLAYER_UPDATE_FREQ = 300L
     }
 }
