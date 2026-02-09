@@ -1,4 +1,4 @@
-package ussr.playlistmaker.viewholders
+package ussr.playlistmaker.ui.tracks
 
 import android.util.DisplayMetrics
 import android.util.TypedValue
@@ -10,15 +10,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import ussr.playlistmaker.R
-import ussr.playlistmaker.data.dto.ItunesTrack
+import ussr.playlistmaker.data.dto.TrackDto
 
 class ItunesTrackViewHolder(private val parentView: View): RecyclerView.ViewHolder(parentView) {
     private val trackName: TextView = parentView.findViewById(R.id.trackName)
     private val trackAuthor: TextView = parentView.findViewById(R.id.trackAuthor)
     private val trackDuration: TextView = parentView.findViewById(R.id.trackDuration)
-    private val albumCover: ImageView= parentView.findViewById(R.id.albumImage)
+    private val albumCover: ImageView = parentView.findViewById(R.id.albumImage)
 
-    fun bind(model: ItunesTrack){
+    fun bind(model: TrackDto){
         trackName.text = model.trackName
         trackAuthor.text = model.artistName
         trackDuration.text = model.getHumanizedTime()
