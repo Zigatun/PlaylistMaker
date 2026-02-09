@@ -26,10 +26,11 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
-import ussr.playlistmaker.adapters.ItunesTrackAdapter
-import ussr.playlistmaker.api.ItunesSearchApiService
-import ussr.playlistmaker.data.dto.ItunesSearchResult
+import ussr.playlistmaker.ui.tracks.ItunesTrackAdapter
+import ussr.playlistmaker.data.network.ItunesSearchApiService
+import ussr.playlistmaker.data.dto.ItunesSearchResultDto
 import ussr.playlistmaker.storages.SearchHistory
+import ussr.playlistmaker.ui.media.PlayerActivity
 import java.time.Instant
 
 class SearchActivity : AppCompatActivity() {
@@ -91,10 +92,10 @@ class SearchActivity : AppCompatActivity() {
         findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = true
         findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
         itunesSearchApiService.search(request)
-            .enqueue(object : Callback<ItunesSearchResult> {
+            .enqueue(object : Callback<ItunesSearchResultDto> {
                 override fun onResponse(
-                    call: Call<ItunesSearchResult?>,
-                    response: Response<ItunesSearchResult?>
+                    call: Call<ItunesSearchResultDto?>,
+                    response: Response<ItunesSearchResultDto?>
                 ) {
                     if (response.isSuccessful) {
                         if (wasBeenCleared) {
@@ -114,7 +115,7 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(
-                    call: Call<ItunesSearchResult?>,
+                    call: Call<ItunesSearchResultDto?>,
                     t: Throwable
                 ) {
                     if (wasBeenCleared) {

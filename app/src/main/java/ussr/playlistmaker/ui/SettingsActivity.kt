@@ -1,4 +1,4 @@
-package ussr.playlistmaker
+package ussr.playlistmaker.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.google.android.material.switchmaterial.SwitchMaterial
+import ussr.playlistmaker.PlaylistMakerApp
+import ussr.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {

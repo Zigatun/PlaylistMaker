@@ -1,4 +1,4 @@
-package ussr.playlistmaker
+package ussr.playlistmaker.ui.media
 
 import android.annotation.SuppressLint
 import android.media.MediaPlayer
@@ -11,9 +11,11 @@ import android.util.TypedValue
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.Group
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -21,7 +23,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.coroutines.Runnable
-import ussr.playlistmaker.data.dto.ItunesTrack
+import ussr.playlistmaker.R
+import ussr.playlistmaker.data.dto.TrackDto
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -55,7 +58,7 @@ class PlayerActivity : AppCompatActivity() {
             insets
         }
 
-        findViewById<android.widget.Toolbar>(R.id.main_toolbar).setNavigationOnClickListener {
+        findViewById<Toolbar>(R.id.main_toolbar).setNavigationOnClickListener {
             finish()
         }
         playButton.setOnClickListener {
@@ -69,7 +72,7 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
-        val track = intent.getParcelableExtra("track", ItunesTrack::class.java)
+        val track = intent.getParcelableExtra("track", TrackDto::class.java)
         track?.let{
             preparePlayer(track.previewUrl)
             trackPositionTextView.text = "00:00"
@@ -77,13 +80,13 @@ class PlayerActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.track_author).text = it.artistName
             findViewById<TextView>(R.id.duration).text = it.getHumanizedTime()
 
-            val albumGroup = findViewById<androidx.constraintlayout.widget.Group>(R.id.album_group)
+            val albumGroup = findViewById<Group>(R.id.album_group)
             if(it.collectionName == null)
                 albumGroup.isVisible = false
             else
                 findViewById<TextView>(R.id.album).text = it.collectionName
 
-            val yearGroup = findViewById<androidx.constraintlayout.widget.Group>(R.id.year_group)
+            val yearGroup = findViewById<Group>(R.id.year_group)
             if(it.releaseDate == null)
                 yearGroup.isVisible = false
             else

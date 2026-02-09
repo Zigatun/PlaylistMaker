@@ -2,24 +2,24 @@ package ussr.playlistmaker.storages
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import ussr.playlistmaker.data.dto.ItunesTrack
+import ussr.playlistmaker.data.dto.TrackDto
 
 private const val PLAYLISTMAKER_SEARCH_HISTORY = "playlistmaker_search_history"
 private const val PLAYLISTMAKER_HISTORY_LIMIT = 10
 class SearchHistory(val storage: SharedPreferences) {
-    private fun commit(target: ArrayDeque<ItunesTrack>){
+    private fun commit(target: ArrayDeque<TrackDto>){
         val json = Gson().toJson(target)
 
         storage.edit().putString(PLAYLISTMAKER_SEARCH_HISTORY, json).apply()
     }
-    fun get() : ArrayDeque<ItunesTrack>{
-        val out = ArrayDeque<ItunesTrack>()
+    fun get() : ArrayDeque<TrackDto>{
+        val out = ArrayDeque<TrackDto>()
         val json = storage.getString(PLAYLISTMAKER_SEARCH_HISTORY, "")
-        val memory = Gson().fromJson(json, Array<ItunesTrack>::class.java)?:emptyArray()
+        val memory = Gson().fromJson(json, Array<TrackDto>::class.java)?:emptyArray()
         out.addAll(memory)
         return out
     }
-    fun add(track: ItunesTrack){
+    fun add(track: TrackDto){
         val tracks = get()
         if (!tracks.any{t->t.trackId == track.trackId}){
             tracks.addFirst(track)
