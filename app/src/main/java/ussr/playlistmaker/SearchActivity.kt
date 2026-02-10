@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import ussr.playlistmaker.ui.tracks.ItunesTrackAdapter
 import ussr.playlistmaker.data.network.ItunesSearchApiService
-import ussr.playlistmaker.data.dto.ItunesSearchResultDto
+import ussr.playlistmaker.data.dto.ItunesSearchResponse
 import ussr.playlistmaker.storages.SearchHistory
 import ussr.playlistmaker.ui.media.PlayerActivity
 import java.time.Instant
@@ -43,16 +43,7 @@ class SearchActivity : AppCompatActivity() {
     private val searchRunnable = Runnable {
         doSearch(searchBarValue.toString(), false)
     }
-    private val gson = GsonBuilder()
-        .registerTypeAdapter(
-            Instant::class.java,
-            JsonDeserializer { json, _, _ -> Instant.parse(json.asString) }
-        )
-        .create()
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://itunes.apple.com/")
-        .addConverterFactory(GsonConverterFactory.create(gson))
-        .build()
+
 
     private val itunesSearchApiService = retrofit.create<ItunesSearchApiService>()
 
@@ -92,10 +83,10 @@ class SearchActivity : AppCompatActivity() {
         findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = true
         findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
         itunesSearchApiService.search(request)
-            .enqueue(object : Callback<ItunesSearchResultDto> {
+            .enqueue(object : Callback<ItunesSearchResponse> {
                 override fun onResponse(
-                    call: Call<ItunesSearchResultDto?>,
-                    response: Response<ItunesSearchResultDto?>
+                    call: Call<ItunesSearchResponse?>,
+                    response: Response<ItunesSearchResponse?>
                 ) {
                     if (response.isSuccessful) {
                         if (wasBeenCleared) {
@@ -115,7 +106,7 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(
-                    call: Call<ItunesSearchResultDto?>,
+                    call: Call<ItunesSearchResponse?>,
                     t: Throwable
                 ) {
                     if (wasBeenCleared) {
