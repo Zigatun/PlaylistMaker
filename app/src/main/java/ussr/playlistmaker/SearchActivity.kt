@@ -29,6 +29,7 @@ import retrofit2.create
 import ussr.playlistmaker.ui.tracks.ItunesTrackAdapter
 import ussr.playlistmaker.data.network.ItunesSearchApiService
 import ussr.playlistmaker.data.dto.ItunesSearchResponse
+import ussr.playlistmaker.domain.api.SearchHistoryInteractor
 import ussr.playlistmaker.domain.api.TracksInteractor
 import ussr.playlistmaker.domain.models.Track
 import ussr.playlistmaker.storages.SearchHistory
@@ -39,8 +40,7 @@ class SearchActivity : AppCompatActivity() {
     private var searchBarValue: CharSequence? = SEARCHBAR_VALUE_DEFAULT
     private val handler = Handler(Looper.getMainLooper())
     private var searchItemClickAllowed = true
-    private lateinit var history: SearchHistory
-    //private lateinit var historyAdapter: ItunesTrackAdapter
+    private lateinit var historyAdapter: ItunesTrackAdapter
     private lateinit var resultsAdapter: ItunesTrackAdapter
     private val searchRunnable = Runnable {
         doSearch(searchBarValue.toString(), false)
@@ -116,12 +116,14 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private lateinit var tracksInteractor: TracksInteractor
+    private lateinit var searchHistoryInteractor: SearchHistoryInteractor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
         tracksInteractor = Creator.provideTracksInteractor()
+        searchHistoryInteractor = Creator.provideSearchHistoryInteractor((applicationContext as PlaylistMakerApp).sharedPreferences)
 
         val searchBar = findViewById<EditText>(R.id.search_bar)
         val clearButton = findViewById<ImageView>(R.id.search_bar_clear_text)
