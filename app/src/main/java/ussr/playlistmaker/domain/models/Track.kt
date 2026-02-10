@@ -1,5 +1,7 @@
 package ussr.playlistmaker.domain.models
 
+import java.time.Instant
+
 class Track (val trackId: Long,
                      val trackName: String,
                      val artistName: String,
@@ -8,6 +10,7 @@ class Track (val trackId: Long,
                      val coverArtworkUrl: String,
                      val previewUrl: String,
                      val collectionName: String?,
+                     val releaseDate: Instant?,
                      val yearOfRelease: String?,
                      val genreName:String,
                      val country:String)
