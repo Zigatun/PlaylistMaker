@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ussr.playlistmaker.R
 import ussr.playlistmaker.data.dto.TrackDto
+import ussr.playlistmaker.domain.models.Track
 
-class ItunesTrackAdapter(private var tracks: MutableList<TrackDto>, private val onItemClick: (TrackDto) -> Unit
+class ItunesTrackAdapter(private var tracks: MutableList<Track>, private val onItemClick: (Track) -> Unit
 ) : RecyclerView.Adapter<ItunesTrackViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -26,7 +27,7 @@ class ItunesTrackAdapter(private var tracks: MutableList<TrackDto>, private val 
              onItemClick(tracks[position])
         }
     }
-    fun updateTracks(newTracks: MutableList<TrackDto>) {
+    fun updateTracks(newTracks: MutableList<Track>) {
         tracks = newTracks
         notifyDataSetChanged()
     }
