@@ -2,7 +2,6 @@ package ussr.playlistmaker.domain.impl
 
 import ussr.playlistmaker.domain.api.TracksInteractor
 import ussr.playlistmaker.domain.api.TracksRepository
-import java.util.concurrent.Executors
 
 class TracksInteractorImpl(private val repository: TracksRepository): TracksInteractor {
 

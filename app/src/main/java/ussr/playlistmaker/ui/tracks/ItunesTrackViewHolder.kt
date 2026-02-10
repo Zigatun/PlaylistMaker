@@ -26,7 +26,7 @@ class ItunesTrackViewHolder(private val parentView: View): RecyclerView.ViewHold
         val metrics: DisplayMetrics = parentView.resources.displayMetrics
         val radiusPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, radius, metrics)
         Glide.with(parentView)
-            .load(model.artworkUrl)
+            .load(model.coverArtworkUrl)
             .placeholder(R.drawable.placeholder_image)
             .centerCrop()
             .apply(RequestOptions.bitmapTransform(RoundedCorners(radiusPx.toInt())))

@@ -25,6 +25,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.coroutines.Runnable
 import ussr.playlistmaker.R
 import ussr.playlistmaker.data.dto.TrackDto
+import ussr.playlistmaker.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -72,13 +73,13 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
-        val track = intent.getParcelableExtra("track", TrackDto::class.java)
+        val track = intent.getParcelableExtra("track", Track::class.java)
         track?.let{
             preparePlayer(track.previewUrl)
             trackPositionTextView.text = "00:00"
             findViewById<TextView>(R.id.track_name).text = it.trackName
             findViewById<TextView>(R.id.track_author).text = it.artistName
-            findViewById<TextView>(R.id.duration).text = it.getHumanizedTime()
+            findViewById<TextView>(R.id.duration).text = it.trackTime
 
             val albumGroup = findViewById<Group>(R.id.album_group)
             if(it.collectionName == null)
@@ -87,19 +88,19 @@ class PlayerActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.album).text = it.collectionName
 
             val yearGroup = findViewById<Group>(R.id.year_group)
-            if(it.releaseDate == null)
+            if(it.yearOfRelease == null)
                 yearGroup.isVisible = false
             else
-                findViewById<TextView>(R.id.year).text = it.getYearOfRelease()
+                findViewById<TextView>(R.id.year).text = it.yearOfRelease
 
-            findViewById<TextView>(R.id.genre).text = it.primaryGenreName
+            findViewById<TextView>(R.id.genre).text = it.genreName
             findViewById<TextView>(R.id.country).text = it.country
             val albumImage = findViewById<ImageView>(R.id.album_image)
             val radius = 8f
             val metrics: DisplayMetrics = this.resources.displayMetrics
             val radiusPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, radius, metrics)
             Glide.with(this)
-                .load(it.getCoverArtwork())
+                .load(it.coverArtworkUrl)
                 .placeholder(R.drawable.placeholder_image)
                 .centerCrop()
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(radiusPx.toInt())))

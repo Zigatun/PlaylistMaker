@@ -29,6 +29,8 @@ import retrofit2.create
 import ussr.playlistmaker.ui.tracks.ItunesTrackAdapter
 import ussr.playlistmaker.data.network.ItunesSearchApiService
 import ussr.playlistmaker.data.dto.ItunesSearchResponse
+import ussr.playlistmaker.domain.api.TracksInteractor
+import ussr.playlistmaker.domain.models.Track
 import ussr.playlistmaker.storages.SearchHistory
 import ussr.playlistmaker.ui.media.PlayerActivity
 import java.time.Instant
@@ -38,14 +40,11 @@ class SearchActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private var searchItemClickAllowed = true
     private lateinit var history: SearchHistory
-    private lateinit var historyAdapter: ItunesTrackAdapter
+    //private lateinit var historyAdapter: ItunesTrackAdapter
     private lateinit var resultsAdapter: ItunesTrackAdapter
     private val searchRunnable = Runnable {
         doSearch(searchBarValue.toString(), false)
     }
-
-
-    private val itunesSearchApiService = retrofit.create<ItunesSearchApiService>()
 
     private fun isSearchItemClickAllowed() : Boolean {
         val current = searchItemClickAllowed
@@ -82,45 +81,28 @@ class SearchActivity : AppCompatActivity() {
         setPlaceholderMessage("")
         findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = true
         findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
-        itunesSearchApiService.search(request)
-            .enqueue(object : Callback<ItunesSearchResponse> {
-                override fun onResponse(
-                    call: Call<ItunesSearchResponse?>,
-                    response: Response<ItunesSearchResponse?>
-                ) {
-                    if (response.isSuccessful) {
-                        if (wasBeenCleared) {
-                            findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
-                            findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
-                            return
-                        }
-                        val respObjects = response.body()?.results
-                        if (respObjects != null && respObjects.isNotEmpty()) {
-                            resultsAdapter.updateTracks(respObjects.toMutableList())
-                            findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
-                            findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = true
-                        } else {
-                            setPlaceholderMessage(getString(R.string.any_not_found))
-                        }
-                    }
-                }
 
-                override fun onFailure(
-                    call: Call<ItunesSearchResponse?>,
-                    t: Throwable
-                ) {
+        tracksInteractor.searchTracks(request, object: TracksInteractor.TracksConsumer {
+            override fun consume(foundTracks: List<Track>) {
+                runOnUiThread {
+
+                    if (foundTracks.isEmpty()) {
+                        setPlaceholderMessage(getString(R.string.any_not_found))
+                        return@runOnUiThread
+                    }
+
                     if (wasBeenCleared) {
-                        setPlaceholderMessage("")
-                        return
+                        findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
+                        findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
+                        return@runOnUiThread
                     }
-                    setPlaceholderMessage(
-                        getString(R.string.connection_troubles) + "\n\n" + getString(
-                            R.string.trouble_no_internet
-                        ), true
-                    )
-                }
 
-            })
+                    resultsAdapter.updateTracks(foundTracks.toMutableList())
+                    findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
+                    findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = true
+                }
+            }
+        })
     }
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
@@ -130,41 +112,45 @@ class SearchActivity : AppCompatActivity() {
         val items = history.get()
         val root = findViewById<ScrollView>(R.id.tracksSearchHistory)
         root.isVisible = items.isNotEmpty()
-        historyAdapter.updateTracks(items.toMutableList())
+        //historyAdapter.updateTracks(items.toMutableList())
     }
+
+    private lateinit var tracksInteractor: TracksInteractor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        tracksInteractor = Creator.provideTracksInteractor()
 
         val searchBar = findViewById<EditText>(R.id.search_bar)
         val clearButton = findViewById<ImageView>(R.id.search_bar_clear_text)
         val refreshButton = findViewById<Button>(R.id.placeholder_refresh_button)
         history = SearchHistory((applicationContext as PlaylistMakerApp).sharedPreferences)
 
-        historyAdapter = ItunesTrackAdapter(history.get().toMutableList()) { track ->
-            history.add(track)
-            historyAdapter.updateTracks(history.get().toMutableList())
-
-            if(isSearchItemClickAllowed()) {
-                val playerIntent = Intent(this, PlayerActivity::class.java)
-                playerIntent.putExtra("track", track)
-                startActivity(playerIntent)
-            }
-        }
+//        historyAdapter = ItunesTrackAdapter(history.get().toMutableList()) { track ->
+//            history.add(track)
+//            historyAdapter.updateTracks(history.get().toMutableList())
+//
+//            if(isSearchItemClickAllowed()) {
+//                val playerIntent = Intent(this, PlayerActivity::class.java)
+//                playerIntentputExtra("track", track)
+//                startActivity(playerIntent)
+//            }
+//        }
 
         resultsAdapter = ItunesTrackAdapter(mutableListOf()) { track ->
-            history.add(track)
-            historyAdapter.updateTracks(history.get().toMutableList())
+            //history.add(track)
+            //historyAdapter.updateTracks(history.get().toMutableList())
 
             if(isSearchItemClickAllowed()) {
                 val playerIntent = Intent(this, PlayerActivity::class.java)
-                playerIntent.putExtra("track", track)
+                //playerIntent.putExtra("track", track)
                 startActivity(playerIntent)
             }
         }
 
-        findViewById<RecyclerView>(R.id.tracksHistoryRecyclerView).adapter = historyAdapter
+        //findViewById<RecyclerView>(R.id.tracksHistoryRecyclerView).adapter = historyAdapter
         findViewById<RecyclerView>(R.id.tracksRecyclerView).adapter = resultsAdapter
 
         if (savedInstanceState != null) {
