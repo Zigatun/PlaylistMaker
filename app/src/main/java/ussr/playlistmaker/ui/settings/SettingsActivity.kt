@@ -21,7 +21,7 @@ class SettingsActivity : AppCompatActivity()  {
 
         val switcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
         switcher.isChecked = (applicationContext as PlaylistMakerApp).isDarkTheme
-        switcher.setOnCheckedChangeListener { sw, enabled ->
+        switcher.setOnCheckedChangeListener { _, enabled ->
             (applicationContext as PlaylistMakerApp).switchTheme(enabled)
         }
 
