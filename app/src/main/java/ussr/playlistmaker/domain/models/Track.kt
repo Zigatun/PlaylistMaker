@@ -1,7 +1,9 @@
 package ussr.playlistmaker.domain.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.time.Instant
-
+@Parcelize
 class Track (val trackId: Long,
                      val trackName: String,
                      val artistName: String,
@@ -13,4 +15,4 @@ class Track (val trackId: Long,
                      val releaseDate: Instant?,
                      val yearOfRelease: String?,
                      val genreName:String,
-                     val country:String)
+                     val country:String) : Parcelable
