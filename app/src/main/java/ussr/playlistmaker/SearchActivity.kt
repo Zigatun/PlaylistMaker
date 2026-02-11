@@ -40,8 +40,18 @@ class SearchActivity : AppCompatActivity() {
     private var searchBarValue: CharSequence? = SEARCHBAR_VALUE_DEFAULT
     private val handler = Handler(Looper.getMainLooper())
     private var searchItemClickAllowed = true
+
     private lateinit var historyAdapter: ItunesTrackAdapter
     private lateinit var resultsAdapter: ItunesTrackAdapter
+
+    private lateinit var searchProgressBar: ProgressBar
+    private lateinit var tracksView: RecyclerView
+    private lateinit var rootView: ScrollView
+    private lateinit var placeholderTextView: TextView
+    private lateinit var searchBar: EditText
+    private lateinit var clearButton: ImageView
+    private lateinit var refreshButton: Button
+
     private val searchRunnable = Runnable {
         doSearch(searchBarValue.toString(), false)
     }
@@ -56,8 +66,7 @@ class SearchActivity : AppCompatActivity() {
     }
     private fun setPlaceholderMessage(message: String = "", isError: Boolean = false) {
         val placeholderView = findViewById<LinearLayout>(R.id.error_placeholder)
-        val tracksView = findViewById<RecyclerView>(R.id.tracksRecyclerView)
-        findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
+        searchProgressBar.isVisible = false
         if (message == "") {
             placeholderView.isVisible = false
             tracksView.isVisible = true
@@ -66,7 +75,7 @@ class SearchActivity : AppCompatActivity() {
             placeholderView.isVisible = true
             tracksView.isVisible = false
         }
-        findViewById<TextView>(R.id.error_description).text = message
+        placeholderTextView.text = message
         val icon = findViewById<ImageView>(R.id.placeholder_icon)
         val btn = findViewById<Button>(R.id.placeholder_refresh_button)
         btn.isVisible = isError
@@ -79,8 +88,8 @@ class SearchActivity : AppCompatActivity() {
 
     private fun doSearch(request: String, wasBeenCleared: Boolean = false) {
         setPlaceholderMessage("")
-        findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = true
-        findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
+        searchProgressBar.isVisible = true
+        tracksView.isVisible = false
 
         tracksInteractor.searchTracks(request, object: TracksInteractor.TracksConsumer {
             override fun consume(foundTracks: List<Track>) {
@@ -92,14 +101,14 @@ class SearchActivity : AppCompatActivity() {
                     }
 
                     if (wasBeenCleared) {
-                        findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = false
-                        findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
+                        tracksView.isVisible = false
+                        searchProgressBar.isVisible = false
                         return@runOnUiThread
                     }
 
                     resultsAdapter.updateTracks(foundTracks.toMutableList())
-                    findViewById<ProgressBar>(R.id.searchProgressBar).isVisible = false
-                    findViewById<RecyclerView>(R.id.tracksRecyclerView).isVisible = true
+                    searchProgressBar.isVisible = false
+                    tracksView.isVisible = true
                 }
             }
         })
@@ -110,8 +119,7 @@ class SearchActivity : AppCompatActivity() {
     }
     private fun refreshHistory() {
         val items = history.get()
-        val root = findViewById<ScrollView>(R.id.tracksSearchHistory)
-        root.isVisible = items.isNotEmpty()
+        rootView.isVisible = items.isNotEmpty()
         //historyAdapter.updateTracks(items.toMutableList())
     }
 
@@ -125,10 +133,13 @@ class SearchActivity : AppCompatActivity() {
         tracksInteractor = Creator.provideTracksInteractor()
         searchHistoryInteractor = Creator.provideSearchHistoryInteractor((applicationContext as PlaylistMakerApp).sharedPreferences)
 
-        val searchBar = findViewById<EditText>(R.id.search_bar)
-        val clearButton = findViewById<ImageView>(R.id.search_bar_clear_text)
-        val refreshButton = findViewById<Button>(R.id.placeholder_refresh_button)
-        history = SearchHistory((applicationContext as PlaylistMakerApp).sharedPreferences)
+        searchProgressBar = findViewById<ProgressBar>(R.id.searchProgressBar)
+        tracksView = findViewById<RecyclerView>(R.id.tracksRecyclerView)
+        rootView = findViewById<ScrollView>(R.id.tracksSearchHistory)
+        placeholderTextView = findViewById<TextView>(R.id.error_description)
+        searchBar = findViewById<EditText>(R.id.search_bar)
+        clearButton = findViewById<ImageView>(R.id.search_bar_clear_text)
+        refreshButton = findViewById<Button>(R.id.placeholder_refresh_button)
 
 //        historyAdapter = ItunesTrackAdapter(history.get().toMutableList()) { track ->
 //            history.add(track)
@@ -153,7 +164,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         //findViewById<RecyclerView>(R.id.tracksHistoryRecyclerView).adapter = historyAdapter
-        findViewById<RecyclerView>(R.id.tracksRecyclerView).adapter = resultsAdapter
+        tracksView.adapter = resultsAdapter
 
         if (savedInstanceState != null) {
             searchBarValue = savedInstanceState.getCharSequence(SEARCHBAR, SEARCHBAR_VALUE_DEFAULT)
@@ -180,7 +191,7 @@ class SearchActivity : AppCompatActivity() {
         }
         searchBar.setOnFocusChangeListener { _, hasFocus ->
             val historyIsVisible = hasFocus && searchBar.text.isEmpty()
-            findViewById<ScrollView>(R.id.tracksSearchHistory).isVisible = historyIsVisible
+            rootView.isVisible = historyIsVisible
             if (historyIsVisible)
                 refreshHistory()
         }
@@ -202,7 +213,7 @@ class SearchActivity : AppCompatActivity() {
                 clearButton.isVisible = !s.isNullOrEmpty()
 
                 val historyIsVisible = searchBar.hasFocus() && s?.isEmpty() == true
-                findViewById<ScrollView>(R.id.tracksSearchHistory).isVisible = historyIsVisible
+                rootView.isVisible = historyIsVisible
                 if (historyIsVisible) {
                     refreshHistory()
                 }
