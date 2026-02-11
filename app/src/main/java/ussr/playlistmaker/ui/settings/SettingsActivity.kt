@@ -7,45 +7,40 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.google.android.material.switchmaterial.SwitchMaterial
+import ussr.playlistmaker.Creator
 import ussr.playlistmaker.PlaylistMakerApp
 import ussr.playlistmaker.R
+import ussr.playlistmaker.domain.api.SettingsInteractor
 
 class SettingsActivity : AppCompatActivity()  {
+    private lateinit var settingsInteractor: SettingsInteractor
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        settingsInteractor = Creator.provideSettingsInteractor(applicationContext as PlaylistMakerApp)
 
         findViewById<ImageView>(R.id.back_button).setOnClickListener {
             finish()
         }
 
         val switcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        switcher.isChecked = (applicationContext as PlaylistMakerApp).isDarkTheme
+        switcher.isChecked = settingsInteractor.isDarkThemeEnabled()
         switcher.setOnCheckedChangeListener { _, enabled ->
-            (applicationContext as PlaylistMakerApp).switchTheme(enabled)
+            settingsInteractor.switchTheme(enabled)
         }
 
         findViewById<FrameLayout>(R.id.share_app).setOnClickListener{
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = "text/plain"
-            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
-            startActivity(shareIntent)
+            settingsInteractor.shareApp()
         }
 
         findViewById<FrameLayout>(R.id.contact_with_support).setOnClickListener {
-            val emailIntent = Intent(Intent.ACTION_SENDTO)
-            emailIntent.data = "mailto:".toUri()
-
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.email_support_address)))
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_support_title))
-            emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_support_body))
-            startActivity(emailIntent)
+            settingsInteractor.contactSupport()
         }
 
         findViewById<FrameLayout>(R.id.user_agreement).setOnClickListener {
-            val browserIntent =
-                Intent(Intent.ACTION_VIEW, getString(R.string.user_agreement_link).toUri())
-            startActivity(browserIntent)
+            settingsInteractor.openUserAgreement()
         }
     }
 }
