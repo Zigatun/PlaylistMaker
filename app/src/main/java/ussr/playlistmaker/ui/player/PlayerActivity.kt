@@ -1,4 +1,4 @@
-package ussr.playlistmaker.ui.media
+package ussr.playlistmaker.ui.player
 
 import android.annotation.SuppressLint
 import android.media.MediaPlayer
@@ -24,7 +24,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.coroutines.Runnable
 import ussr.playlistmaker.R
-import ussr.playlistmaker.data.dto.TrackDto
 import ussr.playlistmaker.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale

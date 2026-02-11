@@ -1,4 +1,4 @@
-package ussr.playlistmaker.ui
+package ussr.playlistmaker.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
@@ -43,7 +43,8 @@ class SettingsActivity : AppCompatActivity()  {
         }
 
         findViewById<FrameLayout>(R.id.user_agreement).setOnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, getString(R.string.user_agreement_link).toUri())
+            val browserIntent =
+                Intent(Intent.ACTION_VIEW, getString(R.string.user_agreement_link).toUri())
             startActivity(browserIntent)
         }
     }

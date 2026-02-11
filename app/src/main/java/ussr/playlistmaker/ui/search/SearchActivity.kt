@@ -1,4 +1,4 @@
-package ussr.playlistmaker
+package ussr.playlistmaker.ui.search
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,26 +15,18 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializer
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
-import ussr.playlistmaker.ui.tracks.ItunesTrackAdapter
-import ussr.playlistmaker.data.network.ItunesSearchApiService
-import ussr.playlistmaker.data.dto.ItunesSearchResponse
+import ussr.playlistmaker.Creator
+import ussr.playlistmaker.PlaylistMakerApp
+import ussr.playlistmaker.R
 import ussr.playlistmaker.domain.api.SearchHistoryInteractor
 import ussr.playlistmaker.domain.api.TracksInteractor
 import ussr.playlistmaker.domain.models.Track
-import ussr.playlistmaker.storages.SearchHistory
-import ussr.playlistmaker.ui.media.PlayerActivity
-import java.time.Instant
+import ussr.playlistmaker.ui.player.PlayerActivity
+import ussr.playlistmaker.ui.tracks.ItunesTrackAdapter
 
 class SearchActivity : AppCompatActivity() {
     private var searchBarValue: CharSequence? = SEARCHBAR_VALUE_DEFAULT
@@ -154,7 +146,7 @@ class SearchActivity : AppCompatActivity() {
         historyAdapter = ItunesTrackAdapter(mutableListOf()) { track ->
             searchHistoryInteractor.addToHistory(track)
             refreshHistory()
-            if(isSearchItemClickAllowed()) {
+            if (isSearchItemClickAllowed()) {
                 val playerIntent = Intent(this, PlayerActivity::class.java)
                 playerIntent.putExtra("track", track)
                 startActivity(playerIntent)
@@ -164,7 +156,7 @@ class SearchActivity : AppCompatActivity() {
         resultsAdapter = ItunesTrackAdapter(mutableListOf()) { track ->
             searchHistoryInteractor.addToHistory(track)
             refreshHistory()
-            if(isSearchItemClickAllowed()) {
+            if (isSearchItemClickAllowed()) {
                 val playerIntent = Intent(this, PlayerActivity::class.java)
                 playerIntent.putExtra("track", track)
                 startActivity(playerIntent)
@@ -179,7 +171,7 @@ class SearchActivity : AppCompatActivity() {
             searchBar.setText(searchBarValue)
         }
 
-        findViewById<android.widget.Toolbar>(R.id.main_toolbar).setNavigationOnClickListener {
+        findViewById<Toolbar>(R.id.main_toolbar).setNavigationOnClickListener {
             finish()
         }
         findViewById<Button>(R.id.tracksHistoryClear).setOnClickListener {
