@@ -133,7 +133,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         tracksInteractor = Creator.provideTracksInteractor()
-        searchHistoryInteractor = Creator.provideSearchHistoryInteractor((applicationContext as PlaylistMakerApp).sharedPreferences)
+        searchHistoryInteractor = Creator.provideSearchHistoryInteractor(applicationContext as PlaylistMakerApp)
 
         searchProgressBar =     findViewById(R.id.searchProgressBar)
         tracksView =            findViewById(R.id.tracksRecyclerView)
