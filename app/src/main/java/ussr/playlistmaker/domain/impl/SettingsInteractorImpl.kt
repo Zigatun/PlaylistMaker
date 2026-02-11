@@ -14,8 +14,8 @@ class SettingsInteractorImpl(
         return app.isDarkTheme
     }
 
-    override fun switchTheme(enabled: Boolean) {
-        app.switchTheme(enabled)
+    override fun switchTheme(dark: Boolean) {
+        app.switchTheme(dark)
     }
 
     override fun shareApp() {
