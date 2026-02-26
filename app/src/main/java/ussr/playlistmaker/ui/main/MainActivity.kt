@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ussr.playlistmaker.R
 import ussr.playlistmaker.settings.ui.SettingsActivity
 import ussr.playlistmaker.ui.media.MediaActivity
-import ussr.playlistmaker.ui.search.SearchActivity
+import ussr.playlistmaker.search.ui.SearchActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

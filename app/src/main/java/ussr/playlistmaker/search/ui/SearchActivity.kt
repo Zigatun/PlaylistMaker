@@ -1,4 +1,4 @@
-package ussr.playlistmaker.ui.search
+package ussr.playlistmaker.search.ui
 
 import android.content.Intent
 import android.os.Bundle
