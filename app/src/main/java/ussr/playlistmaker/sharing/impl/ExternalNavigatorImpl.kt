@@ -3,7 +3,6 @@ package ussr.playlistmaker.sharing.impl
 import android.content.Intent
 import androidx.core.net.toUri
 import ussr.playlistmaker.PlaylistMakerApp
-import ussr.playlistmaker.R
 import ussr.playlistmaker.sharing.ExternalNavigator
 import ussr.playlistmaker.sharing.models.EmailData
 

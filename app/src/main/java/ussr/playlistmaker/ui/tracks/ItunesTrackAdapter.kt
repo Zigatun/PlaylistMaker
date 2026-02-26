@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ussr.playlistmaker.R
 import ussr.playlistmaker.data.dto.TrackDto
-import ussr.playlistmaker.domain.models.Track
+import ussr.playlistmaker.search.models.Track
 
 class ItunesTrackAdapter(private var tracks: MutableList<Track>, private val onItemClick: (Track) -> Unit
 ) : RecyclerView.Adapter<ItunesTrackViewHolder>() {

@@ -1,7 +1,7 @@
-package ussr.playlistmaker.domain.impl
+package ussr.playlistmaker.search.impl
 
-import ussr.playlistmaker.domain.api.TracksInteractor
-import ussr.playlistmaker.domain.api.TracksRepository
+import ussr.playlistmaker.search.api.TracksInteractor
+import ussr.playlistmaker.search.api.TracksRepository
 
 class TracksInteractorImpl(private val repository: TracksRepository): TracksInteractor {
 

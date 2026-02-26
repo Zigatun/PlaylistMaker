@@ -4,8 +4,8 @@ import com.google.gson.Gson
 import ussr.playlistmaker.data.dto.TrackDto
 import ussr.playlistmaker.data.mappers.toDto
 import ussr.playlistmaker.data.mappers.toModel
-import ussr.playlistmaker.domain.api.SearchHistoryRepository
-import ussr.playlistmaker.domain.models.Track
+import ussr.playlistmaker.search.api.SearchHistoryRepository
+import ussr.playlistmaker.search.models.Track
 
 private const val PLAYLISTMAKER_SEARCH_HISTORY = "playlistmaker_search_history"
 private const val PLAYLISTMAKER_HISTORY_LIMIT = 10

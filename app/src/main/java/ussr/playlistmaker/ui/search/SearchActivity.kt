@@ -22,9 +22,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ussr.playlistmaker.Creator
 import ussr.playlistmaker.PlaylistMakerApp
 import ussr.playlistmaker.R
-import ussr.playlistmaker.domain.api.SearchHistoryInteractor
-import ussr.playlistmaker.domain.api.TracksInteractor
-import ussr.playlistmaker.domain.models.Track
+import ussr.playlistmaker.search.api.SearchHistoryInteractor
+import ussr.playlistmaker.search.api.TracksInteractor
+import ussr.playlistmaker.search.models.Track
 import ussr.playlistmaker.ui.player.PlayerActivity
 import ussr.playlistmaker.ui.tracks.ItunesTrackAdapter
 

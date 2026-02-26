@@ -1,8 +1,8 @@
-package ussr.playlistmaker.domain.impl
+package ussr.playlistmaker.search.impl
 
-import ussr.playlistmaker.domain.api.SearchHistoryInteractor
-import ussr.playlistmaker.domain.api.SearchHistoryRepository
-import ussr.playlistmaker.domain.models.Track
+import ussr.playlistmaker.search.api.SearchHistoryInteractor
+import ussr.playlistmaker.search.api.SearchHistoryRepository
+import ussr.playlistmaker.search.models.Track
 
 class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepository): SearchHistoryInteractor {
     override fun getHistory(consumer: SearchHistoryInteractor.SearchHistoryConsumer) {

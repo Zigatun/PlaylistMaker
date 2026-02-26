@@ -1,18 +1,12 @@
 package ussr.playlistmaker.settings.ui
 
 import android.os.Bundle
-import android.widget.FrameLayout
-import android.widget.ImageView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.switchmaterial.SwitchMaterial
 import ussr.playlistmaker.Creator
 import ussr.playlistmaker.PlaylistMakerApp
 import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.ActivitySettingsBinding
-import ussr.playlistmaker.settings.domain.api.SettingsInteractor
 import ussr.playlistmaker.settings.ui.viewmodel.SettingsActivityViewModel
 import ussr.playlistmaker.sharing.models.EmailData
 

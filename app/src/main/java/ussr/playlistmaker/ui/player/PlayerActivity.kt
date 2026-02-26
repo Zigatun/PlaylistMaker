@@ -24,7 +24,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.coroutines.Runnable
 import ussr.playlistmaker.R
-import ussr.playlistmaker.domain.models.Track
+import ussr.playlistmaker.search.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 

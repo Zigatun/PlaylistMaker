@@ -1,6 +1,6 @@
-package ussr.playlistmaker.domain.api
+package ussr.playlistmaker.search.api
 
-import ussr.playlistmaker.domain.models.Track
+import ussr.playlistmaker.search.models.Track
 
 interface SearchHistoryRepository {
     fun get(): ArrayDeque<Track>
