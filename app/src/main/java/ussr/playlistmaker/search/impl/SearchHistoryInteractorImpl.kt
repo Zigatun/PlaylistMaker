@@ -6,23 +6,25 @@ import ussr.playlistmaker.search.models.Track
 
 class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepository): SearchHistoryInteractor {
     override fun getHistory(consumer: SearchHistoryInteractor.SearchHistoryConsumer) {
-        val t = Thread {
+        //val t = Thread {
             consumer.consume(repository.get())
-        }
-        t.start()
+        //}
+        //t.start()
     }
 
     override fun addToHistory(track: Track) {
-        val t = Thread {
-            repository.add(track)
-        }
-        t.start()
+//        val t = Thread {
+//            repository.add(track)
+//        }
+//        t.start()
+        repository.add(track)
     }
 
     override fun clearHistory() {
-        val t = Thread {
-            repository.clear()
-        }
-        t.start()
+//        val t = Thread {
+//            repository.clear()
+//        }
+//        t.start()
+        repository.clear()
     }
 }
