@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import ussr.playlistmaker.Creator
+import ussr.playlistmaker.main.Creator
 import ussr.playlistmaker.PlaylistMakerApp
 import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.ActivitySearchBinding
@@ -30,7 +30,7 @@ import ussr.playlistmaker.search.api.TracksInteractor
 import ussr.playlistmaker.search.models.Track
 import ussr.playlistmaker.search.models.TracksState
 import ussr.playlistmaker.search.ui.viewmodel.SearchActivityViewModel
-import ussr.playlistmaker.ui.player.PlayerActivity
+import ussr.playlistmaker.player.ui.PlayerActivity
 import ussr.playlistmaker.settings.ui.ItunesTrackAdapter
 
 class SearchActivity : AppCompatActivity() {

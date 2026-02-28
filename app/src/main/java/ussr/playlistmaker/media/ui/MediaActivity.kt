@@ -1,4 +1,4 @@
-package ussr.playlistmaker.ui.media
+package ussr.playlistmaker.media.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

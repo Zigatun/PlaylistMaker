@@ -3,7 +3,7 @@ package ussr.playlistmaker.settings.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import ussr.playlistmaker.Creator
+import ussr.playlistmaker.main.Creator
 import ussr.playlistmaker.PlaylistMakerApp
 import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.ActivitySettingsBinding

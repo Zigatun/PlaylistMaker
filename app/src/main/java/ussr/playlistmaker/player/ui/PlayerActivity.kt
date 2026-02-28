@@ -1,4 +1,4 @@
-package ussr.playlistmaker.ui.player
+package ussr.playlistmaker.player.ui
 
 import android.annotation.SuppressLint
 import android.media.MediaPlayer

@@ -1,19 +1,19 @@
-package ussr.playlistmaker
+package ussr.playlistmaker.main
 
 import android.content.SharedPreferences
-
+import ussr.playlistmaker.PlaylistMakerApp
 import ussr.playlistmaker.data.SearchHistoryRepositoryImpl
 import ussr.playlistmaker.data.TracksRepositoryImpl
 import ussr.playlistmaker.data.network.RetrofitNetworkClient
 import ussr.playlistmaker.data.storage.SharedPreferencesStorage
 import ussr.playlistmaker.search.api.SearchHistoryInteractor
 import ussr.playlistmaker.search.api.SearchHistoryRepository
-import ussr.playlistmaker.settings.domain.api.SettingsInteractor
 import ussr.playlistmaker.search.api.TracksInteractor
 import ussr.playlistmaker.search.api.TracksRepository
 import ussr.playlistmaker.search.impl.SearchHistoryInteractorImpl
-import ussr.playlistmaker.settings.domain.SettingsInteractorImpl
 import ussr.playlistmaker.search.impl.TracksInteractorImpl
+import ussr.playlistmaker.settings.domain.SettingsInteractorImpl
+import ussr.playlistmaker.settings.domain.api.SettingsInteractor
 import ussr.playlistmaker.sharing.ExternalNavigator
 import ussr.playlistmaker.sharing.domain.SharingInteractorImpl
 import ussr.playlistmaker.sharing.domain.api.SharingInteractor
