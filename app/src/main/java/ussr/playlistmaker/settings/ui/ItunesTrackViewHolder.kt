@@ -1,4 +1,4 @@
-package ussr.playlistmaker.ui.tracks
+package ussr.playlistmaker.settings.ui
 
 import android.util.DisplayMetrics
 import android.util.TypedValue
