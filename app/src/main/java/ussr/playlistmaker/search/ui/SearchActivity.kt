@@ -18,7 +18,6 @@ import ussr.playlistmaker.databinding.ActivitySearchBinding
 import ussr.playlistmaker.search.models.TracksState
 import ussr.playlistmaker.search.ui.viewmodel.SearchActivityViewModel
 import ussr.playlistmaker.player.ui.PlayerActivity
-import ussr.playlistmaker.settings.ui.ItunesTrackAdapter
 
 class SearchActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())

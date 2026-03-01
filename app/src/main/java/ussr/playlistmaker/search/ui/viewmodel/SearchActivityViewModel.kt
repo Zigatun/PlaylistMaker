@@ -28,7 +28,6 @@ class SearchActivityViewModel(
     private val trackNavigationEvent = MutableLiveData<Track>()
     fun observableTrackNavigationEvent(): LiveData<Track> = trackNavigationEvent
 
-    private var isSearchFocused = false
     private var currentText: String = ""
 
     private val handler = Handler(Looper.getMainLooper())
@@ -77,20 +76,7 @@ class SearchActivityViewModel(
             loadHistory()
         }
     }
-    private fun updateState() {
 
-        if (isSearchFocused && currentText.isEmpty()) {
-            loadHistory()
-            return
-        }
-
-        if (currentText.isNotEmpty()) {
-            doSearch(currentText)
-            return
-        }
-
-        trackViewState.value = TracksState.Empty("")
-    }
     private fun doSearch(request: String) {
         trackViewState.value = TracksState.Loading
 
