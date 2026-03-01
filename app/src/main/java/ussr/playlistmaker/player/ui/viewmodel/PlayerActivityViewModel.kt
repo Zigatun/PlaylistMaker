@@ -58,8 +58,8 @@ class PlayerActivityViewModel(track: Track) : ViewModel() {
             playerState = PLAYER_STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
-
             playerState = PLAYER_STATE_PREPARED
+            updateState { it.copy(isPlaying = false, positionText = "00:00") }
         }
     }
     private fun startPlayer() {
