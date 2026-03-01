@@ -67,7 +67,7 @@ class SearchActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(
             this, SearchActivityViewModel.getFactory(
-                Creator.provideTracksInteractor(),
+                Creator.provideTracksInteractor(applicationContext as PlaylistMakerApp),
                 Creator.provideSearchHistoryInteractor(applicationContext as PlaylistMakerApp)
             )
         ).get(SearchActivityViewModel::class.java)

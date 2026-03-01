@@ -1,4 +1,4 @@
-package ussr.playlistmaker.data
+package ussr.playlistmaker.search.data
 
 interface StorageService {
     fun get(key: String): String

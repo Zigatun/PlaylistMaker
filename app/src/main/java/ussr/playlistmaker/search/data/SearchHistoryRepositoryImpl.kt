@@ -1,9 +1,9 @@
-package ussr.playlistmaker.data
+package ussr.playlistmaker.search.data
 
 import com.google.gson.Gson
-import ussr.playlistmaker.data.dto.TrackDto
-import ussr.playlistmaker.data.mappers.toDto
-import ussr.playlistmaker.data.mappers.toModel
+import ussr.playlistmaker.search.data.dto.TrackDto
+import ussr.playlistmaker.search.data.mappers.toDto
+import ussr.playlistmaker.search.data.mappers.toModel
 import ussr.playlistmaker.search.api.SearchHistoryRepository
 import ussr.playlistmaker.search.models.Track
 

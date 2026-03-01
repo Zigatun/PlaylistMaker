@@ -1,4 +1,4 @@
-package ussr.playlistmaker.data.dto
+package ussr.playlistmaker.search.data.dto
 
 import java.time.Instant
 

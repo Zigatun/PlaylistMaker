@@ -1,9 +1,9 @@
-package ussr.playlistmaker.data.network
+package ussr.playlistmaker.search.data.network
 
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
-import ussr.playlistmaker.data.dto.ItunesSearchResponse
+import ussr.playlistmaker.search.data.dto.ItunesSearchResponse
 
 interface ItunesSearchApiService {
     @GET("/search?entity=song")

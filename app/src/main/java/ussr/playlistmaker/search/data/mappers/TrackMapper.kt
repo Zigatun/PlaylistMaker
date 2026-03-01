@@ -1,6 +1,6 @@
-package ussr.playlistmaker.data.mappers
+package ussr.playlistmaker.search.data.mappers
 
-import ussr.playlistmaker.data.dto.TrackDto
+import ussr.playlistmaker.search.data.dto.TrackDto
 import ussr.playlistmaker.search.models.Track
 import java.text.SimpleDateFormat
 import java.time.ZoneId

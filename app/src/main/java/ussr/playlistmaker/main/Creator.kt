@@ -2,10 +2,10 @@ package ussr.playlistmaker.main
 
 import android.content.SharedPreferences
 import ussr.playlistmaker.PlaylistMakerApp
-import ussr.playlistmaker.data.SearchHistoryRepositoryImpl
-import ussr.playlistmaker.data.TracksRepositoryImpl
-import ussr.playlistmaker.data.network.RetrofitNetworkClient
-import ussr.playlistmaker.data.storage.SharedPreferencesStorage
+import ussr.playlistmaker.search.data.SearchHistoryRepositoryImpl
+import ussr.playlistmaker.search.data.TracksRepositoryImpl
+import ussr.playlistmaker.search.data.network.RetrofitNetworkClient
+import ussr.playlistmaker.search.data.storage.SharedPreferencesStorage
 import ussr.playlistmaker.search.api.SearchHistoryInteractor
 import ussr.playlistmaker.search.api.SearchHistoryRepository
 import ussr.playlistmaker.search.api.TracksInteractor
@@ -21,12 +21,12 @@ import ussr.playlistmaker.sharing.impl.ExternalNavigatorImpl
 import ussr.playlistmaker.sharing.models.EmailData
 
 object Creator {
-    private fun getTracksRepository(): TracksRepository {
-        return TracksRepositoryImpl(RetrofitNetworkClient())
+    private fun getTracksRepository(app: PlaylistMakerApp): TracksRepository {
+        return TracksRepositoryImpl(RetrofitNetworkClient(app))
     }
 
-    fun provideTracksInteractor(): TracksInteractor {
-        return TracksInteractorImpl(getTracksRepository())
+    fun provideTracksInteractor(app: PlaylistMakerApp): TracksInteractor {
+        return TracksInteractorImpl(getTracksRepository(app))
     }
 
     private fun getSearchHistoryRepository(prefs: SharedPreferences): SearchHistoryRepository {

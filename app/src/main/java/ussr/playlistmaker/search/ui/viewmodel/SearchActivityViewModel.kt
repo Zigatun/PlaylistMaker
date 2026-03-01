@@ -81,14 +81,20 @@ class SearchActivityViewModel(
         trackViewState.value = TracksState.Loading
 
         tracksInteractor.searchTracks(request, object : TracksInteractor.TracksConsumer {
-            override fun consume(foundTracks: List<Track>) {
-                if (foundTracks.isEmpty()) {
+            override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
+                if(errorMessage != null){
+                    trackViewState.postValue(
+                        TracksState.Error(errorMessage)
+                    )
+                    return
+                }
+                if (foundTracks != null && foundTracks.isEmpty()) {
                     trackViewState.postValue(
                         TracksState.Empty("Ничего не найдено")
                     )
                 } else {
                     trackViewState.postValue(
-                        TracksState.Content(foundTracks, false)
+                        TracksState.Content(foundTracks.orEmpty(), false)
                     )
                 }
             }
