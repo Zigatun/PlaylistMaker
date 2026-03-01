@@ -3,7 +3,7 @@ package ussr.playlistmaker.search.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ussr.playlistmaker.R
+import ussr.playlistmaker.databinding.ActivityTrackCardBinding
 import ussr.playlistmaker.search.models.Track
 
 class ItunesTrackAdapter(private val onItemClick: (Track) -> Unit
@@ -15,8 +15,9 @@ class ItunesTrackAdapter(private val onItemClick: (Track) -> Unit
         parent: ViewGroup,
         viewType: Int
     ): ItunesTrackViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_track_card, parent, false)
-        return ItunesTrackViewHolder(view)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ActivityTrackCardBinding.inflate(inflater, parent, false)
+        return ItunesTrackViewHolder(binding)
     }
 
     override fun onBindViewHolder(
