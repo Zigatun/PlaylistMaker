@@ -1,11 +1,10 @@
-package ussr.playlistmaker.settings.ui
+package ussr.playlistmaker.search.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ussr.playlistmaker.R
 import ussr.playlistmaker.search.models.Track
-import ussr.playlistmaker.settings.ui.ItunesTrackViewHolder
 
 class ItunesTrackAdapter(private val onItemClick: (Track) -> Unit
 ) : RecyclerView.Adapter<ItunesTrackViewHolder>() {
