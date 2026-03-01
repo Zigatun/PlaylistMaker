@@ -1,21 +1,13 @@
 package ussr.playlistmaker.player.ui
 
 import android.annotation.SuppressLint
-import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.TypedValue
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toolbar
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.Group
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -23,16 +15,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.coroutines.Runnable
-import ussr.playlistmaker.PlaylistMakerApp
 import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.ActivityPlayerBinding
-import ussr.playlistmaker.main.Creator
 import ussr.playlistmaker.player.ui.viewmodel.PlayerActivityViewModel
 import ussr.playlistmaker.search.models.Track
-import ussr.playlistmaker.search.ui.viewmodel.SearchActivityViewModel
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding

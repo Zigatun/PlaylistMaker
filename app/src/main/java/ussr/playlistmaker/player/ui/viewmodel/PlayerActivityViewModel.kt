@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.Runnable
-import ussr.playlistmaker.R
 import ussr.playlistmaker.player.model.PlayerState
 import ussr.playlistmaker.search.models.Track
 import java.text.SimpleDateFormat
