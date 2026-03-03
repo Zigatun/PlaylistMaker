@@ -1,17 +1,18 @@
 package ussr.playlistmaker.settings.domain
 
-import ussr.playlistmaker.PlaylistMakerApp
+import android.content.SharedPreferences
 import ussr.playlistmaker.settings.domain.api.SettingsInteractor
+const val OPT_IS_DARK_THEME = "OPT_IS_DARK_THEME"
 
 class SettingsInteractorImpl(
-    private val app: PlaylistMakerApp
+    private val prefs: SharedPreferences
 ) : SettingsInteractor {
 
     override fun isDarkThemeEnabled(): Boolean {
-        return app.isDarkTheme
+        return prefs.getBoolean(OPT_IS_DARK_THEME, false)
     }
 
     override fun switchTheme(dark: Boolean) {
-        app.switchTheme(dark)
+        prefs.edit().putBoolean(OPT_IS_DARK_THEME, dark).apply()
     }
 }

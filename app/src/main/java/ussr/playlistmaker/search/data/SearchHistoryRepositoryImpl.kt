@@ -10,8 +10,7 @@ import ussr.playlistmaker.search.models.Track
 private const val PLAYLISTMAKER_SEARCH_HISTORY = "playlistmaker_search_history"
 private const val PLAYLISTMAKER_HISTORY_LIMIT = 10
 
-class SearchHistoryRepositoryImpl(private val storage: StorageService) : SearchHistoryRepository {
-    private val gson = Gson()
+class SearchHistoryRepositoryImpl(val gson: Gson, private val storage: StorageService) : SearchHistoryRepository {
     private fun flush(tracks: ArrayDeque<Track>) {
         val dtos = tracks.map { it.toDto() }
         val json = gson.toJson(dtos)

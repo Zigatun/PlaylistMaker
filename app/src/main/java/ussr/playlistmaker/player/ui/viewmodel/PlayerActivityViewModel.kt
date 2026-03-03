@@ -6,9 +6,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.Runnable
 import ussr.playlistmaker.player.model.PlayerState
 import ussr.playlistmaker.search.models.Track
@@ -104,10 +101,5 @@ class PlayerActivityViewModel(track: Track) : ViewModel() {
         private const val PLAYER_STATE_PLAYING = 2
         private const val PLAYER_STATE_PAUSED = 3
         private const val PLAYER_UPDATE_FREQ = 300L
-        fun getFactory(track: Track): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                PlayerActivityViewModel(track)
-            }
-        }
     }
 }
