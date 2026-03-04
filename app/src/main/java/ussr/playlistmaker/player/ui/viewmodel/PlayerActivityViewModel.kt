@@ -6,22 +6,17 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.Runnable
 import ussr.playlistmaker.player.model.PlayerState
 import ussr.playlistmaker.search.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerActivityViewModel(track: Track) : ViewModel() {
+class PlayerActivityViewModel(private val mediaPlayer: MediaPlayer, track: Track) : ViewModel() {
 
     private val trackState = MutableLiveData(PlayerState(track))
     val observableTrackState: LiveData<PlayerState> = trackState
     private var playerState = PLAYER_STATE_DEFAULT
-
-    private var mediaPlayer = MediaPlayer()
     private val handler = Handler(Looper.getMainLooper())
     private val playbackTimerRunnable = object : Runnable {
         override fun run() {
@@ -104,10 +99,5 @@ class PlayerActivityViewModel(track: Track) : ViewModel() {
         private const val PLAYER_STATE_PLAYING = 2
         private const val PLAYER_STATE_PAUSED = 3
         private const val PLAYER_UPDATE_FREQ = 300L
-        fun getFactory(track: Track): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                PlayerActivityViewModel(track)
-            }
-        }
     }
 }

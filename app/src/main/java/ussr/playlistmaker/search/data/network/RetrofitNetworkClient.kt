@@ -3,30 +3,11 @@ package ussr.playlistmaker.search.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializer
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import ussr.playlistmaker.search.data.NetworkClient
 import ussr.playlistmaker.search.data.dto.BaseResponse
 import ussr.playlistmaker.search.data.dto.ItunesSearchRequest
-import java.time.Instant
 
-class RetrofitNetworkClient(private val context: Context) : NetworkClient {
-    private val itunesBaseUri = "https://itunes.apple.com/"
-
-    private val gson = GsonBuilder()
-        .registerTypeAdapter(
-            Instant::class.java,
-            JsonDeserializer { json, _, _ -> Instant.parse(json.asString) })
-        .create()
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(itunesBaseUri)
-        .addConverterFactory(GsonConverterFactory.create(gson))
-        .build()
-
-    private val itunesService = retrofit.create(ItunesSearchApiService::class.java)
+class RetrofitNetworkClient(private val itunesService: ItunesSearchApiService, private val context: Context) : NetworkClient {
 
     private fun isConnected(): Boolean {
         val connectivityManager = context.getSystemService(

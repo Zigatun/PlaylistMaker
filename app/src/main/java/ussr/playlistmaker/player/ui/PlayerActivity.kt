@@ -11,10 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.core.parameter.parametersOf
 import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.ActivityPlayerBinding
 import ussr.playlistmaker.player.ui.viewmodel.PlayerActivityViewModel
@@ -22,9 +23,7 @@ import ussr.playlistmaker.search.models.Track
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
-    private lateinit var viewModel: PlayerActivityViewModel
-
-
+    lateinit var viewModel: PlayerActivityViewModel
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -34,11 +33,9 @@ class PlayerActivity : AppCompatActivity() {
 
         binding = ActivityPlayerBinding.inflate(layoutInflater)
 
-        val track = intent.getParcelableExtra("track", Track::class.java)
-
-        viewModel = ViewModelProvider(
-            this, PlayerActivityViewModel.getFactory(track!!)
-        ).get(PlayerActivityViewModel::class.java)
+        viewModel = getViewModel {
+            parametersOf(requireNotNull(intent.getParcelableExtra("track", Track::class.java)))
+        }
 
         setContentView(binding.root)
 

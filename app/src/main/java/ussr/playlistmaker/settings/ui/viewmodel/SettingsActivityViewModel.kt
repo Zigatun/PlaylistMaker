@@ -1,11 +1,9 @@
 package ussr.playlistmaker.settings.ui.viewmodel
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import ussr.playlistmaker.settings.domain.api.SettingsInteractor
 import ussr.playlistmaker.sharing.domain.api.SharingInteractor
 
@@ -19,6 +17,13 @@ class SettingsActivityViewModel(
     fun onThemeSwitchChanged(enabled: Boolean){
         settingsInteractor.switchTheme(enabled)
         isDarkThemeEnabledLiveData.value = enabled
+        AppCompatDelegate.setDefaultNightMode(
+            if (enabled) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+        )
     }
 
     fun onShareClicked(){
@@ -31,13 +36,5 @@ class SettingsActivityViewModel(
 
     fun onContactSupportClicked(){
         sharingInteractor.contactSupport()
-    }
-
-    companion object {
-        fun getFactory(settingsInteractor: SettingsInteractor, sharingInteractor: SharingInteractor): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SettingsActivityViewModel(settingsInteractor, sharingInteractor)
-            }
-        }
     }
 }
