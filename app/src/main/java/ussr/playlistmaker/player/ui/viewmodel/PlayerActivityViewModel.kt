@@ -12,13 +12,11 @@ import ussr.playlistmaker.search.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerActivityViewModel(track: Track) : ViewModel() {
+class PlayerActivityViewModel(private val mediaPlayer: MediaPlayer, track: Track) : ViewModel() {
 
     private val trackState = MutableLiveData(PlayerState(track))
     val observableTrackState: LiveData<PlayerState> = trackState
     private var playerState = PLAYER_STATE_DEFAULT
-
-    private var mediaPlayer = MediaPlayer()
     private val handler = Handler(Looper.getMainLooper())
     private val playbackTimerRunnable = object : Runnable {
         override fun run() {

@@ -1,5 +1,6 @@
 package ussr.playlistmaker.di
 
+import android.media.MediaPlayer
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ussr.playlistmaker.PlaylistMakerApp
@@ -10,6 +11,10 @@ val appModule = module {
 
     single {
         androidContext() as PlaylistMakerApp
+    }
+
+    factory {
+        MediaPlayer()
     }
 
     single<ExternalNavigator> {
