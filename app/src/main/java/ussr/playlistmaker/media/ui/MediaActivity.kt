@@ -14,6 +14,7 @@ class MediaActivity : AppCompatActivity(R.layout.activity_media) {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.mainToolbar.setNavigationOnClickListener { finish() }
 
         binding.pager.adapter = MediaPagesAdapter(supportFragmentManager, lifecycle)
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.pager) {tab, position ->
