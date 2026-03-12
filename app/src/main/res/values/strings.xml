@@ -23,4 +23,7 @@
     <string name="any_not_found">Ничего не нашлось</string>
     <string name="connection_troubles">Проблемы со связью</string>
     <string name="trouble_no_internet">Загрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="favorites_empty">Ваша медиатека пуста</string>
+    <string name="user_playlists_empty">Вы не создали ни одного плейлиста</string>
+    <string name="new_playlist">Новый плейлист</string>
 </resources>
