@@ -4,51 +4,57 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.util.TypedValue
-import androidx.activity.enableEdgeToEdge
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
 import ussr.playlistmaker.R
-import ussr.playlistmaker.databinding.ActivityPlayerBinding
+import ussr.playlistmaker.databinding.FragmentPlayerBinding
 import ussr.playlistmaker.player.ui.viewmodel.PlayerActivityViewModel
 import ussr.playlistmaker.search.models.Track
+import kotlin.jvm.java
 
-class PlayerFragment : AppCompatActivity() {
-    private lateinit var binding: ActivityPlayerBinding
+class PlayerFragment : Fragment() {
+    private lateinit var binding: FragmentPlayerBinding
     lateinit var viewModel: PlayerActivityViewModel
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        viewModel = getViewModel {
-            parametersOf(requireNotNull(intent.getParcelableExtra("track", Track::class.java)))
-        }
-
-        setContentView(binding.root)
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.mainToolbar.setNavigationOnClickListener {
-            finish()
+            val result = findNavController().popBackStack()
+            Log.d("NAV", "popBackStack result = $result")
         }
-        viewModel.observableTrackState.observe(this){ state ->
+
+        val track = requireArguments().getParcelable(ARGS_TRACK, Track::class.java)
+        viewModel = getViewModel {
+            parametersOf(requireNotNull(track))
+        }
+        viewModel.observableTrackState.observe(viewLifecycleOwner){ state ->
             binding.trackPlayPosition.text = state.positionText
             binding.trackName.text = state.track.trackName
             binding.trackAuthor.text = state.track.artistName
@@ -69,7 +75,7 @@ class PlayerFragment : AppCompatActivity() {
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(radiusPx.toInt())))
                 .into(binding.albumImage)
         }
-        viewModel.observableTrackState.observe(this) { state ->
+        viewModel.observableTrackState.observe(viewLifecycleOwner) { state ->
             binding.trackPlayPosition.text = state.positionText
             binding.playButton.setImageResource(
                 if (state.isPlaying) R.drawable.pause_icon
@@ -88,5 +94,8 @@ class PlayerFragment : AppCompatActivity() {
 
     companion object {
         private const val CORNER_RADIUS = 8f
+        private const val ARGS_TRACK = "track"
+
+        fun createArgs(track: Track): Bundle = bundleOf(ARGS_TRACK to track)
     }
 }

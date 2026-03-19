@@ -9,6 +9,7 @@ import ussr.playlistmaker.search.api.SearchHistoryInteractor
 import ussr.playlistmaker.search.api.TracksInteractor
 import ussr.playlistmaker.search.models.Track
 import ussr.playlistmaker.search.models.TracksState
+import ussr.playlistmaker.search.ui.Event
 
 class SearchActivityViewModel(
     private val tracksInteractor: TracksInteractor,
@@ -22,8 +23,8 @@ class SearchActivityViewModel(
     private val searchBarText = MutableLiveData<String>()
     fun observableSearchBarText(): LiveData<String> = searchBarText
 
-    private val trackNavigationEvent = MutableLiveData<Track>()
-    fun observableTrackNavigationEvent(): LiveData<Track> = trackNavigationEvent
+    private val trackNavigationEvent = MutableLiveData<Event<Track>>()
+    fun observableTrackNavigationEvent(): LiveData<Event<Track>> = trackNavigationEvent
 
     private var currentText: String = ""
 
@@ -34,7 +35,7 @@ class SearchActivityViewModel(
         val state = trackViewState.value
         if(state is TracksState.Content && !state.isHistory)
         {
-            trackNavigationEvent.value = track
+            trackNavigationEvent.value = Event(track)
         }else{
             loadHistory()
         }

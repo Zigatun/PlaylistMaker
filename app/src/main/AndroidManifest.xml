@@ -15,20 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlaylistMaker">
         <activity
-            android:name=".player.ui.PlayerFragment"
-            android:exported="false" />
-        <activity
-            android:name=".media.ui.MediaFragment"
-            android:exported="false" />
-        <activity
-            android:name=".search.ui.SearchFragment"
-            android:exported="false" />
-        <activity
-            android:name=".settings.ui.SettingsFragment"
-            android:exported="false" />
-        <activity
             android:name=".main.ui.RootActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
