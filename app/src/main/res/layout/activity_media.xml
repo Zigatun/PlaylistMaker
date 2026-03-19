@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:title="@string/media"
-        android:titleTextAppearance="@style/ToolbarTitleTextStyle"
-        android:navigationIcon="@drawable/back_icon" />
+        android:titleTextAppearance="@style/ToolbarTitleTextStyle" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"

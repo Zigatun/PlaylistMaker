@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:title="@string/search"
-        android:titleTextAppearance="@style/ToolbarTitleTextStyle"
-        android:navigationIcon="@drawable/back_icon" />
+        android:titleTextAppearance="@style/ToolbarTitleTextStyle" />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
