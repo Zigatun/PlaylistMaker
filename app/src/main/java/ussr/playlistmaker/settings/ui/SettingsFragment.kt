@@ -6,7 +6,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ussr.playlistmaker.databinding.ActivitySettingsBinding
 import ussr.playlistmaker.settings.ui.viewmodel.SettingsActivityViewModel
 
-class SettingsActivity : AppCompatActivity()  {
+class SettingsFragment : AppCompatActivity()  {
     private lateinit var binding: ActivitySettingsBinding
     private val viewModel: SettingsActivityViewModel by viewModel()
 

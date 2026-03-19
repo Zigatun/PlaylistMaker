@@ -15,9 +15,9 @@ import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.ActivitySearchBinding
 import ussr.playlistmaker.search.models.TracksState
 import ussr.playlistmaker.search.ui.viewmodel.SearchActivityViewModel
-import ussr.playlistmaker.player.ui.PlayerActivity
+import ussr.playlistmaker.player.ui.PlayerFragment
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
 
     private lateinit var binding: ActivitySearchBinding
@@ -76,7 +76,7 @@ class SearchActivity : AppCompatActivity() {
         binding.tracksHistoryRecyclerView.adapter = historyAdapter
         binding.tracksRecyclerView.adapter = resultsAdapter
         viewModel.observableTrackNavigationEvent().observe(this) { track ->
-            val intent = Intent(this, PlayerActivity::class.java)
+            val intent = Intent(this, PlayerFragment::class.java)
             intent.putExtra("track", track)
             startActivity(intent)
         }

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorOnBackground"
-    tools:context=".player.ui.PlayerActivity">
+    tools:context=".player.ui.PlayerFragment">
     <Toolbar
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

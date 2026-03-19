@@ -6,7 +6,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.ActivityMediaBinding
 
-class MediaActivity : AppCompatActivity(R.layout.activity_media) {
+class MediaFragment : AppCompatActivity(R.layout.fragment_media) {
     private lateinit var binding: ActivityMediaBinding
     private lateinit var tabMediator: TabLayoutMediator
 

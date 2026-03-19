@@ -21,7 +21,7 @@ import ussr.playlistmaker.databinding.ActivityPlayerBinding
 import ussr.playlistmaker.player.ui.viewmodel.PlayerActivityViewModel
 import ussr.playlistmaker.search.models.Track
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerFragment : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     lateinit var viewModel: PlayerActivityViewModel
 
