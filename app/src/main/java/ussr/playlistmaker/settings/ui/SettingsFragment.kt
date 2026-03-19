@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ussr.playlistmaker.databinding.FragmentMediaBinding
 import ussr.playlistmaker.databinding.FragmentSettingsBinding
 import ussr.playlistmaker.settings.ui.viewmodel.SettingsActivityViewModel
 
