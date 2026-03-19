@@ -1,21 +1,32 @@
 package ussr.playlistmaker.media.ui
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.tabs.TabLayoutMediator
 import ussr.playlistmaker.R
+import ussr.playlistmaker.databinding.ActivityMediaBinding
 
-class MediaActivity : AppCompatActivity() {
+class MediaActivity : AppCompatActivity(R.layout.activity_media) {
+    private lateinit var binding: ActivityMediaBinding
+    private lateinit var tabMediator: TabLayoutMediator
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_media)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding = ActivityMediaBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.mainToolbar.setNavigationOnClickListener { finish() }
+
+        binding.pager.adapter = MediaPagesAdapter(supportFragmentManager, lifecycle)
+        tabMediator = TabLayoutMediator(binding.tabLayout, binding.pager) {tab, position ->
+            when(position){
+                0 -> tab.text = getString(R.string.favorites_tracks)
+                1 -> tab.text = getString(R.string.playlists)
+            }
         }
+        tabMediator.attach()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        tabMediator.detach()
     }
 }
