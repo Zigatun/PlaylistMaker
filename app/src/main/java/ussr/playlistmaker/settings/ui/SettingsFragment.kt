@@ -6,19 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ussr.playlistmaker.databinding.FragmentMediaBinding
 import ussr.playlistmaker.databinding.FragmentSettingsBinding
 import ussr.playlistmaker.settings.ui.viewmodel.SettingsActivityViewModel
 
 class SettingsFragment : Fragment()  {
-    private lateinit var binding: FragmentSettingsBinding
+    private var _binding: FragmentSettingsBinding? = null
     private val viewModel: SettingsActivityViewModel by viewModel()
-
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -44,5 +45,10 @@ class SettingsFragment : Fragment()  {
         binding.userAgreement.setOnClickListener {
             viewModel.onShowUserAgreementClicked()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

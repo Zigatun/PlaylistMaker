@@ -26,7 +26,8 @@ import ussr.playlistmaker.search.models.Track
 import kotlin.jvm.java
 
 class PlayerFragment : Fragment() {
-    private lateinit var binding: FragmentPlayerBinding
+    private var _binding: FragmentPlayerBinding? = null
+    private val binding get() = _binding!!
     lateinit var viewModel: PlayerActivityViewModel
 
     @SuppressLint("SetTextI18n")
@@ -37,7 +38,7 @@ class PlayerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        _binding = FragmentPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -85,6 +86,12 @@ class PlayerFragment : Fragment() {
         binding.playButton.setOnClickListener {
             viewModel.onPlayClicked()
         }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onPause() {

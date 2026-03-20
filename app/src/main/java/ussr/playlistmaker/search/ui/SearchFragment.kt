@@ -25,7 +25,8 @@ import ussr.playlistmaker.player.ui.PlayerFragment
 class SearchFragment : Fragment() {
     private val handler = Handler(Looper.getMainLooper())
 
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: SearchActivityViewModel by viewModel()
 
     private var searchItemClickAllowed = true
@@ -67,8 +68,8 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentSearchBinding.inflate(layoutInflater)
+    ): View {
+        _binding = FragmentSearchBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -180,6 +181,11 @@ class SearchFragment : Fragment() {
 
         binding.searchBar.addTextChangedListener(searchBarTextWatcher)
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
