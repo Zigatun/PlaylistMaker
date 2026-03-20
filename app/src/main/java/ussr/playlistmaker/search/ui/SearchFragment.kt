@@ -1,26 +1,31 @@
 package ussr.playlistmaker.search.ui
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ussr.playlistmaker.R
-import ussr.playlistmaker.databinding.ActivitySearchBinding
+import ussr.playlistmaker.databinding.FragmentSearchBinding
 import ussr.playlistmaker.search.models.TracksState
 import ussr.playlistmaker.search.ui.viewmodel.SearchActivityViewModel
-import ussr.playlistmaker.player.ui.PlayerActivity
+import ussr.playlistmaker.player.ui.PlayerFragment
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
     private val handler = Handler(Looper.getMainLooper())
 
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: SearchActivityViewModel by viewModel()
 
     private var searchItemClickAllowed = true
@@ -58,10 +63,17 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         historyAdapter = ItunesTrackAdapter { track ->
             if(isSearchItemClickAllowed())
@@ -75,23 +87,18 @@ class SearchActivity : AppCompatActivity() {
 
         binding.tracksHistoryRecyclerView.adapter = historyAdapter
         binding.tracksRecyclerView.adapter = resultsAdapter
-        viewModel.observableTrackNavigationEvent().observe(this) { track ->
-            val intent = Intent(this, PlayerActivity::class.java)
-            intent.putExtra("track", track)
-            startActivity(intent)
+        viewModel.observableTrackNavigationEvent().observe(viewLifecycleOwner) { event ->
+            event.get()?.let { track ->
+                findNavController().navigate(R.id.action_searchFragment_to_playerFragment,
+                    PlayerFragment.createArgs(track))
+            }
         }
-//        if (savedInstanceState != null) {
-//            searchBarValue = savedInstanceState.getCharSequence(SEARCHBAR, SEARCHBAR_VALUE_DEFAULT)
-//            searchBar.setText(searchBarValue)
-//        }
-
-        binding.mainToolbar.setNavigationOnClickListener { finish() }
 
         binding.tracksHistoryClear.setOnClickListener { viewModel.onHistoryClearClicked() }
 
         binding.searchBarClearText.setOnClickListener {
             viewModel.onClearClicked()
-            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+            val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.searchBarClearText.windowToken, 0)
         }
 
@@ -109,17 +116,17 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.observableClearTextIsAvailable().observe(this) {isAvailable ->
+        viewModel.observableClearTextIsAvailable().observe(viewLifecycleOwner) {isAvailable ->
             binding.searchBarClearText.isVisible = isAvailable
         }
 
-        viewModel.observableSearchBarText().observe(this) { text ->
+        viewModel.observableSearchBarText().observe(viewLifecycleOwner) { text ->
             if (binding.searchBar.text.toString() != text) {
                 binding.searchBar.setText(text)
             }
         }
 
-        viewModel.observableTrackViewState().observe(this) { state ->
+        viewModel.observableTrackViewState().observe(viewLifecycleOwner) { state ->
             when (state) {
 
                 is TracksState.Content -> {
@@ -175,8 +182,9 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
