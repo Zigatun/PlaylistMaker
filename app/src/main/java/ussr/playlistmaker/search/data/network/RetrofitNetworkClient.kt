@@ -3,6 +3,8 @@ package ussr.playlistmaker.search.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ussr.playlistmaker.search.data.NetworkClient
 import ussr.playlistmaker.search.data.dto.BaseResponse
 import ussr.playlistmaker.search.data.dto.ItunesSearchRequest
@@ -25,20 +27,21 @@ class RetrofitNetworkClient(private val itunesService: ItunesSearchApiService, p
         return false
     }
 
-    override fun doRequest(dto: Any): BaseResponse {
+    override suspend fun doRequest(dto: Any): BaseResponse {
         if (!isConnected()) {
             return BaseResponse().apply { resultCode = -1 }
         }
         if (dto !is ItunesSearchRequest) {
             return BaseResponse().apply { resultCode = 400 }
         }
-        val resp = itunesService.search(dto.request).execute()
-        val body = resp.body()
 
-        return if (body != null) {
-            body.apply { resultCode = resp.code() }
-        } else {
-            BaseResponse().apply { resultCode = resp.code() }
+        return withContext(Dispatchers.IO){
+            try {
+                val response = itunesService.search(dto.request)
+                response.apply { resultCode = 200 }
+            } catch (_: Throwable){
+                BaseResponse().apply { resultCode = 200 }
+            }
         }
     }
 }
