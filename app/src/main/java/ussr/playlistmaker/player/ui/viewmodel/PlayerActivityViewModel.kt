@@ -42,6 +42,7 @@ class PlayerActivityViewModel(private val mediaPlayer: MediaPlayer, track: Track
             playerState.postValue(PlayerState.Prepared())
         }
         mediaPlayer.setOnCompletionListener {
+            timerJob?.cancel()
             playerState.postValue(PlayerState.Prepared())
         }
     }
