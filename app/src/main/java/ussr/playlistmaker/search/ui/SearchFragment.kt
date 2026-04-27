@@ -2,8 +2,6 @@ package ussr.playlistmaker.search.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,7 +11,11 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.FragmentSearchBinding
@@ -22,8 +24,6 @@ import ussr.playlistmaker.search.ui.viewmodel.SearchActivityViewModel
 import ussr.playlistmaker.player.ui.PlayerFragment
 
 class SearchFragment : Fragment() {
-    private val handler = Handler(Looper.getMainLooper())
-
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SearchActivityViewModel by viewModel()
@@ -33,12 +33,14 @@ class SearchFragment : Fragment() {
     private lateinit var historyAdapter: ItunesTrackAdapter
     private lateinit var resultsAdapter: ItunesTrackAdapter
 
-
     private fun isSearchItemClickAllowed(): Boolean {
         val current = searchItemClickAllowed
         if (searchItemClickAllowed) {
             searchItemClickAllowed = false
-            handler.postDelayed({ searchItemClickAllowed = true }, SEARCHLIST_DEBOUNCE_DELAY)
+            lifecycleScope.launch {
+                delay(SEARCHLIST_DEBOUNCE_DELAY)
+                searchItemClickAllowed = true
+            }
         }
         return current
     }

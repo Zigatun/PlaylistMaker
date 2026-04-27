@@ -56,6 +56,7 @@ class SearchActivityViewModel(
     }
 
     fun onSearchSubmitted(text: String) {
+        searchJob?.cancel()
         doSearch(text)
     }
 
@@ -63,6 +64,7 @@ class SearchActivityViewModel(
         currentText = text
         searchBarText.postValue(text)
         if (text.isBlank()) {
+            searchJob?.cancel()
             clearTextIsAvailable.postValue(false)
             loadHistory()
         } else {
