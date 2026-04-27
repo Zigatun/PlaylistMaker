@@ -1,10 +1,12 @@
 package ussr.playlistmaker.search.ui.viewmodel
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ussr.playlistmaker.search.api.SearchHistoryInteractor
 import ussr.playlistmaker.search.api.TracksInteractor
 import ussr.playlistmaker.search.models.Track
@@ -27,18 +29,19 @@ class SearchActivityViewModel(
     fun observableTrackNavigationEvent(): LiveData<Event<Track>> = trackNavigationEvent
 
     private var currentText: String = ""
+    private var latestSearchText: String? = null
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var searchJob: Job? = null
 
     fun onTrackClicked(track: Track) {
         searchHistoryInteractor.addToHistory(track)
         val state = trackViewState.value
-        if(state is TracksState.Content && !state.isHistory)
-        {
+        if (state is TracksState.Content && !state.isHistory) {
             trackNavigationEvent.value = Event(track)
-        }else{
+        } else {
             loadHistory()
         }
+
     }
 
     fun onClearClicked() {
@@ -46,13 +49,14 @@ class SearchActivityViewModel(
         searchBarText.postValue("")
         trackViewState.postValue(TracksState.Empty(""))
     }
+
     fun onHistoryClearClicked() {
         searchHistoryInteractor.clearHistory()
         loadHistory()
     }
 
     fun onSearchSubmitted(text: String) {
-        handler.removeCallbacksAndMessages(null)
+        searchJob?.cancel()
         doSearch(text)
     }
 
@@ -60,7 +64,7 @@ class SearchActivityViewModel(
         currentText = text
         searchBarText.postValue(text)
         if (text.isBlank()) {
-            handler.removeCallbacksAndMessages(null)
+            searchJob?.cancel()
             clearTextIsAvailable.postValue(false)
             loadHistory()
         } else {
@@ -78,25 +82,46 @@ class SearchActivityViewModel(
     private fun doSearch(request: String) {
         trackViewState.value = TracksState.Loading
 
-        tracksInteractor.searchTracks(request, object : TracksInteractor.TracksConsumer {
-            override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
-                if(errorMessage != null){
-                    trackViewState.postValue(
-                        TracksState.Error(errorMessage)
+        viewModelScope.launch {
+            tracksInteractor
+                .searchTracks(request)
+                .collect { pair ->
+                    if (pair.second != null) {
+                        trackViewState.postValue(
+                            TracksState.Error(pair.second as String)
+                        )
+                    }
+                    if ((pair.first as List<Track>).isEmpty()) {
+                        trackViewState.postValue(
+                            TracksState.Empty("Ничего не найдено")
+                        )
+                    }else{
+                                            trackViewState.postValue(
+                        TracksState.Content((pair.first as List<Track>), false)
                     )
-                    return
+                    }
                 }
-                if (foundTracks != null && foundTracks.isEmpty()) {
-                    trackViewState.postValue(
-                        TracksState.Empty("Ничего не найдено")
-                    )
-                } else {
-                    trackViewState.postValue(
-                        TracksState.Content(foundTracks.orEmpty(), false)
-                    )
-                }
-            }
-        })
+        }
+
+//        tracksInteractor.searchTracks(request, object : TracksInteractor.TracksConsumer {
+//            override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
+//                if(errorMessage != null){
+//                    trackViewState.postValue(
+//                        TracksState.Error(errorMessage)
+//                    )
+//                    return
+//                }
+//                if (foundTracks != null && foundTracks.isEmpty()) {
+//                    trackViewState.postValue(
+//                        TracksState.Empty("Ничего не найдено")
+//                    )
+//                } else {
+//                    trackViewState.postValue(
+//                        TracksState.Content(foundTracks.orEmpty(), false)
+//                    )
+//                }
+//            }
+//        })
     }
 
     private fun loadHistory() {
@@ -112,10 +137,16 @@ class SearchActivityViewModel(
     }
 
     private fun searchDebounce(text: String) {
-        handler.removeCallbacksAndMessages(null)
-        handler.postDelayed({
+        if (text == latestSearchText) {
+            return
+        }
+        latestSearchText = text
+
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCHBAR_DEBOUNCE_DELAY)
             doSearch(text)
-        }, SEARCHBAR_DEBOUNCE_DELAY)
+        }
     }
 
     companion object {

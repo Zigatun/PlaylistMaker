@@ -1,9 +1,8 @@
 package ussr.playlistmaker.player.model
 
-import ussr.playlistmaker.search.models.Track
-
-data class PlayerState(
-    val track: Track,
-    val positionText: String = "00:00",
-    val isPlaying: Boolean = false
-)
+sealed class PlayerState(val isInPlayMode: Boolean, val progress: String){
+    class Default : PlayerState(false, "00:00")
+    class Prepared : PlayerState(false, "00:00")
+    class Playing(progress: String) : PlayerState(true, progress)
+    class Paused(progress: String) : PlayerState(false, progress)
+}

@@ -55,31 +55,29 @@ class PlayerFragment : Fragment() {
         viewModel = getViewModel {
             parametersOf(requireNotNull(track))
         }
-        viewModel.observableTrackState.observe(viewLifecycleOwner){ state ->
-            binding.trackPlayPosition.text = state.positionText
-            binding.trackName.text = state.track.trackName
-            binding.trackAuthor.text = state.track.artistName
-            binding.duration.text = state.track.trackTime
-            binding.albumGroup.isVisible = state.track.collectionName != null
-            binding.album.text = state.track.collectionName
-            binding.yearGroup.isVisible = state.track.yearOfRelease != null
-            binding.year.text = state.track.yearOfRelease
-            binding.genre.text= state.track.genreName
-            binding.country.text = state.track.country
 
-            val metrics: DisplayMetrics = this.resources.displayMetrics
-            val radiusPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CORNER_RADIUS, metrics)
-            Glide.with(this)
-                .load(state.track.coverArtworkUrl)
-                .placeholder(R.drawable.placeholder_image)
-                .centerCrop()
-                .apply(RequestOptions.bitmapTransform(RoundedCorners(radiusPx.toInt())))
-                .into(binding.albumImage)
-        }
-        viewModel.observableTrackState.observe(viewLifecycleOwner) { state ->
-            binding.trackPlayPosition.text = state.positionText
+        binding.trackName.text = track?.trackName
+        binding.trackAuthor.text = track?.artistName
+        binding.duration.text = track?.trackTime
+        binding.albumGroup.isVisible = track?.collectionName != null
+        binding.album.text = track?.collectionName
+        binding.yearGroup.isVisible = track?.yearOfRelease != null
+        binding.year.text = track?.yearOfRelease
+        binding.genre.text= track?.genreName
+        binding.country.text = track?.country
+        val metrics: DisplayMetrics = this.resources.displayMetrics
+        val radiusPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CORNER_RADIUS, metrics)
+        Glide.with(this)
+            .load(track?.coverArtworkUrl)
+            .placeholder(R.drawable.placeholder_image)
+            .centerCrop()
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(radiusPx.toInt())))
+            .into(binding.albumImage)
+
+        viewModel.observableTrackState.observe(viewLifecycleOwner){ state ->
+            binding.trackPlayPosition.text = state.progress
             binding.playButton.setImageResource(
-                if (state.isPlaying) R.drawable.pause_icon
+                if (state.isInPlayMode) R.drawable.pause_icon
                 else R.drawable.play_icon
             )
         }
