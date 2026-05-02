@@ -1,10 +1,7 @@
 package ussr.playlistmaker.search.data
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 import ussr.playlistmaker.media.data.FavoritesDatabase
 import ussr.playlistmaker.search.data.dto.ItunesSearchRequest
 import ussr.playlistmaker.search.data.dto.ItunesSearchResponse
@@ -32,5 +29,5 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient, private val
                 emit(Resource.Error("Внутренняя ошибка сервера"))
             }
         }
-    }.flowOn(Dispatchers.IO)
+    }
 }

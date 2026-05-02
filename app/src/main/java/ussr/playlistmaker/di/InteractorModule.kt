@@ -3,8 +3,6 @@ package ussr.playlistmaker.di
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ussr.playlistmaker.R
-import ussr.playlistmaker.media.domain.FavoritesInteractor
-import ussr.playlistmaker.media.impl.FavoritesInteractorImpl
 import ussr.playlistmaker.search.api.SearchHistoryInteractor
 import ussr.playlistmaker.search.api.TracksInteractor
 import ussr.playlistmaker.search.impl.SearchHistoryInteractorImpl
@@ -23,9 +21,6 @@ val interactorModule = module {
 
     single<TracksInteractor> {
         TracksInteractorImpl(get())
-    }
-    single<FavoritesInteractor> {
-        FavoritesInteractorImpl(get())
     }
 
     single<SettingsInteractor> {
