@@ -2,6 +2,8 @@ package ussr.playlistmaker.di
 
 import com.google.gson.Gson
 import org.koin.dsl.module
+import ussr.playlistmaker.media.data.FavoritesRepositoryImpl
+import ussr.playlistmaker.media.domain.FavoritesRepository
 import ussr.playlistmaker.search.api.SearchHistoryRepository
 import ussr.playlistmaker.search.api.TracksRepository
 import ussr.playlistmaker.search.data.SearchHistoryRepositoryImpl
@@ -14,7 +16,11 @@ val repositoryModule = module {
     }
 
     single<TracksRepository> {
-        TracksRepositoryImpl(get())
+        TracksRepositoryImpl(get(), get())
+    }
+
+    single<FavoritesRepository> {
+        FavoritesRepositoryImpl(get())
     }
 
 }
