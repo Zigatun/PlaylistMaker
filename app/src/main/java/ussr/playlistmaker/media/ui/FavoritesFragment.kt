@@ -12,6 +12,7 @@ import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.FragmentFavoritesBinding
 import ussr.playlistmaker.media.ui.viewmodel.FavoritesFragmentViewModel
 import ussr.playlistmaker.player.ui.PlayerFragment
+import ussr.playlistmaker.search.models.Track
 import ussr.playlistmaker.search.models.TracksState
 import ussr.playlistmaker.search.ui.ItunesTrackAdapter
 
