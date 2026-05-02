@@ -84,7 +84,7 @@ class PlayerFragment : Fragment() {
         }
 
         viewModel.observableIsInFavorites.observe(viewLifecycleOwner){ isInFavorites ->
-            binding.addToFavorites.setImageResource(if (isInFavorites == true) R.drawable.remove_from_favorites_icon else R.drawable.add_to_favorites_icon)
+            binding.addToFavorites.setImageResource(if (track?.isFavorite == true) R.drawable.remove_from_favorites_icon else R.drawable.add_to_favorites_icon)
         }
 
         binding.addToFavorites.setOnClickListener {
