@@ -28,7 +28,7 @@ val viewModelModule = module {
     }
 
     viewModel { (track: Track) ->
-        PlayerActivityViewModel(get(), track)
+        PlayerActivityViewModel(get(), get(), track)
     }
 
 }

@@ -8,15 +8,20 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ussr.playlistmaker.media.domain.FavoritesInteractor
 import ussr.playlistmaker.player.model.PlayerState
 import ussr.playlistmaker.search.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerActivityViewModel(private val mediaPlayer: MediaPlayer, track: Track) : ViewModel() {
+class PlayerActivityViewModel(private val mediaPlayer: MediaPlayer, private val favoritesInteractor: FavoritesInteractor, val track: Track) : ViewModel() {
 
     private val playerState = MutableLiveData<PlayerState>(PlayerState.Default())
     val observableTrackState: LiveData<PlayerState> = playerState
+
+    private val isInFavorites = MutableLiveData<Boolean>(track.isFavorite)
+    val observableIsInFavorites: LiveData<Boolean> = isInFavorites
+
     private var timerJob: Job? = null
     fun onPlayClicked() {
         when (playerState.value) {
@@ -27,6 +32,17 @@ class PlayerActivityViewModel(private val mediaPlayer: MediaPlayer, track: Track
                 startPlayer()
             }
             else -> {}
+        }
+    }
+
+    fun onFavoritesClicked(){
+        viewModelScope.launch {
+            if(isInFavorites.value == true){
+                favoritesInteractor.removeTrack(track)
+            } else {
+                favoritesInteractor.addTrack(track)
+            }
+            isInFavorites.value?.let { isInFavorites.postValue(!it) }
         }
     }
 
@@ -59,6 +75,7 @@ class PlayerActivityViewModel(private val mediaPlayer: MediaPlayer, track: Track
     }
 
     private fun startTimer() {
+        timerJob?.cancel()
         timerJob = viewModelScope.launch {
             while (mediaPlayer.isPlaying) {
                 delay(PLAYER_UPDATE_FREQ)
