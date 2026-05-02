@@ -33,7 +33,7 @@ fun TrackDto.toModel() = Track(this.trackId,
     this.releaseDate,
     this.releaseDate?.atZone(ZoneId.systemDefault())?.year.toString(),
     this.primaryGenreName,
-    this.country,false)
+    this.country)
 
 fun Track.toDto(): TrackDto = TrackDto(
     this.trackId,
