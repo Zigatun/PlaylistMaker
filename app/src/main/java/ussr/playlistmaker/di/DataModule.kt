@@ -33,7 +33,7 @@ val dataModule = module {
     }
 
     single {
-        Room.databaseBuilder(androidContext(), FavoritesDatabase::class.java, "database.db").build()
+        Room.databaseBuilder(androidContext(), FavoritesDatabase::class.java, "database.db").fallbackToDestructiveMigration(true).build()
     }
 
     single<SharedPreferences> {

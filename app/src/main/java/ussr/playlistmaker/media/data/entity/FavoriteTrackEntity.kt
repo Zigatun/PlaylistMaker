@@ -3,6 +3,7 @@ package ussr.playlistmaker.media.data.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.Instant
+import java.time.LocalDateTime
 
 @Entity(tableName = "favorites")
 data class FavoriteTrackEntity(
@@ -16,5 +17,6 @@ data class FavoriteTrackEntity(
                                val genreName:String,
                                val country:String,
                                val trackTime: String,
-                               val previewUrl: String
+                               val previewUrl: String,
+                                val dateAdded: LocalDateTime
 )

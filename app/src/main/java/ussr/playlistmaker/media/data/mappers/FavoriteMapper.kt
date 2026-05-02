@@ -2,6 +2,7 @@ package ussr.playlistmaker.media.data.mappers
 
 import ussr.playlistmaker.media.data.entity.FavoriteTrackEntity
 import ussr.playlistmaker.search.models.Track
+import java.time.LocalDateTime
 
 fun FavoriteTrackEntity.toModel() = Track(this.trackId,
     this.trackName,
@@ -27,5 +28,6 @@ fun Track.toDatabaseEntity() = FavoriteTrackEntity(
     this.genreName,
     this.country,
     this.trackTime,
-    this.previewUrl
+    this.previewUrl,
+    LocalDateTime.now()
 )

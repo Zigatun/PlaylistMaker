@@ -15,7 +15,7 @@ interface FavoritesDao {
     @Delete
     suspend fun removeTrack(track: FavoriteTrackEntity)
 
-    @Query("SELECT * FROM favorites")
+    @Query("SELECT * FROM favorites ORDER BY dateAdded DESC")
     suspend fun getTracks() : List<FavoriteTrackEntity>
 
     @Query("SELECT trackId FROM favorites")
