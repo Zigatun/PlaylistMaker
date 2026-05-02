@@ -74,16 +74,6 @@ class FavoritesFragment: Fragment() {
         viewModel.onViewPrepared()
     }
 
-    private fun renderFavorites(data: List<Track>){
-        if(data.isEmpty()){
-
-        }else
-        {
-
-        }
-        trackAdapter.setList(data)
-    }
-
     companion object {
         fun newInstance() = FavoritesFragment()
     }
