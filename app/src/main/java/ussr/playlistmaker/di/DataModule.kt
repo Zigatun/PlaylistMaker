@@ -2,7 +2,6 @@ package ussr.playlistmaker.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializer
@@ -12,7 +11,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ussr.playlistmaker.media.data.FavoritesDatabase
 import ussr.playlistmaker.search.data.NetworkClient
 import ussr.playlistmaker.search.data.StorageService
 import ussr.playlistmaker.search.data.network.ItunesSearchApiService
@@ -30,10 +28,6 @@ val dataModule = module {
             .addConverterFactory(GsonConverterFactory.create(get<Gson>()))
             .build()
             .create(ItunesSearchApiService::class.java)
-    }
-
-    single {
-        Room.databaseBuilder(androidContext(), FavoritesDatabase::class.java, "database.db").build()
     }
 
     single<SharedPreferences> {
