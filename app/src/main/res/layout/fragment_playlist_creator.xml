@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Toolbar
+        android:id="@+id/main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:titleTextAppearance="@style/ToolbarTitleTextStyle"
+        android:title="@string/new_playlist"
+        android:navigationIcon="@drawable/back_icon" />
+    <ImageView
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="32dp"
+        android:id="@+id/album_image"
+        android:layout_gravity="center"
+        android:layout_width="312dp"
+        android:layout_height="312dp"
+        android:src="@drawable/album_art_pick_icon" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rectangle"
+        android:layout_margin="16dp"
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="58dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@null"
+            style="@style/RegularTextStyle"
+            android:textFontWeight="400"
+            android:hint="@string/name_required"
+            android:textColorHint="@color/black"
+            />
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rectangle"
+        android:layout_marginHorizontal="16dp"
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="58dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@null"
+            style="@style/RegularTextStyle"
+            android:textFontWeight="400"
+            android:hint="@string/name_required"
+            android:textColorHint="@color/black"
+            />
+    </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <Button
+        style="@style/PrimaryActionButton"
+
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_vertical"
+        android:layout_marginBottom="32dp"
+        android:layout_marginHorizontal="17dp"
+        android:backgroundTint="@color/yp_text_gray"
+        android:text="@string/create"/>
+</LinearLayout>
