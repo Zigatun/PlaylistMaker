@@ -65,6 +65,7 @@ class PlayerFragment : Fragment() {
         binding.year.text = track?.yearOfRelease
         binding.genre.text= track?.genreName
         binding.country.text = track?.country
+        binding.addToFavorites.setImageResource(if (track?.isFavorite == true) R.drawable.remove_from_favorites_icon else R.drawable.add_to_favorites_icon)
         val metrics: DisplayMetrics = this.resources.displayMetrics
         val radiusPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CORNER_RADIUS, metrics)
         Glide.with(this)
@@ -76,11 +77,21 @@ class PlayerFragment : Fragment() {
 
         viewModel.observableTrackState.observe(viewLifecycleOwner){ state ->
             binding.trackPlayPosition.text = state.progress
+            binding.addToFavorites.setImageResource(if (state.isInFavorites) R.drawable.remove_from_favorites_icon else R.drawable.add_to_favorites_icon)
             binding.playButton.setImageResource(
                 if (state.isInPlayMode) R.drawable.pause_icon
                 else R.drawable.play_icon
             )
         }
+
+//        viewModel.observableIsInFavorites.observe(viewLifecycleOwner){ isInFavorites ->
+//            binding.addToFavorites.setImageResource(if (isInFavorites == true) R.drawable.remove_from_favorites_icon else R.drawable.add_to_favorites_icon)
+//        }
+
+        binding.addToFavorites.setOnClickListener {
+            viewModel.onFavoritesClicked()
+        }
+
         binding.playButton.setOnClickListener {
             viewModel.onPlayClicked()
         }

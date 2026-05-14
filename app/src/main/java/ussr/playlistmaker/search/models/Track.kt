@@ -16,4 +16,5 @@ class Track (val trackId: Long,
              val releaseDate: Instant?,
              val yearOfRelease: String?,
              val genreName:String,
-             val country:String) : Parcelable
+             val country:String,
+             var isFavorite: Boolean) : Parcelable
