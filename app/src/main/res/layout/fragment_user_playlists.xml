@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_gravity="center_horizontal">
     <Button
-        android:id="@+id/tracksHistoryClear"
+        android:id="@+id/create_new_playlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    tools:context=".playlist.ui.PlaylistCreatorFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <Toolbar
         android:id="@+id/main_toolbar"
@@ -35,7 +37,7 @@
             style="@style/RegularTextStyle"
             android:textFontWeight="400"
             android:hint="@string/name_required"
-            android:textColorHint="@color/black"
+            android:textColorHint="?attr/android:textColorSecondary"
             />
     </FrameLayout>
     <FrameLayout
@@ -51,9 +53,10 @@
             android:layout_marginHorizontal="16dp"
             android:background="@null"
             style="@style/RegularTextStyle"
+
             android:textFontWeight="400"
-            android:hint="@string/name_required"
-            android:textColorHint="@color/black"
+            android:hint="@string/description"
+            android:textColorHint="?attr/android:textColorSecondary"
             />
     </FrameLayout>
     <View
@@ -61,14 +64,12 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
     <Button
+        android:id="@+id/create_button"
         style="@style/PrimaryActionButton"
-
-        android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="fill_vertical"
         android:layout_marginBottom="32dp"
         android:layout_marginHorizontal="17dp"
-        android:backgroundTint="@color/yp_text_gray"
         android:text="@string/create"/>
 </LinearLayout>
