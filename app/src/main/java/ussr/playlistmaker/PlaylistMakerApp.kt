@@ -2,6 +2,7 @@ package ussr.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.markodevcic.peko.PermissionRequester
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import ussr.playlistmaker.di.appModule
@@ -16,6 +17,7 @@ class PlaylistMakerApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        PermissionRequester.initialize(applicationContext)
         startKoin {
             androidContext(this@PlaylistMakerApp)
             modules(appModule, dataModule, interactorModule, repositoryModule, viewModelModule)

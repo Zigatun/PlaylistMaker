@@ -47,8 +47,7 @@ class PlayerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.mainToolbar.setNavigationOnClickListener {
-            val result = findNavController().popBackStack()
-            Log.d("NAV", "popBackStack result = $result")
+            findNavController().popBackStack()
         }
 
         val track = requireArguments().getParcelable(ARGS_TRACK, Track::class.java)

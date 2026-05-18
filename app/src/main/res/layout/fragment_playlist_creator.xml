@@ -16,7 +16,7 @@
     <ImageView
         android:layout_marginTop="26dp"
         android:layout_marginBottom="32dp"
-        android:id="@+id/album_image"
+        android:id="@+id/playlist_image"
         android:layout_gravity="center"
         android:layout_width="312dp"
         android:layout_height="312dp"
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/create_button"
         style="@style/PrimaryActionButton"
         android:layout_width="match_parent"

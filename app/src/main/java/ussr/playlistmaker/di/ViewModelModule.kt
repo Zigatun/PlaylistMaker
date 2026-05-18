@@ -24,7 +24,7 @@ val viewModelModule = module {
         UserPlaylistsFragmentViewModel()
     }
     viewModel {
-        PlaylistCreatorViewModel()
+        PlaylistCreatorViewModel(get(), get())
     }
 
     viewModel {

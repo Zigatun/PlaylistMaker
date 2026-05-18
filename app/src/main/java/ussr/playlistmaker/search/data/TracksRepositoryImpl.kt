@@ -4,8 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
-import ussr.playlistmaker.media.data.FavoritesDatabase
+import ussr.playlistmaker.main.data.AppDatabase
 import ussr.playlistmaker.search.data.dto.ItunesSearchRequest
 import ussr.playlistmaker.search.data.dto.ItunesSearchResponse
 import ussr.playlistmaker.search.data.mappers.toModel
@@ -13,7 +12,7 @@ import ussr.playlistmaker.search.api.TracksRepository
 import ussr.playlistmaker.search.models.Track
 import ussr.playlistmaker.search.util.Resource
 
-class TracksRepositoryImpl(private val networkClient: NetworkClient, private val database: FavoritesDatabase): TracksRepository {
+class TracksRepositoryImpl(private val networkClient: NetworkClient, private val database: AppDatabase): TracksRepository {
     override fun searchTracks(searchPattern: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(ItunesSearchRequest(searchPattern))
         val favoriteIds = database.favoritesDao().getTracksIds().toSet()
