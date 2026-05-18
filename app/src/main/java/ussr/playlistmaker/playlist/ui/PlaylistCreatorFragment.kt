@@ -103,13 +103,14 @@ class PlaylistCreatorFragment: Fragment() {
                 if (granted) {
                     pickMedia.launch("image/*")
                 } else {
-                    MaterialAlertDialogBuilder(requireContext())
+                    val c = requireContext()
+                    MaterialAlertDialogBuilder(c)
                         .setTitle(R.string.no_permission)
                         .setMessage(R.string.no_permission_description)
                         .setPositiveButton(R.string.yes, {_, _ ->
                             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            intent.data= Uri.fromParts("package", context?.packageName, null)
+                            intent.data= Uri.fromParts("package", c.packageName, null)
                             context?.startActivity(intent)
                         })
                         .setNegativeButton(R.string.no, null)
