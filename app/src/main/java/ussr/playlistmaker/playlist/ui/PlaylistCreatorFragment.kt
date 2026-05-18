@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
@@ -54,7 +55,7 @@ class PlaylistCreatorFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.mainToolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+            promptUserForUnsavedChanges()
         }
 
         viewModel.state.observe(viewLifecycleOwner){state ->
@@ -124,7 +125,37 @@ class PlaylistCreatorFragment: Fragment() {
         binding.playlistDescription.doAfterTextChanged { viewModel.onDescriptionChanged(it.toString()) }
 
         binding.createButton.setOnClickListener { viewModel.onSavePressed() }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+
+                override fun handleOnBackPressed() {
+
+                    promptUserForUnsavedChanges()
+                }
+            }
+        )
     }
+
+    private fun promptUserForUnsavedChanges() {
+
+        if (!viewModel.canGracefullyLeave()) {
+
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Завершить создание плейлиста?")
+                .setMessage("Все несохранённые данные будут потеряны")
+                .setPositiveButton("Завершить") { _, _ ->
+                    findNavController().popBackStack()
+                }
+                .setNegativeButton("Отмена", null)
+                .show()
+
+        } else {
+            findNavController().popBackStack()
+        }
+    }
+
     companion object {
         private const val CORNER_RADIUS = 8f
     }

@@ -34,6 +34,11 @@ class PlaylistCreatorViewModel(
         updateState(description = description)
     }
 
+    fun canGracefullyLeave(): Boolean{
+        val currentState = _state.value!!
+        return currentState.title.isBlank() && currentState.description.isBlank() && currentState.albumPhotoUri == null
+    }
+
     fun onSavePressed() {
         val currentState = _state.value ?: return
         if (!currentState.allowToSave) return
