@@ -9,12 +9,23 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ussr.playlistmaker.media.domain.FavoritesInteractor
+import ussr.playlistmaker.media.ui.data.PlaylistsState
 import ussr.playlistmaker.player.model.PlayerState
+import ussr.playlistmaker.playlist.domain.PlaylistInteractor
 import ussr.playlistmaker.search.models.Track
+import ussr.playlistmaker.search.models.TracksState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerActivityViewModel(private val mediaPlayer: MediaPlayer, private val favoritesInteractor: FavoritesInteractor, val track: Track) : ViewModel() {
+class PlayerActivityViewModel(
+    private val mediaPlayer: MediaPlayer,
+    private val favoritesInteractor: FavoritesInteractor,
+    private val playlistInteractor: PlaylistInteractor,
+    val track: Track
+) : ViewModel() {
+
+    private val playlistViewState = MutableLiveData<PlaylistsState>(PlaylistsState.Loading)
+    fun observablePlaylistViewState(): LiveData<PlaylistsState> = playlistViewState
 
     private val playerState = MutableLiveData<PlayerState>(PlayerState.Default(track.isFavorite))
     val observableTrackState: LiveData<PlayerState> = playerState
@@ -24,27 +35,32 @@ class PlayerActivityViewModel(private val mediaPlayer: MediaPlayer, private val 
             is PlayerState.Playing -> {
                 pausePlayer()
             }
+
             is PlayerState.Prepared, is PlayerState.Paused -> {
                 startPlayer()
             }
+
             else -> {}
         }
     }
 
-    fun onFavoritesClicked(){
+    fun onFavoritesClicked() {
         viewModelScope.launch {
-            if(track.isFavorite){
+            if (track.isFavorite) {
                 favoritesInteractor.removeTrack(track)
                 track.isFavorite = false
             } else {
                 favoritesInteractor.addTrack(track)
                 track.isFavorite = true
             }
-            playerState.postValue(playerState.value.apply { this?.isInFavorites = track.isFavorite })
+            playerState.postValue(playerState.value.apply {
+                this?.isInFavorites = track.isFavorite
+            })
         }
     }
 
-    fun onPausePlayer(){
+
+    fun onPausePlayer() {
         pausePlayer()
     }
 
@@ -60,6 +76,7 @@ class PlayerActivityViewModel(private val mediaPlayer: MediaPlayer, private val 
             playerState.postValue(PlayerState.Prepared(track.isFavorite))
         }
     }
+
     private fun startPlayer() {
         mediaPlayer.start()
         playerState.postValue(PlayerState.Playing(getCurrentPlayerPosition(), track.isFavorite))
@@ -77,7 +94,26 @@ class PlayerActivityViewModel(private val mediaPlayer: MediaPlayer, private val 
         timerJob = viewModelScope.launch {
             while (mediaPlayer.isPlaying) {
                 delay(PLAYER_UPDATE_FREQ)
-                playerState.postValue(PlayerState.Playing(getCurrentPlayerPosition(), track.isFavorite))
+                playerState.postValue(
+                    PlayerState.Playing(
+                        getCurrentPlayerPosition(),
+                        track.isFavorite
+                    )
+                )
+            }
+        }
+    }
+
+    fun loadPlaylists(){
+        viewModelScope.launch {
+            playlistViewState.value = PlaylistsState.Loading
+            playlistInteractor.GetPlaylists().collect { data ->
+                if(data.isEmpty()){
+                    playlistViewState.postValue(PlaylistsState.Empty("Вы не создали ни одного плейлиста"))
+                }
+                else{
+                    playlistViewState.postValue(PlaylistsState.Content(data))
+                }
             }
         }
     }
@@ -92,9 +128,12 @@ class PlayerActivityViewModel(private val mediaPlayer: MediaPlayer, private val 
         mediaPlayer.release()
         playerState.value = PlayerState.Default(track.isFavorite)
     }
+
     private fun getCurrentPlayerPosition(): String {
-        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition) ?: "00:00"
+        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+            ?: "00:00"
     }
+
     companion object {
         private const val PLAYER_UPDATE_FREQ = 300L
     }

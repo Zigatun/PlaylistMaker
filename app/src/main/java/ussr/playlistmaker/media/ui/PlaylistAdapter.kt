@@ -6,20 +6,20 @@ import androidx.recyclerview.widget.RecyclerView
 import ussr.playlistmaker.databinding.ListItemPlaylistCardBinding
 import ussr.playlistmaker.playlist.data.models.PlaylistModel
 
-class PlaylistTrackAdapter: RecyclerView.Adapter<PlaylistTrackViewHolder>() {
+class PlaylistAdapter: RecyclerView.Adapter<PlaylistViewHolder>() {
     private val playlists = mutableListOf<PlaylistModel>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): PlaylistTrackViewHolder {
+    ): PlaylistViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListItemPlaylistCardBinding.inflate(inflater, parent,false)
-        return PlaylistTrackViewHolder(binding)
+        return PlaylistViewHolder(binding)
     }
 
     override fun onBindViewHolder(
-        holder: PlaylistTrackViewHolder,
+        holder: PlaylistViewHolder,
         position: Int
     ) {
         holder.bind(playlists[position])

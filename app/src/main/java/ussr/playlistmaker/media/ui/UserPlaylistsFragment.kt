@@ -20,7 +20,7 @@ class UserPlaylistsFragment: Fragment() {
 
     private val viewModel: UserPlaylistsFragmentViewModel by viewModel()
 
-    private lateinit var playlistsAdapter: PlaylistTrackAdapter
+    private lateinit var playlistsAdapter: PlaylistAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +33,7 @@ class UserPlaylistsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        playlistsAdapter = PlaylistTrackAdapter()
+        playlistsAdapter = PlaylistAdapter()
         binding.playlistsRecyclerView.layoutManager = GridLayoutManager(context, 2)
         binding.playlistsRecyclerView.adapter = playlistsAdapter
 
