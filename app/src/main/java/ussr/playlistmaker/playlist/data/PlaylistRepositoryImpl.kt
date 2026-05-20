@@ -20,10 +20,21 @@ class PlaylistRepositoryImpl(private val database: AppDatabase, private val gson
         database.playlistsDao().removePlaylist(playlist.toDatabaseEntity(gson))
     }
 
+    override suspend fun UpdatePlaylist(playlist: PlaylistModel) {
+        val db = playlist.toDatabaseEntity(gson)
+        database.playlistsDao().updatePlaylist(db)
+    }
+
     override suspend fun GetPlaylists(): Flow<List<PlaylistModel>> = flow {
         emit(database.playlistsDao()
             .getPlaylists()
             .map { it.toModel(gson) })
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun GetPlaylist(playlistId: Long): PlaylistModel {
+        return database.playlistsDao()
+            .getPlaylistById(playlistId)
+            .toModel(gson)
+    }
 
 }

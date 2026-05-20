@@ -9,12 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -23,9 +23,9 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
 import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.FragmentPlayerBinding
-import ussr.playlistmaker.media.ui.PlaylistAdapter
 import ussr.playlistmaker.media.ui.data.PlaylistsState
 import ussr.playlistmaker.player.ui.viewmodel.PlayerActivityViewModel
+import ussr.playlistmaker.playlist.ui.data.PlaylistTrackAddEvent
 import ussr.playlistmaker.search.models.Track
 import kotlin.jvm.java
 
@@ -64,17 +64,18 @@ class PlayerFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val track = requireArguments().getParcelable(ARGS_TRACK, Track::class.java)
 
         playlistsAdapter = PlaylistHorizontalCardAdapter({playlist ->
-
+            viewModel.onPlaylistSelected(playlist, track!!)
         })
+
         binding.playlistsRecyclerView.adapter = playlistsAdapter
 
         binding.mainToolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
 
-        val track = requireArguments().getParcelable(ARGS_TRACK, Track::class.java)
         viewModel = getViewModel {
             parametersOf(requireNotNull(track))
         }
@@ -124,7 +125,26 @@ class PlayerFragment : Fragment() {
                 }
             }
         }
+        viewModel.trackAddEvent.observe(viewLifecycleOwner) { event ->
 
+            when (event) {
+                is PlaylistTrackAddEvent.TrackAdded -> {
+                    Toast.makeText(
+                        requireContext(),
+                        event.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                is PlaylistTrackAddEvent.TrackAlreadyExists -> {
+                    Toast.makeText(
+                        requireContext(),
+                        event.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            setBottomSheetState(BottomSheetBehavior.STATE_HIDDEN)
+        }
 //        viewModel.observableIsInFavorites.observe(viewLifecycleOwner){ isInFavorites ->
 //            binding.addToFavorites.setImageResource(if (isInFavorites == true) R.drawable.remove_from_favorites_icon else R.drawable.add_to_favorites_icon)
 //        }

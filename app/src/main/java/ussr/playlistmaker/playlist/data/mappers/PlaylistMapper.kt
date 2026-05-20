@@ -8,6 +8,7 @@ import ussr.playlistmaker.search.models.Track
 import java.time.LocalDateTime
 
 fun PlaylistModel.toDatabaseEntity(gson: Gson) = PlaylistEntity(
+    id = this.id,
     title = this.title,
     description = this.description,
     content = gson.toJson(this.content),

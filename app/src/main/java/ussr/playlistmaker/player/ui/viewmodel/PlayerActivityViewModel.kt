@@ -11,9 +11,10 @@ import kotlinx.coroutines.launch
 import ussr.playlistmaker.media.domain.FavoritesInteractor
 import ussr.playlistmaker.media.ui.data.PlaylistsState
 import ussr.playlistmaker.player.model.PlayerState
+import ussr.playlistmaker.playlist.data.models.PlaylistModel
 import ussr.playlistmaker.playlist.domain.PlaylistInteractor
+import ussr.playlistmaker.playlist.ui.data.PlaylistTrackAddEvent
 import ussr.playlistmaker.search.models.Track
-import ussr.playlistmaker.search.models.TracksState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -29,6 +30,10 @@ class PlayerActivityViewModel(
 
     private val playerState = MutableLiveData<PlayerState>(PlayerState.Default(track.isFavorite))
     val observableTrackState: LiveData<PlayerState> = playerState
+
+    private val _trackAddEvent = MutableLiveData<PlaylistTrackAddEvent>()
+    val trackAddEvent: LiveData<PlaylistTrackAddEvent> = _trackAddEvent
+
     private var timerJob: Job? = null
     fun onPlayClicked() {
         when (playerState.value) {
@@ -101,6 +106,12 @@ class PlayerActivityViewModel(
                     )
                 )
             }
+        }
+    }
+
+    fun onPlaylistSelected(playlist: PlaylistModel, track: Track){
+        viewModelScope.launch {
+           _trackAddEvent.value = playlistInteractor.PutTrackIntoPlaylist(playlist.id, track)
         }
     }
 

@@ -44,16 +44,12 @@ class PlaylistCreatorViewModel(
         if (!currentState.allowToSave) return
 
         viewModelScope.launch {
-            if (currentState.albumPhotoUri != null) {
-
-            }
-
             playlistInteractor.CreatePlaylist(
                 PlaylistModel(
                     title = currentState.title,
                     description = currentState.description,
                     imagePath = playlistCoverInteractor.saveToInternalStorage(currentState.albumPhotoUri),
-                    content = emptyList()
+                    content = mutableListOf()
                 )
             )
 
