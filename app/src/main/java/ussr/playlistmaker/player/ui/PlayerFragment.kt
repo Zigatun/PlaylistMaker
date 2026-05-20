@@ -147,6 +147,13 @@ class PlayerFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        syncOverlay()
+        if(bottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN){
+            viewModel.loadPlaylists()
+        }
+    }
     private fun setBottomSheetState(state: Int){
         bottomSheetBehavior.state = state
         syncOverlay()
