@@ -1,6 +1,5 @@
 package ussr.playlistmaker.playlist.data.mappers
 
-import ussr.playlistmaker.media.data.entity.FavoriteTrackEntity
 import ussr.playlistmaker.playlist.data.entity.PlaylistContentEntity
 import ussr.playlistmaker.search.models.Track
 import java.time.LocalDateTime
