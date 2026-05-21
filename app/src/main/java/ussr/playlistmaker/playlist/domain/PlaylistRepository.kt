@@ -4,9 +4,9 @@ import kotlinx.coroutines.flow.Flow
 import ussr.playlistmaker.playlist.data.models.PlaylistModel
 
 interface PlaylistRepository {
-    suspend fun CreatePlaylist(playlist: PlaylistModel)
-    suspend fun RemovePlaylist(playlist: PlaylistModel)
-    suspend fun UpdatePlaylist(playlist: PlaylistModel)
-    suspend fun GetPlaylists() : Flow<List<PlaylistModel>>
-    suspend fun GetPlaylist(playlistId: Long): PlaylistModel
+    suspend fun createPlaylist(playlist: PlaylistModel)
+    suspend fun removePlaylist(playlist: PlaylistModel)
+    suspend fun updatePlaylist(playlist: PlaylistModel)
+    suspend fun getPlaylists() : Flow<List<PlaylistModel>>
+    suspend fun getPlaylist(playlistId: Long): PlaylistModel
 }

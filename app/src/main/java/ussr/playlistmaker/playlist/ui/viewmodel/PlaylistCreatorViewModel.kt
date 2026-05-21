@@ -44,7 +44,7 @@ class PlaylistCreatorViewModel(
         if (!currentState.allowToSave) return
 
         viewModelScope.launch {
-            playlistInteractor.CreatePlaylist(
+            playlistInteractor.createPlaylist(
                 PlaylistModel(
                     title = currentState.title,
                     description = currentState.description,

@@ -15,7 +15,7 @@ class UserPlaylistsFragmentViewModel(private val playlistInteractor: PlaylistInt
     private fun loadFavorites(){
         viewModelScope.launch {
             playlistViewState.value = PlaylistsState.Loading
-            playlistInteractor.GetPlaylists().collect { data ->
+            playlistInteractor.getPlaylists().collect { data ->
                 if(data.isEmpty()){
                     playlistViewState.postValue(PlaylistsState.Empty("Вы не создали ни одного плейлиста"))
                 }

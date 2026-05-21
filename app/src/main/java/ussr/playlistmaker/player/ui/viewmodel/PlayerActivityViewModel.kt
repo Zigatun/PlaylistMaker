@@ -111,14 +111,14 @@ class PlayerActivityViewModel(
 
     fun onPlaylistSelected(playlist: PlaylistModel, track: Track){
         viewModelScope.launch {
-           _trackAddEvent.value = playlistInteractor.PutTrackIntoPlaylist(playlist.id, track)
+           _trackAddEvent.value = playlistInteractor.putTrackIntoPlaylist(playlist.id, track)
         }
     }
 
     fun loadPlaylists(){
         viewModelScope.launch {
             playlistViewState.value = PlaylistsState.Loading
-            playlistInteractor.GetPlaylists().collect { data ->
+            playlistInteractor.getPlaylists().collect { data ->
                 if(data.isEmpty()){
                     playlistViewState.postValue(PlaylistsState.Empty("Вы не создали ни одного плейлиста"))
                 }
