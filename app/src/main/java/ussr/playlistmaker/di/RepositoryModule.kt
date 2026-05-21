@@ -5,8 +5,10 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ussr.playlistmaker.media.data.FavoritesRepositoryImpl
 import ussr.playlistmaker.media.domain.FavoritesRepository
+import ussr.playlistmaker.playlist.data.PlaylistContentRepositoryImpl
 import ussr.playlistmaker.playlist.data.PlaylistCoverRepositoryImpl
 import ussr.playlistmaker.playlist.data.PlaylistRepositoryImpl
+import ussr.playlistmaker.playlist.domain.PlaylistContentRepository
 import ussr.playlistmaker.playlist.domain.PlaylistCoverRepository
 import ussr.playlistmaker.playlist.domain.PlaylistRepository
 import ussr.playlistmaker.search.api.SearchHistoryRepository
@@ -28,9 +30,14 @@ val repositoryModule = module {
         FavoritesRepositoryImpl(get())
     }
 
+    single<PlaylistContentRepository> {
+        PlaylistContentRepositoryImpl(get())
+    }
+
     single<PlaylistCoverRepository> {
         PlaylistCoverRepositoryImpl(androidContext())
     }
+
     single<PlaylistRepository> {
         PlaylistRepositoryImpl(get(), get())
     }

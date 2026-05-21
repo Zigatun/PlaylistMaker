@@ -1,13 +1,11 @@
 package ussr.playlistmaker.playlist.data.models
 
-import ussr.playlistmaker.search.models.Track
-
 data class PlaylistModel(
     val id: Long = 0,
     val title: String,
                          val description: String = "",
                          val imagePath: String? = null,
-                         val content: MutableList<Track>)
+                         val content: MutableList<Long>)
 {
     fun formatTrackCount(): String = when {
         content.isEmpty() -> "Плейлист пуст"

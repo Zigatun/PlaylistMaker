@@ -31,11 +31,12 @@ val interactorModule = module {
     single<FavoritesInteractor> {
         FavoritesInteractorImpl(get())
     }
+
     single<PlaylistCoverInteractor> {
         PlaylistCoverInteractorImpl(get())
     }
     single<PlaylistInteractor> {
-        PlaylistInteractorImpl(get())
+        PlaylistInteractorImpl(get(), get())
     }
 
     single<SettingsInteractor> {

@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ussr.playlistmaker.playlist.data.entity.PlaylistEntity
 import ussr.playlistmaker.playlist.data.models.PlaylistModel
-import ussr.playlistmaker.search.models.Track
 import java.time.LocalDateTime
 
 fun PlaylistModel.toDatabaseEntity(gson: Gson) = PlaylistEntity(
@@ -16,7 +15,7 @@ fun PlaylistModel.toDatabaseEntity(gson: Gson) = PlaylistEntity(
     imagePath = this.imagePath)
 
 fun PlaylistEntity.toModel(gson: Gson): PlaylistModel{
-    val type = object : TypeToken<List<Track>>() {}.type
+    val type = object : TypeToken<List<Long>>() {}.type
     return PlaylistModel(
         id = this.id,
         title = this.title,
