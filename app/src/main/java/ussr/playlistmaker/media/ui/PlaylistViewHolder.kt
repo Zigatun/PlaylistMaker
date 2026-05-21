@@ -4,6 +4,7 @@ import android.util.DisplayMetrics
 import android.util.TypedValue
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import ussr.playlistmaker.R
@@ -20,8 +21,10 @@ class PlaylistViewHolder(private val binding: ListItemPlaylistCardBinding): Recy
         Glide.with(binding.root)
             .load(target.imagePath)
             .placeholder(R.drawable.placeholder_image)
-            .centerCrop()
-            .apply(RequestOptions.bitmapTransform(RoundedCorners(radiusPx.toInt())))
+            .transform(
+                CenterCrop(),
+                RoundedCorners(radiusPx.toInt())
+            )
             .into(binding.playlistImage)
     }
 }

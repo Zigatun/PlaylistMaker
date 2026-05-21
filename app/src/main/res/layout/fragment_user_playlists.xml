@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_gravity="center_horizontal">
+    android:layout_gravity="fill_horizontal">
     <Button
         android:id="@+id/create_new_playlist"
         android:layout_width="wrap_content"
@@ -17,7 +17,8 @@
         android:textAllCaps="false"/>
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="fill_horizontal">
         <LinearLayout
             android:id="@+id/no_items_placeholder"
             android:visibility="gone"
@@ -57,7 +58,8 @@
             android:id="@+id/playlistsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="16dp">
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="16dp">
         </androidx.recyclerview.widget.RecyclerView>
     </FrameLayout>
 

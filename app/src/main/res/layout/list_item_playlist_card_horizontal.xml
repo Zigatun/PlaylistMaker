@@ -13,6 +13,7 @@
         <ImageView
             android:id="@+id/playlistImage"
             style="@style/MusicAlbumImageCard"
+            android:scaleType="centerCrop"
             android:layout_gravity="center_vertical">
         </ImageView>
         <LinearLayout
