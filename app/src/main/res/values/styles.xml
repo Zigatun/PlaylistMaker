@@ -44,6 +44,12 @@
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
+    <style name="PlaylistHeaderTextStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
     <style name="TabBarTextStyle">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
@@ -161,5 +167,9 @@
         <item name="android:layout_gravity">end</item>
         <item name="android:layout_marginVertical">16dp</item>
         <item name="android:backgroundTint">@color/yp_text_gray</item>
+    </style>
+    <style name="PlaylistButtonIcon">
+        <item name="android:layout_gravity">end</item>
+        <item name="android:backgroundTint">?attr/colorOnPrimary</item>
     </style>
 </resources>
