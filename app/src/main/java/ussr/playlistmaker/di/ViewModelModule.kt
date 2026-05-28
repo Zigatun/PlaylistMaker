@@ -5,6 +5,7 @@ import org.koin.dsl.module
 import ussr.playlistmaker.media.ui.viewmodel.FavoritesFragmentViewModel
 import ussr.playlistmaker.media.ui.viewmodel.UserPlaylistsFragmentViewModel
 import ussr.playlistmaker.player.ui.viewmodel.PlayerActivityViewModel
+import ussr.playlistmaker.playlist.ui.viewmodel.PlaylistCreatorViewModel
 import ussr.playlistmaker.search.models.Track
 import ussr.playlistmaker.search.ui.viewmodel.SearchActivityViewModel
 import ussr.playlistmaker.settings.ui.viewmodel.SettingsActivityViewModel
@@ -20,7 +21,10 @@ val viewModelModule = module {
     }
 
     viewModel {
-        UserPlaylistsFragmentViewModel()
+        UserPlaylistsFragmentViewModel(get())
+    }
+    viewModel {
+        PlaylistCreatorViewModel(get(), get())
     }
 
     viewModel {
@@ -28,7 +32,7 @@ val viewModelModule = module {
     }
 
     viewModel { (track: Track) ->
-        PlayerActivityViewModel(get(), get(), track)
+        PlayerActivityViewModel(get(), get(), get(), track)
     }
 
 }

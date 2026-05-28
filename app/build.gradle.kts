@@ -66,6 +66,8 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.kotlinx.coroutines.android)
 
+    implementation("com.markodevcic:peko:3.0.5")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

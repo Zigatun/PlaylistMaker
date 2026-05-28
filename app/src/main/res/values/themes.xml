@@ -9,5 +9,6 @@
         <item name="hintTextColor">@color/yp_text_gray</item>
         <item name="subtitleTextColor">@color/yp_text_gray</item>
         <item name="backgroundTint">@color/yp_light_gray</item>
+        <item name="android:textColorSecondary">@color/yp_black</item>
     </style>
 </resources>

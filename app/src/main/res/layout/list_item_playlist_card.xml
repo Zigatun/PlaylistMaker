@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_marginBottom="16dp">
+    <ImageView
+        android:id="@+id/playlist_image"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/placeholder_image" />
+
+    <TextView
+        android:id="@+id/playlist_name"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorOnPrimary"
+        style="@style/MusicNameTextStyle"
+        android:textSize="12sp"
+        tools:text="Kunteynir - основа" />
+
+    <TextView
+        android:id="@+id/playlist_tracks_count"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorOnPrimary"
+        style="@style/MusicNameTextStyle"
+        android:textSize="12sp"
+        tools:text="24 трека" />
+</LinearLayout>

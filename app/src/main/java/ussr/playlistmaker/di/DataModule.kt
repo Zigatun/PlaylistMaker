@@ -12,7 +12,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ussr.playlistmaker.media.data.FavoritesDatabase
+import ussr.playlistmaker.main.data.AppDatabase
 import ussr.playlistmaker.search.data.NetworkClient
 import ussr.playlistmaker.search.data.StorageService
 import ussr.playlistmaker.search.data.network.ItunesSearchApiService
@@ -33,7 +33,7 @@ val dataModule = module {
     }
 
     single {
-        Room.databaseBuilder(androidContext(), FavoritesDatabase::class.java, "database.db").fallbackToDestructiveMigration(true).build()
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db").fallbackToDestructiveMigration(true).build()
     }
 
     single<SharedPreferences> {

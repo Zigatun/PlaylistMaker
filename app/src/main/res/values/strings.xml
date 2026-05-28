@@ -26,6 +26,17 @@
     <string name="favorites_empty">Ваша медиатека пуста</string>
     <string name="user_playlists_empty">Вы не создали ни одного плейлиста</string>
     <string name="new_playlist">Новый плейлист</string>
+    <string name="add_to_playlist">Добавить в плейлист</string>
     <string name="favorites_tracks">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
+    <string name="name_required">Название*</string>
+    <string name="description">Описание</string>
+    <string name="create">Создать</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="permission_description">Доступ необходим для выбора обложки альбома</string>
+    <string name="no_permission">Нет доступа</string>
+    <string name="no_permission_description">Не удалось получить доступ к галерее. Доступ необходим для выбора изображения в качестве обложки плейлиста. Убедитесь, что нужное разрешение активировано в настройках устройства и повторите попытку. Желаете открыть настройки прав доступа сейчас?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
