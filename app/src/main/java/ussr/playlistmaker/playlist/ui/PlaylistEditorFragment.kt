@@ -74,7 +74,7 @@ class PlaylistEditorFragment: Fragment()  {
         else ->  "${content.size} треков"
     }
     fun sharePlaylist(playlist:PlaylistModel, content: List<Track>){
-        var playlistContent: String = "${playlist.title}\n"
+        var playlistContent = "${playlist.title}\n"
         playlistContent += "${playlist.description}\n"
         playlistContent += "${formatTrackCount(content)}\n\n"
         var playlistIterator = 1
