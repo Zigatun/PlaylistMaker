@@ -172,7 +172,6 @@ class PlaylistCreatorFragment: Fragment() {
     private fun promptUserForUnsavedChanges() {
 
         if (!viewModel.canGracefullyLeave()) {
-            if(playlist == null)
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(if (playlist == null) "Завершить создание плейлиста?" else "Завершить редактирование плейлиста?")
                 .setMessage("Все несохранённые данные будут потеряны")
