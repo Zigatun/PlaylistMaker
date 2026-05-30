@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -14,6 +15,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -25,16 +28,20 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.allGranted
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.core.parameter.parametersOf
 import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.FragmentPlaylistCreatorBinding
+import ussr.playlistmaker.playlist.data.models.PlaylistModel
 import ussr.playlistmaker.playlist.ui.data.CreatePlaylistEvent
 import ussr.playlistmaker.playlist.ui.viewmodel.PlaylistCreatorViewModel
 
 class PlaylistCreatorFragment: Fragment() {
     private var _binding: FragmentPlaylistCreatorBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: PlaylistCreatorViewModel by viewModel()
+    private lateinit var viewModel: PlaylistCreatorViewModel
+
+    private var playlist: PlaylistModel? = null
     val requester = PermissionRequester.instance()
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -50,13 +57,18 @@ class PlaylistCreatorFragment: Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.mainToolbar.setNavigationOnClickListener {
             promptUserForUnsavedChanges()
         }
+        playlist = arguments?.getParcelable(ARGS_PLAYLIST, PlaylistModel::class.java)
 
+        viewModel = getViewModel {
+            parametersOf(playlist)
+        }
         viewModel.state.observe(viewLifecycleOwner){state ->
             binding.createButton.isEnabled = state.allowToSave
 
@@ -78,6 +90,16 @@ class PlaylistCreatorFragment: Fragment() {
                     Toast.makeText(
                         requireContext(),
                         "Плейлист ${event.playlistTitle} создан",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    findNavController().popBackStack()
+                }
+
+                is CreatePlaylistEvent.PlaylistModified -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Плейлист ${event.playlistTitle} изменён",
                         Toast.LENGTH_SHORT
                     ).show()
 
@@ -137,14 +159,23 @@ class PlaylistCreatorFragment: Fragment() {
                 }
             }
         )
+        if (playlist != null) {
+            binding.mainToolbar.title = "Редактировать"
+            binding.createButton.text = "Сохранить"
+
+            binding.playlistName.setText(playlist?.title)
+            binding.playlistDescription.setText(playlist?.description)
+
+            viewModel.initForEdit(playlist!!)
+        }
     }
 
     private fun promptUserForUnsavedChanges() {
 
         if (!viewModel.canGracefullyLeave()) {
-
+            if(playlist == null)
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Завершить создание плейлиста?")
+                .setTitle(if (playlist == null) "Завершить создание плейлиста?" else "Завершить редактирование плейлиста?")
                 .setMessage("Все несохранённые данные будут потеряны")
                 .setPositiveButton("Завершить") { _, _ ->
                     findNavController().popBackStack()
@@ -159,5 +190,7 @@ class PlaylistCreatorFragment: Fragment() {
 
     companion object {
         private const val CORNER_RADIUS = 8f
+        private const val ARGS_PLAYLIST = "playlist"
+        fun createArgs(playlist: PlaylistModel): Bundle = bundleOf(PlaylistCreatorFragment.Companion.ARGS_PLAYLIST to playlist)
     }
 }

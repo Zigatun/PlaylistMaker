@@ -77,15 +77,16 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        historyAdapter = ItunesTrackAdapter { track ->
-            if(isSearchItemClickAllowed())
-                viewModel.onTrackClicked(track)
-        }
 
-        resultsAdapter = ItunesTrackAdapter { track ->
+        historyAdapter = ItunesTrackAdapter({ track ->
             if(isSearchItemClickAllowed())
                 viewModel.onTrackClicked(track)
-        }
+        }, {})
+
+        resultsAdapter = ItunesTrackAdapter({ track ->
+            if(isSearchItemClickAllowed())
+                viewModel.onTrackClicked(track)
+        }, {})
 
         binding.tracksHistoryRecyclerView.adapter = historyAdapter
         binding.tracksRecyclerView.adapter = resultsAdapter

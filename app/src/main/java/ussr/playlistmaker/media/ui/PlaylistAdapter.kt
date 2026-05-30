@@ -5,8 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ussr.playlistmaker.databinding.ListItemPlaylistCardBinding
 import ussr.playlistmaker.playlist.data.models.PlaylistModel
+import ussr.playlistmaker.search.models.Track
 
-class PlaylistAdapter: RecyclerView.Adapter<PlaylistViewHolder>() {
+class PlaylistAdapter(private val onItemClick: (PlaylistModel) -> Unit
+): RecyclerView.Adapter<PlaylistViewHolder>() {
     private val playlists = mutableListOf<PlaylistModel>()
 
     override fun onCreateViewHolder(
@@ -23,6 +25,9 @@ class PlaylistAdapter: RecyclerView.Adapter<PlaylistViewHolder>() {
         position: Int
     ) {
         holder.bind(playlists[position])
+        holder.itemView.setOnClickListener {
+            onItemClick(playlists[position])
+        }
     }
 
     override fun getItemCount(): Int = playlists.size

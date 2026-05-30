@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.FragmentFavoritesBinding
@@ -22,6 +24,7 @@ class FavoritesFragment: Fragment() {
     private val viewModel: FavoritesFragmentViewModel by viewModel()
 
     private lateinit var trackAdapter: ItunesTrackAdapter
+    lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +38,7 @@ class FavoritesFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        trackAdapter = ItunesTrackAdapter {track -> viewModel.onTrackClicked(track)}
+        trackAdapter = ItunesTrackAdapter({track -> viewModel.onTrackClicked(track)}, {})
         binding.tracksRecyclerView.adapter = trackAdapter
 
         viewModel.observableTrackNavigationEvent().observe(viewLifecycleOwner) { event ->

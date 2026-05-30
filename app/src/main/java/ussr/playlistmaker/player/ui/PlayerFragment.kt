@@ -66,6 +66,10 @@ class PlayerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val track = requireArguments().getParcelable(ARGS_TRACK, Track::class.java)
 
+        viewModel = getViewModel {
+            parametersOf(requireNotNull(track))
+        }
+
         playlistsAdapter = PlaylistHorizontalCardAdapter({playlist ->
             viewModel.onPlaylistSelected(playlist, track!!)
         })
@@ -74,10 +78,6 @@ class PlayerFragment : Fragment() {
 
         binding.mainToolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
-        }
-
-        viewModel = getViewModel {
-            parametersOf(requireNotNull(track))
         }
 
         binding.trackName.text = track?.trackName

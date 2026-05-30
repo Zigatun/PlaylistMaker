@@ -12,16 +12,30 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/playlistImage"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintDimensionRatio="1:1"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <Toolbar
                 android:id="@+id/main_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:navigationIcon="@drawable/back_icon"
-                android:titleTextAppearance="@style/ToolbarTitleTextStyle" />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+                android:titleTextAppearance="@style/ToolbarTitleTextStyle"/>
+
         </FrameLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -34,14 +48,16 @@
                 tools:text="Kunteynir"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/yp_black"
                 style="@style/PlaylistHeaderTextStyle"/>
             <TextView
-                android:id="@+id/playlistTitle"
+                android:id="@+id/playlistDescription"
                 tools:text="Легендарные песни"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
                 android:layout_marginTop="8dp"
+                android:textColor="@color/yp_black"
                 style="@style/MusicNameTextStyle"/>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -49,44 +65,50 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp">
                 <TextView
-                    android:id="@+id/playlistTitle"
+                    android:id="@+id/playlistLength"
                     tools:text="300 минут"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/yp_black"
                     android:textSize="18dp"
                     style="@style/MusicNameTextStyle"/>
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:tint="@color/yp_black"
+                    app:tint="@color/yp_black"
                     android:src="@drawable/dot_icon"/>
 
                 <TextView
-                    android:id="@+id/playlistTitle"
+                    android:id="@+id/playlistTracksCount"
                     tools:text="300 треков"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/yp_black"
                     style="@style/MusicNameTextStyle"/>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/actionButtons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="24dp">
                 <ImageView
+                    android:id="@+id/sharePlaylist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/share_icon"
-                    android:tint="@color/yp_black"
+                    app:tint="@color/yp_black"
                     style="@style/PlaylistButtonIcon" />
                 <ImageView
+                    android:id="@+id/more"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ellipsis_icon"
                     android:layout_marginLeft="16dp"
-                    android:tint="@color/yp_black"
+                    app:tint="@color/yp_black"
                     style="@style/PlaylistButtonIcon" />
             </LinearLayout>
         </LinearLayout>
@@ -94,13 +116,12 @@
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/playlist_add_sheet"
+        android:id="@+id/playlistContentSheet"
         android:layout_width="match_parent"
-        android:layout_height="266dp"
+        android:layout_height="match_parent"
         android:background="@drawable/bottom_sheet_bg"
         app:backgroundTint="?attr/colorOnBackground"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="266dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,6 +142,90 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_marginTop="12dp">
             </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+    </FrameLayout>
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/moreActionsSheet"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:background="@drawable/bottom_sheet_bg"
+        app:backgroundTint="?attr/colorOnBackground"
+        app:behavior_peekHeight="380dp"
+
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="13dp"
+            >
+            <View
+                android:layout_width="50dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+                <ImageView
+                    android:id="@+id/playlistImageLow"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp">
+                </ImageView>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_gravity="center_vertical">
+                    <TextView
+                        android:id="@+id/playlistNameLow"
+                        style="@style/MusicNameTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Kunteynir"/>
+                    <TextView
+                        android:id="@+id/playlistDescriptionLow"
+                        style="@style/MusicArtistTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="300 треков"/>
+                </LinearLayout>
+            </LinearLayout>
+        <TextView
+            android:id="@+id/sharePlaylistLow"
+            style="@style/MusicNameTextStyle"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="21dp"
+            android:text="@string/share"/>
+            <TextView
+                android:id="@+id/editInfo"
+                style="@style/MusicNameTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="21dp"
+            android:text="@string/edit_info"/>
+            <TextView
+                android:id="@+id/removePlaylist"
+                style="@style/MusicNameTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="21dp"
+            android:text="@string/remove_playlist"/>
         </LinearLayout>
     </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

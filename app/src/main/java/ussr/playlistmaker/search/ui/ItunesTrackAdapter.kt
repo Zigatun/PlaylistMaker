@@ -6,8 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ussr.playlistmaker.databinding.ListItemTrackCardBinding
 import ussr.playlistmaker.search.models.Track
 
-class ItunesTrackAdapter(private val onItemClick: (Track) -> Unit
-) : RecyclerView.Adapter<ItunesTrackViewHolder>() {
+class ItunesTrackAdapter(private val onItemClick: (Track) -> Unit, private val onItemLongPressed: (Track) -> Unit) : RecyclerView.Adapter<ItunesTrackViewHolder>() {
 
     private val tracks = mutableListOf<Track>()
 
@@ -27,6 +26,10 @@ class ItunesTrackAdapter(private val onItemClick: (Track) -> Unit
         holder.bind(tracks[position])
         holder.itemView.setOnClickListener {
              onItemClick(tracks[position])
+        }
+        holder.itemView.setOnLongClickListener {
+            onItemLongPressed(tracks[position])
+            true
         }
     }
 
