@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.text.Editable
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -191,6 +190,6 @@ class PlaylistCreatorFragment: Fragment() {
     companion object {
         private const val CORNER_RADIUS = 8f
         private const val ARGS_PLAYLIST = "playlist"
-        fun createArgs(playlist: PlaylistModel): Bundle = bundleOf(PlaylistCreatorFragment.Companion.ARGS_PLAYLIST to playlist)
+        fun createArgs(playlist: PlaylistModel): Bundle = bundleOf(ARGS_PLAYLIST to playlist)
     }
 }

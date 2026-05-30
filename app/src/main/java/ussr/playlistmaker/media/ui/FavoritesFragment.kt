@@ -24,7 +24,6 @@ class FavoritesFragment: Fragment() {
     private val viewModel: FavoritesFragmentViewModel by viewModel()
 
     private lateinit var trackAdapter: ItunesTrackAdapter
-    lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
 
     override fun onCreateView(
         inflater: LayoutInflater,

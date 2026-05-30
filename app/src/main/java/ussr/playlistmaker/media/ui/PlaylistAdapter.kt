@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ussr.playlistmaker.databinding.ListItemPlaylistCardBinding
 import ussr.playlistmaker.playlist.data.models.PlaylistModel
-import ussr.playlistmaker.search.models.Track
 
 class PlaylistAdapter(private val onItemClick: (PlaylistModel) -> Unit
 ): RecyclerView.Adapter<PlaylistViewHolder>() {

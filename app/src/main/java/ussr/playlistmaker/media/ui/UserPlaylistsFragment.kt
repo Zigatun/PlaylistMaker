@@ -13,9 +13,7 @@ import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.FragmentUserPlaylistsBinding
 import ussr.playlistmaker.media.ui.data.PlaylistsState
 import ussr.playlistmaker.media.ui.viewmodel.UserPlaylistsFragmentViewModel
-import ussr.playlistmaker.player.ui.PlayerFragment
 import ussr.playlistmaker.playlist.ui.PlaylistEditorFragment
-import kotlin.text.get
 
 class UserPlaylistsFragment: Fragment() {
     private var _binding: FragmentUserPlaylistsBinding? = null
