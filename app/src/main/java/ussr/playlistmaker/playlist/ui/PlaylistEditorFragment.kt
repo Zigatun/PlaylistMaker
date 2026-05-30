@@ -134,6 +134,10 @@ class PlaylistEditorFragment: Fragment()  {
             viewModel.onShareClicked()
         }
 
+        binding.sharePlaylistLow.setOnClickListener {
+            viewModel.onShareClicked()
+        }
+
         binding.more.setOnClickListener {
             setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED)
         }
