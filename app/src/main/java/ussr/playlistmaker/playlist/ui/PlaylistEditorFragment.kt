@@ -187,7 +187,7 @@ class PlaylistEditorFragment: Fragment()  {
             event.get()?.let { track ->
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("Удаление трека")
-                    .setMessage("Хотите удалить трек \"${track.artistName} - ${track.trackName}\"?")
+                    .setMessage("Хотите удалить трек?")
                     .setPositiveButton("Да", { _,_ ->
                         viewModel.removeTrackFromPlaylist(track)
                     })
