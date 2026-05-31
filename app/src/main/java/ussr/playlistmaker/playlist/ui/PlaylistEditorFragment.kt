@@ -73,6 +73,21 @@ class PlaylistEditorFragment: Fragment()  {
         content.size % 10 in 2..4 -> "${content.size} трека"
         else ->  "${content.size} треков"
     }
+
+    fun formatMinutes(minutes: Int): String {
+        val mod100 = minutes % 100
+        val mod10 = minutes % 10
+
+        val word = when {
+            mod100 in 11..14 -> "минут"
+            mod10 == 1 -> "минута"
+            mod10 in 2..4 -> "минуты"
+            else -> "минут"
+        }
+
+        return "$minutes $word"
+    }
+
     fun sharePlaylist(playlist:PlaylistModel, content: List<Track>){
         var playlistContent = "${playlist.title}\n"
         playlistContent += "${playlist.description}\n"
@@ -156,8 +171,7 @@ class PlaylistEditorFragment: Fragment()  {
         viewModel.PlaylistContentState().observe(viewLifecycleOwner,
             { data ->
                 tracksAdapter.setList(data)
-                val durationSum = data.sumOf { t-> durationToSeconds(t.trackTime) }
-                binding.playlistLength.text = "$durationSum минут"
+                binding.playlistLength.text = formatMinutes(data.sumOf { t-> durationToSeconds(t.trackTime) })
                 binding.playlistTracksCount.text = formatTrackCount(data)
                 binding.root.requestLayout()
             })
