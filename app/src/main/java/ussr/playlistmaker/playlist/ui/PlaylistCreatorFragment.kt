@@ -172,8 +172,13 @@ class PlaylistCreatorFragment: Fragment() {
     private fun promptUserForUnsavedChanges() {
 
         if (!viewModel.canGracefullyLeave()) {
+            if(playlist != null) {
+                findNavController().popBackStack()
+                return
+            }
+
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle(if (playlist == null) "Завершить создание плейлиста?" else "Завершить редактирование плейлиста?")
+                .setTitle("Завершить создание плейлиста?")
                 .setMessage("Все несохранённые данные будут потеряны")
                 .setPositiveButton("Завершить") { _, _ ->
                     findNavController().popBackStack()
