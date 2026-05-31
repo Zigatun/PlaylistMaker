@@ -61,7 +61,7 @@ class PlaylistEditorViewModel(private val playlistInteractor: PlaylistInteractor
 
     fun onShareClicked(){
         viewModelScope.launch {
-            if(playlist.content.isEmpty()) {
+            if(_playlistContentState.value!!.isEmpty()) {
                 _sharePlaylistEvent.emit(SharePlaylistEvent.NoContent("В этом плейлисте нет списка треков, которым можно поделиться"))
             }
             else{
