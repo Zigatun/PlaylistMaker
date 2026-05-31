@@ -33,4 +33,8 @@ class PlaylistContentRepositoryImpl(private val database: AppDatabase): Playlist
     override suspend fun removeTrackById(trackId: Long) {
         database.playlistsContentDao().removeTrackById(trackId)
     }
+
+    override suspend fun removeTracks() {
+        database.playlistsContentDao().removeTracks()
+    }
 }

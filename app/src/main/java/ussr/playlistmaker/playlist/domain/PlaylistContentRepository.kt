@@ -10,4 +10,5 @@ interface PlaylistContentRepository {
     suspend fun hasTrack(trackId: Long): Boolean
     suspend fun removeTrack(track: Track)
     suspend fun removeTrackById(trackId: Long)
+    suspend fun removeTracks()
 }

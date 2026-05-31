@@ -16,10 +16,15 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository,
     override suspend fun removePlaylist(playlist: PlaylistModel) {
         playlistRepository.removePlaylist(playlist)
         playlistRepository.getPlaylists().collect { p ->
-            playlist.content.forEach {
-                val playlists = p.filter { pl -> pl.content.contains(it) }
-                if(playlists.isEmpty()){
-                    playlistContentRepository.removeTrackById(it)
+            if(p.isEmpty()){
+                playlistContentRepository.removeTracks()
+            }
+            else {
+                playlist.content.forEach {
+                    val playlists = p.filter { pl -> pl.content.contains(it) }
+                    if(playlists.isEmpty()){
+                        playlistContentRepository.removeTrackById(it)
+                    }
                 }
             }
         }

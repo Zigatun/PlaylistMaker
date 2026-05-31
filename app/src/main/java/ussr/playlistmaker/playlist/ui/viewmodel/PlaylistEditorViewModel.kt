@@ -37,7 +37,7 @@ class PlaylistEditorViewModel(private val playlistInteractor: PlaylistInteractor
 
     private fun loadPlaylistContent(){
         viewModelScope.launch {
-            playlistContentRepository.getTracksByIds(playlist.content).collect { data ->
+            playlistContentRepository.getTracksByIds(playlist.content.reversed()).collect { data ->
                 _playlistContentState.postValue(data)
             }
         }
