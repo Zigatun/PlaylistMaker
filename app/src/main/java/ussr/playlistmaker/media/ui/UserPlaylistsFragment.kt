@@ -13,6 +13,7 @@ import ussr.playlistmaker.R
 import ussr.playlistmaker.databinding.FragmentUserPlaylistsBinding
 import ussr.playlistmaker.media.ui.data.PlaylistsState
 import ussr.playlistmaker.media.ui.viewmodel.UserPlaylistsFragmentViewModel
+import ussr.playlistmaker.playlist.ui.PlaylistEditorFragment
 
 class UserPlaylistsFragment: Fragment() {
     private var _binding: FragmentUserPlaylistsBinding? = null
@@ -33,12 +34,21 @@ class UserPlaylistsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        playlistsAdapter = PlaylistAdapter()
+        playlistsAdapter = PlaylistAdapter( { playlist ->
+            viewModel.onPlaylistClicked(playlist)
+        })
         binding.playlistsRecyclerView.layoutManager = GridLayoutManager(context, 2)
         binding.playlistsRecyclerView.adapter = playlistsAdapter
 
         binding.createNewPlaylist.setOnClickListener {
             findNavController().navigate(R.id.action_mediaFragment_to_playlistCreatorFragment)
+        }
+
+        viewModel.observablePlaylistNavigationEvent().observe(viewLifecycleOwner) { event ->
+            event.get()?.let { playlist ->
+                findNavController().navigate(R.id.action_mediaFragment_to_playlistEditorFragment,
+                    PlaylistEditorFragment.createArgs(playlist))
+            }
         }
 
         viewModel.observablePlaylistViewState().observe(viewLifecycleOwner){ data ->

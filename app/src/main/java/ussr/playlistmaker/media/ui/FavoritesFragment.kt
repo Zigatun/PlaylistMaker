@@ -35,7 +35,7 @@ class FavoritesFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        trackAdapter = ItunesTrackAdapter {track -> viewModel.onTrackClicked(track)}
+        trackAdapter = ItunesTrackAdapter({track -> viewModel.onTrackClicked(track)}, {})
         binding.tracksRecyclerView.adapter = trackAdapter
 
         viewModel.observableTrackNavigationEvent().observe(viewLifecycleOwner) { event ->

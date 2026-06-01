@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_mediaFragment_to_playlistCreatorFragment"
             app:destination="@id/playlistCreatorFragment" />
+        <action
+            android:id="@+id/action_mediaFragment_to_playlistEditorFragment"
+            app:destination="@id/playlistEditorFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -54,4 +57,16 @@
         android:name="ussr.playlistmaker.playlist.ui.PlaylistCreatorFragment"
         android:label="PlaylistCreatorFragment"
         tools:layout="@layout/fragment_playlist_creator"/>
+    <fragment
+        android:id="@+id/playlistEditorFragment"
+        android:name="ussr.playlistmaker.playlist.ui.PlaylistEditorFragment"
+        android:label="PlaylistEditorFragment"
+        tools:layout="@layout/fragment_playlist_editor">
+        <action
+            android:id="@+id/action_playlistEditorFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_playlistEditorFragment_to_playlistCreatorFragment"
+            app:destination="@id/playlistCreatorFragment" />
+    </fragment>
 </navigation>

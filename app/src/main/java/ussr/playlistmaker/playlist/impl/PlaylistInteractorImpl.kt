@@ -15,6 +15,24 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository,
 
     override suspend fun removePlaylist(playlist: PlaylistModel) {
         playlistRepository.removePlaylist(playlist)
+        playlistRepository.getPlaylists().collect { p ->
+            if(p.isEmpty()){
+                playlistContentRepository.removeTracks()
+            }
+            else {
+                playlist.content.forEach {
+                    val playlists = p.filter { pl -> pl.content.contains(it) }
+                    if(playlists.isEmpty()){
+                        playlistContentRepository.removeTrackById(it)
+                    }
+                }
+            }
+        }
+
+    }
+
+    override suspend fun modifyPlaylist(playlist: PlaylistModel) {
+        playlistRepository.updatePlaylist(playlist)
     }
 
     override suspend fun getPlaylists(): Flow<List<PlaylistModel>> {
@@ -33,5 +51,20 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository,
         playlistRepository.updatePlaylist(playlist)
 
         return PlaylistTrackAddEvent.TrackAdded("Добавлено в плейлист ${playlist.title}")
+    }
+
+    override suspend fun removeTrackFromPlaylist(
+        playlistId: Long,
+        track: Track
+    ) {
+        val playlist = playlistRepository.getPlaylist(playlistId)
+        playlist.content.remove(track.trackId)
+        playlistRepository.updatePlaylist(playlist)
+        playlistRepository.getPlaylists().collect { p ->
+            val playlists = p.filter { pl -> pl.content.contains(track.trackId) }
+            if(playlists.isEmpty()){
+                playlistContentRepository.removeTrack(track)
+            }
+        }
     }
 }
