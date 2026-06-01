@@ -20,7 +20,14 @@ class PlaylistContentRepositoryImpl(private val database: AppDatabase): Playlist
     }
 
     override suspend fun getTracksByIds(trackIds: List<Long>): Flow<List<Track>> = flow {
-        emit(database.playlistsContentDao().getTrackByIds(trackIds).map { t-> t.toModel() })}.flowOn(Dispatchers.IO)
+        val tracks = database.playlistsContentDao()
+            .getTrackByIds(trackIds)
+            .map { it.toModel() }
+
+        val tracksById = tracks.associateBy { it.trackId }
+
+        emit(trackIds.mapNotNull { tracksById[it] })
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun hasTrack(trackId: Long): Boolean {
         return database.playlistsContentDao().hasInStorage(trackId) > 0
